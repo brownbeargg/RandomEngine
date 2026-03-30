@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.20)
+project(Sandbox)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_subdirectory("../Random" "${CMAKE_BINARY_DIR}/Random")
+
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
+    src/*.cpp
+)
+
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Random/include/Client
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Random)
+
+set_target_properties(Random ${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin-int/$<CONFIG>"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+    COMMAND_EXPAND_LISTS
+)
