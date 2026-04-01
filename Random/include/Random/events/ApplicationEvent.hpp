@@ -10,7 +10,7 @@ namespace Rand
         WindowCloseEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::WindowClose)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         std::string toString() const override { return "WindowCloseEvent"; }
     };
@@ -21,7 +21,7 @@ namespace Rand
         WindowResizeEvent(uint32_t width, uint32_t height) : m_Width(width), m_Height(height) {}
 
         RAND_EVENT_CLASS_TYPE(EventType::WindowResize)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override
         {
@@ -43,7 +43,7 @@ namespace Rand
         WindowFocusEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::WindowFocus)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override { return "WindowFocusEvent"; }
     };
@@ -54,7 +54,7 @@ namespace Rand
         WindowLostFocusEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::WindowLostFocus)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         std::string toString() const override { return "WindowLostFocusEvent"; }
     };
@@ -65,7 +65,7 @@ namespace Rand
         WindowMovedEvent(int xPos, int yPos) : m_XPos(xPos), m_YPos(yPos) {}
 
         RAND_EVENT_CLASS_TYPE(EventType::WindowMoved)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override
         {
@@ -84,7 +84,7 @@ namespace Rand
         AppTickEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::AppTick)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override { return "AppTickEvent"; }
     };
@@ -95,7 +95,7 @@ namespace Rand
         AppUpdateEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::AppTick)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override { return "AppUpdateEvent"; }
 
@@ -108,7 +108,7 @@ namespace Rand
         AppRenderEvent() = default;
 
         RAND_EVENT_CLASS_TYPE(EventType::AppRender)
-        RAND_EVENT_CLASS_CATEGORY(EventCategory::Application)
+        RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
         virtual inline std::string toString() const override { return "AppRenderEvent"; }
     };

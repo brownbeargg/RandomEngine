@@ -9,17 +9,24 @@ if (WIN32)
     file(GLOB_RECURSE PLATFORM_SRC_FILES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/Windows/*.cpp
     ) 
-else()
+else ()
     message(FATAL_ERROR "Hazel doesn't support this platform")
-endif(WIN32)
+endif ()
 
 add_library(${PROJECT_NAME} SHARED
     ${SRC_FILES}
     ${PLATFORM_SRC_FILES}
 )
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    glfw
+)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
 )
 
@@ -27,7 +34,7 @@ if (WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC
         RAND_PLATFORM_WINDOWS
     )
-endif (WIN32)
+endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     RAND_BUILD_DLL
