@@ -20,10 +20,23 @@ namespace Rand
         RAND_CORE_WARN("RANDOM ENGINE IS RUNNING!");
         RAND_TRACE("APPLICATION IS RUNNING");
 
-        while (true)
+        while (m_Running)
         {
+            m_Window->onUpdate();
         }
     }
 
-    void Application::onEvent(Event& event) { RAND_CORE_TRACE("event is {0}", event.toString()); }
+    void Application::onEvent(Event& event)
+    {
+        EventDispatcher dispatcher(event);
+        dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(onWindowClose));
+
+        RAND_CORE_TRACE("event is {0}", event.toString());
+    }
+
+    bool Application::onWindowClose(WindowCloseEvent& event)
+    {
+        m_Running = false;
+        return true;
+    }
 } // namespace Rand

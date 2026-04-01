@@ -1,6 +1,9 @@
 #include "Platform/Windows/WindowsWindow.hpp"
 
 #include "Random/Core.hpp"
+#include "Random/events/ApplicationEvent.hpp"
+#include "Random/events/KeyEvent.hpp"
+#include "Random/events/MouseEvent.hpp"
 
 namespace Rand
 {
@@ -47,6 +50,8 @@ namespace Rand
 
         RAND_CORE_INFO("CREATING WINDOW {0} {1} by {2} pixels, at {3}, {4}", props.Title, props.Width, props.Height,
                        m_Data.Props.XPos, m_Data.Props.YPos);
+
+        setEventCallbacks();
     }
 
     void WindowsWindow::shutdown()
@@ -77,4 +82,114 @@ namespace Rand
         return glfwGetPrimaryMonitor();
     }
 
+    void WindowsWindow::setEventCallbacks()
+    {
+        glfwSetErrorCallback([](int error, const char* description)
+        { RAND_CORE_ERROR("GLFW ERROR ({0}): {1}", error, description); });
+
+        glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            switch (action)
+            {
+            case GLFW_PRESS:
+                {
+                    KeyPressedEvent event(key, 0);
+                    data->EventCallback(event);
+                    break;
+                }
+            case GLFW_REPEAT:
+
+                {
+                    KeyPressedEvent event(key, 1);
+                    data->EventCallback(event);
+                    break;
+                }
+            case GLFW_RELEASE:
+                {
+                    KeyReleasedEvent event(key);
+                    data->EventCallback(event);
+                    break;
+                }
+            }
+        });
+
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+            switch (action)
+            {
+            case GLFW_PRESS:
+                {
+                    MouseButtonPressedEvent event(button);
+                    data->EventCallback(event);
+                    break;
+                }
+            case GLFW_RELEASE:
+                {
+                    MouseButtonReleasedEvent event(button);
+                    data->EventCallback(event);
+                    break;
+                }
+            }
+        });
+
+        glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            MouseMovedEvent event(xPos, yPos);
+            data->EventCallback(event);
+        });
+
+        glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            MouseScrolledEvent event(xOffset, yOffset);
+            data->EventCallback(event);
+        });
+
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            WindowCloseEvent event;
+            data->EventCallback(event);
+        });
+
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            WindowResizeEvent event(width, height);
+            data->EventCallback(event);
+        });
+
+        glfwSetWindowFocusCallback(m_Window, [](GLFWwindow* window, int focused)
+        {
+            WindowData* data  = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+            data->Props.Focus = focused;
+
+            if (focused)
+            {
+                WindowFocusEvent event;
+                data->EventCallback(event);
+            }
+            else
+            {
+                WindowLostFocusEvent event;
+                data->EventCallback(event);
+            }
+        });
+
+        glfwSetWindowPosCallback(m_Window, [](GLFWwindow* window, int xPos, int yPos)
+        {
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+            WindowMovedEvent event(xPos, yPos);
+            data->EventCallback(event);
+        });
+    }
 } // namespace Rand

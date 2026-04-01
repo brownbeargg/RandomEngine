@@ -41,6 +41,7 @@ namespace Rand
         void shutdown();
 
         GLFWmonitor* getMonitor();
+        void         setEventCallbacks();
 
       private:
         GLFWwindow* m_Window;

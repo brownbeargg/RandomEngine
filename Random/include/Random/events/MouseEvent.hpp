@@ -50,6 +50,7 @@ namespace Rand
 
     class RAND_API MouseMovedEvent : public Event
     {
+      public:
         explicit MouseMovedEvent(int xPos, int yPos) : m_XPos(xPos), m_YPos(yPos) {}
 
         RAND_EVENT_CLASS_TYPE(EventType::MouseMoved)

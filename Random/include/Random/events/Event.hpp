@@ -70,7 +70,7 @@ namespace Rand
       private:
         template <typename T>
             requires std::derived_from<T, Event>
-        using EventFn = std::function<bool>(T&);
+        using EventFn = std::function<bool(T&)>;
 
       public:
         explicit EventDispatcher(Event& event) : m_Event(event) {}
