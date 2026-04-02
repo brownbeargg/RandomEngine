@@ -23,6 +23,9 @@ namespace Rand
         while (m_Running)
         {
             m_Window->onUpdate();
+
+            for (Layer* layer : m_LayerStack)
+                layer->onUpdate();
         }
     }
 
@@ -32,6 +35,15 @@ namespace Rand
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(onWindowClose));
 
         RAND_CORE_TRACE("event is {0}", event.toString());
+
+        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+        {
+            (*it)->onEvent(event);
+            if (event.isHandled())
+            {
+                break;
+            }
+        }
     }
 
     bool Application::onWindowClose(WindowCloseEvent& event)
