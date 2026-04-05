@@ -22,6 +22,12 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     glfw
+    glad
+)
+
+add_library(glad ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLAD/src/glad.c)
+target_include_directories(glad PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLAD/include
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -38,6 +44,7 @@ endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     RAND_BUILD_DLL
+    GLFW_INCLUDE_NONE
 )
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC

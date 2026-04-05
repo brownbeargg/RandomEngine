@@ -3,6 +3,8 @@
 #include "Random/Log.hpp"
 #include "Random/RandomPch.hpp"
 
+#include <glad/glad.h>
+
 namespace Rand
 {
 #define RAND_BIND_EVENT_FN(eventFn) std::bind(&Application::eventFn, this, std::placeholders::_1)

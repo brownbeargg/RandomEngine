@@ -5,15 +5,26 @@
 #include "Random/events/KeyEvent.hpp"
 #include "Random/events/MouseEvent.hpp"
 
+#include <glad/glad.h>
+
 namespace Rand
 {
     static bool isGLFWInitialized = false;
 
-    Window* Window::create(const WindowProps& props) { return new WindowsWindow(props); }
+    Window* Window::create(const WindowProps& props)
+    {
+        return new WindowsWindow(props);
+    }
 
-    WindowsWindow::WindowsWindow(const WindowProps& props) { init(props); }
+    WindowsWindow::WindowsWindow(const WindowProps& props)
+    {
+        init(props);
+    }
 
-    WindowsWindow::~WindowsWindow() { shutdown(); }
+    WindowsWindow::~WindowsWindow()
+    {
+        shutdown();
+    }
 
     void WindowsWindow::onUpdate()
     {
@@ -25,10 +36,10 @@ namespace Rand
     {
         if (!isGLFWInitialized)
         {
-            int succes = glfwInit();
-            RAND_CORE_ASSERT(succes, "Failed to initialize GLFW");
+            int glfwInitStatus = glfwInit();
+            RAND_CORE_ASSERT(glfwInitStatus, "Failed to initialize GLFW");
 
-            isGLFWInitialized = succes;
+            isGLFWInitialized = glfwInitStatus;
         }
 
         m_Data.Props = props;
@@ -37,6 +48,10 @@ namespace Rand
                                     nullptr, nullptr);
         glfwSetWindowUserPointer(m_Window, &m_Data);
         setVSync(true);
+        glfwMakeContextCurrent(m_Window);
+
+        int gladLoadStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        RAND_CORE_ASSERT(gladLoadStatus, "Failed to initialize GLAD")
 
         m_Data.Monitor = getMonitor();
 
