@@ -5,11 +5,15 @@
 
 #include <glad/glad.h>
 
+#include <chrono>
+using namespace std::chrono_literals;
+#include <thread>
+
 namespace Rand
 {
 #define RAND_BIND_EVENT_FN(eventFn) std::bind(&Application::eventFn, this, std::placeholders::_1)
 
-    Application::Application()
+    Application::Application() : m_LayerStack(*this)
     {
         m_Window = std::unique_ptr<Window>(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(onEvent));
@@ -24,10 +28,13 @@ namespace Rand
 
         while (m_Running)
         {
-            m_Window->onUpdate();
+            glClearColor(0.5, 0.0, 0.2, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             for (Layer* layer : m_LayerStack)
                 layer->onUpdate();
+
+            m_Window->onUpdate();
         }
     }
 

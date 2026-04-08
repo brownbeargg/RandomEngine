@@ -26,6 +26,8 @@ namespace Rand
         void popLayer(Layer* const layer) { m_LayerStack.popLayer(layer); }
         void popOverlay(Layer* const overlay) { m_LayerStack.popOverlay(overlay); }
 
+        Window& getWindow() const { return *m_Window; }
+
       private:
         bool onWindowClose(WindowCloseEvent& event);
 

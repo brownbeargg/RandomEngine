@@ -32,9 +32,10 @@ namespace Rand
         inline virtual uint32_t getWidth() const  = 0;
         inline virtual uint32_t getHeight() const = 0;
 
-        inline virtual void setEventCallback(const EventCallbackFn& func) = 0;
-        inline virtual void setVSync(const bool enabled)                  = 0;
-        inline virtual bool isVSync()                                     = 0;
+        inline virtual void  setEventCallback(const EventCallbackFn& func) = 0;
+        inline virtual void  setVSync(const bool enabled)                  = 0;
+        inline virtual bool  isVSync() const                               = 0;
+        inline virtual void* getNativeWindow() const                       = 0;
 
         static Window* create(const WindowProps& props = WindowProps());
     };

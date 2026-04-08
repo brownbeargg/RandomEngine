@@ -1,6 +1,6 @@
 #include "Sandbox.hpp"
 
-SandboxLayer::SandboxLayer() : Layer("SandboxLayer") {}
+SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app) {}
 
 void SandboxLayer::onUpdate()
 {
@@ -14,7 +14,8 @@ void SandboxLayer::onEvent(Rand::Event& event)
 
 Sandbox::Sandbox()
 {
-    pushLayer(new SandboxLayer());
+    pushLayer(new SandboxLayer(*this));
+    pushOverlay(new Rand::ImGuiLayer(*this));
 }
 
 Sandbox::~Sandbox() {}

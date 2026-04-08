@@ -4,3 +4,7 @@
 [submodule "Random/vendor/GLFW"]
 	path = Random/vendor/GLFW
 	url = https://github.com/glfw/glfw.git
+[submodule "Random/vendor/imgui"]
+	path = Random/vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+    branch = docking

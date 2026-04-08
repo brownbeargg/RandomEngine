@@ -29,12 +29,16 @@ namespace Rand
         uint32_t getHeight() const override { return m_Data.Props.Height; }
 
         void setEventCallback(const EventCallbackFn& func) override { m_Data.EventCallback = func; };
+
         void setVSync(const bool enabled) override
         {
             m_Data.VSync = true;
             glfwSwapInterval(enabled);
         }
-        bool isVSync() override { return m_Data.VSync; }
+
+        bool isVSync() const override { return m_Data.VSync; }
+
+        void* getNativeWindow() const override { return m_Window; }
 
       private:
         void init(const WindowProps& props);

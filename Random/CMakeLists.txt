@@ -8,6 +8,7 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 if (WIN32)
     file(GLOB_RECURSE PLATFORM_SRC_FILES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/Windows/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/*.cpp
     ) 
 else ()
     message(FATAL_ERROR "Hazel doesn't support this platform")
@@ -20,20 +21,33 @@ add_library(${PROJECT_NAME} SHARED
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    glfw
-    glad
-)
-
 add_library(glad ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLAD/src/glad.c)
 target_include_directories(glad PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLAD/include
+)
+
+file(GLOB IMGUI_SRC
+    vendor/imgui/*.cpp
+)
+add_library(imgui STATIC ${IMGUI_SRC})
+target_include_directories(imgui PUBLIC
+    vendor/GLAD/include
+    vendor/GLFW/include
+    vendor/imgui
+    vendor/imgui/backends
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    glfw
+    glad
+    imgui
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
 )
 
 if (WIN32)

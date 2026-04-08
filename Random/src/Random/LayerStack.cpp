@@ -2,7 +2,7 @@
 
 namespace Rand
 {
-    LayerStack::LayerStack() : m_LayerInsert(m_Layers.begin()) {}
+    LayerStack::LayerStack(const Application& app) : m_Layers(), m_LayerInsert(m_Layers.begin()) {}
 
     LayerStack::~LayerStack()
     {
@@ -15,6 +15,7 @@ namespace Rand
         auto it = std::find(m_Layers.begin(), m_LayerInsert, layer);
         if (it != m_LayerInsert)
         {
+            (*it)->onDetach();
             m_Layers.erase(it);
             --m_LayerInsert;
         }
@@ -25,6 +26,7 @@ namespace Rand
         auto it = std::find(m_Layers.begin(), m_LayerInsert, overlay);
         if (it != m_LayerInsert)
         {
+            (*it)->onDetach();
             m_Layers.erase(it);
             --m_LayerInsert;
         }

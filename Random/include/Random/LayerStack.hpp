@@ -4,14 +4,22 @@
 
 namespace Rand
 {
-    class LayerStack
+    class RAND_API LayerStack
     {
       public:
-        LayerStack();
+        LayerStack(const Application& app);
         ~LayerStack();
 
-        void pushLayer(Layer* const layer) { m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer); }
-        void pushOverlay(Layer* const overlay) { m_Layers.push_back(overlay); }
+        void pushLayer(Layer* const layer)
+        {
+            layer->onAttach();
+            m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
+        }
+        void pushOverlay(Layer* const overlay)
+        {
+            overlay->onAttach();
+            m_Layers.push_back(overlay);
+        }
 
         void popLayer(Layer* const layer);
         void popOverlay(Layer* const overlay);

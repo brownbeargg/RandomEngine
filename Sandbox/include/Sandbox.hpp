@@ -5,7 +5,7 @@
 class SandboxLayer : public Rand::Layer
 {
   public:
-    SandboxLayer();
+    SandboxLayer(const Rand::Application& app);
 
     void onUpdate() override;
     void onEvent(Rand::Event& event) override;
