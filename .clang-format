@@ -31,11 +31,10 @@ NamespaceIndentation: All
 IndentCaseLabels: false
 IndentCaseBlocks: true
 
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations:
-  Enabled: true
-AlignOperands: Align
-AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignOperands: DontAlign
+AlignAfterOpenBracket: DontAlign
 
 Cpp11BracedListStyle: true
 

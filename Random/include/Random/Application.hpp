@@ -33,8 +33,8 @@ namespace Rand
 
       private:
         std::unique_ptr<Window> m_Window;
-        LayerStack              m_LayerStack;
-        bool                    m_Running = true;
+        LayerStack m_LayerStack;
+        bool m_Running = true;
     };
 
     std::unique_ptr<Application> createApplication();

@@ -11,10 +11,10 @@ namespace Rand
       private:
         struct WindowData
         {
-            WindowProps  Props{};
+            WindowProps Props{};
             GLFWmonitor* Monitor{};
             GLFWvidmode* VidMode{};
-            bool         VSync{};
+            bool VSync{};
 
             EventCallbackFn EventCallback = nullptr;
         };
@@ -45,10 +45,10 @@ namespace Rand
         void shutdown();
 
         GLFWmonitor* getMonitor();
-        void         setEventCallbacks();
+        void setEventCallbacks();
 
       private:
         GLFWwindow* m_Window;
-        WindowData  m_Data;
+        WindowData m_Data;
     };
 } // namespace Rand

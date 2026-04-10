@@ -11,12 +11,10 @@ using namespace std::chrono_literals;
 
 namespace Rand
 {
-#define RAND_BIND_EVENT_FN(eventFn) std::bind(&Application::eventFn, this, std::placeholders::_1)
-
     Application::Application() : m_LayerStack(*this)
     {
         m_Window = std::unique_ptr<Window>(Window::create());
-        m_Window->setEventCallback(RAND_BIND_EVENT_FN(onEvent));
+        m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
     }
 
     Application::~Application() {}
@@ -41,7 +39,7 @@ namespace Rand
     void Application::onEvent(Event& event)
     {
         EventDispatcher dispatcher(event);
-        dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(onWindowClose));
+        dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
 
         RAND_CORE_TRACE("event is {0}", event.toString());
 

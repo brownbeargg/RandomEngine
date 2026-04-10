@@ -5,6 +5,8 @@
 
 namespace Rand
 {
+#define RAND_BIND_EVENT_FN(eventFn) std::bind(&eventFn, this, std::placeholders::_1)
+
     enum class EventType
     {
         None = 0,
@@ -30,27 +32,39 @@ namespace Rand
 
     enum class EventCategory
     {
-        None        = 0,
+        None = 0,
         Application = BIT(0),
-        Input       = BIT(1),
-        Keyboard    = BIT(2),
-        Mouse       = BIT(3),
+        Input = BIT(1),
+        Keyboard = BIT(2),
+        Mouse = BIT(3),
     };
 
 #define RAND_EVENT_CLASS_TYPE(type)                                                                                    \
-    static EventType    getStaticType() { return type; }                                                               \
-    virtual EventType   getEventType() const override { return getStaticType(); }                                      \
-    virtual const char* getName() const override { return #type; }
+    static EventType getStaticType()                                                                                   \
+    {                                                                                                                  \
+        return type;                                                                                                   \
+    }                                                                                                                  \
+    virtual EventType getEventType() const override                                                                    \
+    {                                                                                                                  \
+        return getStaticType();                                                                                        \
+    }                                                                                                                  \
+    virtual const char* getName() const override                                                                       \
+    {                                                                                                                  \
+        return #type;                                                                                                  \
+    }
 
 #define RAND_EVENT_CLASS_CATEGORY(category)                                                                            \
-    virtual int getCategoryFlags() const override { return category; }
+    virtual int getCategoryFlags() const override                                                                      \
+    {                                                                                                                  \
+        return category;                                                                                               \
+    }
 
     class RAND_API Event
     {
       public:
-        inline virtual EventType   getEventType() const     = 0;
-        inline virtual const char* getName() const          = 0;
-        inline virtual int         getCategoryFlags() const = 0;
+        inline virtual EventType getEventType() const = 0;
+        inline virtual const char* getName() const = 0;
+        inline virtual int getCategoryFlags() const = 0;
         inline virtual std::string toString() const { return getName(); }
 
         inline bool isInCategory(EventCategory category) const
@@ -92,5 +106,8 @@ namespace Rand
         Event& m_Event;
     };
 
-    inline std::ostream& operator<<(std::ostream& os, const Event& event) { return os << event.toString(); }
+    inline std::ostream& operator<<(std::ostream& os, const Event& event)
+    {
+        return os << event.toString();
+    }
 } // namespace Rand
