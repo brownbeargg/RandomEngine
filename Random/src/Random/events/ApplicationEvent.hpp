@@ -4,7 +4,7 @@
 
 namespace Rand
 {
-    class RAND_API WindowCloseEvent : public Event
+    class  WindowCloseEvent : public Event
     {
       public:
         WindowCloseEvent() = default;
@@ -15,7 +15,7 @@ namespace Rand
         std::string toString() const override { return "WindowCloseEvent"; }
     };
 
-    class RAND_API WindowResizeEvent : public Event
+    class  WindowResizeEvent : public Event
     {
       public:
         WindowResizeEvent(uint32_t width, uint32_t height) : m_Width(width), m_Height(height) {}
@@ -37,7 +37,7 @@ namespace Rand
         uint32_t m_Width, m_Height;
     };
 
-    class RAND_API WindowFocusEvent : public Event
+    class  WindowFocusEvent : public Event
     {
       public:
         WindowFocusEvent() = default;
@@ -48,7 +48,7 @@ namespace Rand
         virtual inline std::string toString() const override { return "WindowFocusEvent"; }
     };
 
-    class RAND_API WindowLostFocusEvent : public Event
+    class  WindowLostFocusEvent : public Event
     {
       public:
         WindowLostFocusEvent() = default;
@@ -59,7 +59,7 @@ namespace Rand
         std::string toString() const override { return "WindowLostFocusEvent"; }
     };
 
-    class RAND_API WindowMovedEvent : public Event
+    class  WindowMovedEvent : public Event
     {
       public:
         WindowMovedEvent(int xPos, int yPos) : m_XPos(xPos), m_YPos(yPos) {}
@@ -78,7 +78,7 @@ namespace Rand
         int m_XPos, m_YPos;
     };
 
-    class RAND_API AppTickEvent : public Event
+    class  AppTickEvent : public Event
     {
       public:
         AppTickEvent() = default;
@@ -89,7 +89,7 @@ namespace Rand
         virtual inline std::string toString() const override { return "AppTickEvent"; }
     };
 
-    class RAND_API AppUpdateEvent : public Event
+    class  AppUpdateEvent : public Event
     {
       public:
         AppUpdateEvent() = default;
@@ -102,7 +102,7 @@ namespace Rand
       private:
     };
 
-    class RAND_API AppRenderEvent : public Event
+    class  AppRenderEvent : public Event
     {
       public:
         AppRenderEvent() = default;

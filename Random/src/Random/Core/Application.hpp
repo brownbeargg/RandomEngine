@@ -12,7 +12,7 @@
 
 namespace Rand
 {
-    class RAND_API Application
+    class  Application
     {
       public:
         Application();

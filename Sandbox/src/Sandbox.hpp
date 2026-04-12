@@ -9,6 +9,7 @@ class SandboxLayer : public Rand::Layer
 
     void onUpdate() override;
     void onEvent(Rand::Event& event) override;
+    void onImGuiRender() override;
 };
 
 class Sandbox : public Rand::Application

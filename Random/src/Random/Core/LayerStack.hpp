@@ -4,7 +4,7 @@
 
 namespace Rand
 {
-    class RAND_API LayerStack
+    class  LayerStack
     {
       public:
         LayerStack(const Application& app);

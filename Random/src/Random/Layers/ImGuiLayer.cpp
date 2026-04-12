@@ -50,6 +50,7 @@ namespace Rand
     void ImGuiLayer::onImGuiRender()
     {
         ImGui::ShowDemoWindow();
+        ImGui::ShowDebugLogWindow();
     }
 
     void ImGuiLayer::begin()

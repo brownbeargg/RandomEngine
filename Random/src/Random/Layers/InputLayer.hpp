@@ -7,7 +7,7 @@
 
 namespace Rand
 {
-    class RAND_API InputLayer : public Layer
+    class InputLayer : public Layer
     {
       public:
         InputLayer(const Application& app) : Layer("InputLayer", app) {}
@@ -15,8 +15,8 @@ namespace Rand
         bool isKeyPressed(int key) const;
         bool isMouseButtonPressed(int key) const;
 
-        inline glm::vec2 getMousePos() const;
-        inline float getMouseX() const { return getMousePos().x; }
-        inline float getMouseY() const { return getMousePos().y; }
+        glm::vec2 getMousePos() const;
+        float getMouseX() const { return getMousePos().x; }
+        float getMouseY() const { return getMousePos().y; }
     };
 } // namespace Rand

@@ -4,8 +4,8 @@
 
 /* Key | Mouse Codes */
 
-#include "Random/Core/codes/KeyCodes.hpp"
-#include "Random/Core/codes/MouseCodes.hpp"
+#include "Random/Core/Codes/KeyCodes.hpp"
+#include "Random/Core/Codes/MouseCodes.hpp"
 
 /* Core */
 

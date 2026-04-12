@@ -14,7 +14,7 @@ else ()
     message(FATAL_ERROR "Hazel doesn't support this platform")
 endif ()
 
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
     ${SRC_FILES}
     ${PLATFORM_SRC_FILES}
 )
@@ -39,9 +39,11 @@ target_include_directories(imgui PUBLIC
     vendor/imgui/backends
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(${PROJECT_NAME}
+PRIVATE
     glfw
     glad
+PUBLIC
     imgui
 )
 
@@ -60,7 +62,6 @@ if (WIN32)
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    RAND_BUILD_DLL
     GLFW_INCLUDE_NONE
 )
 

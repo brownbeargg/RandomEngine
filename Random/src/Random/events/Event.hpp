@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Random/Core/Core.hpp"
-#include "RandomPch.hpp"
 
 namespace Rand
 {
@@ -59,7 +58,7 @@ namespace Rand
         return category;                                                                                               \
     }
 
-    class RAND_API Event
+    class  Event
     {
       public:
         inline virtual EventType getEventType() const = 0;
@@ -79,7 +78,7 @@ namespace Rand
         friend class EventDispatcher;
     };
 
-    class RAND_API EventDispatcher
+    class  EventDispatcher
     {
       private:
         template <typename T>

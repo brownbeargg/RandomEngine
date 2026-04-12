@@ -32,14 +32,22 @@ namespace Rand
         {
             m_Window->onUpdate();
 
-            glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(0.5, 0.0, 0.2, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            //
+            // Main updates
+            //
 
             for (Layer* layer : m_CoreLayerStack)
                 layer->onUpdate();
 
             for (Layer* layer : m_LayerStack)
                 layer->onUpdate();
+
+            //
+            // ImGui
+            //
 
             m_ImGuiLayer->begin();
 

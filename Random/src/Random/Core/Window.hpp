@@ -19,7 +19,7 @@ namespace Rand
         }
     };
 
-    class RAND_API Window
+    class  Window
     {
       protected:
         using EventCallbackFn = std::function<void(Event&)>;

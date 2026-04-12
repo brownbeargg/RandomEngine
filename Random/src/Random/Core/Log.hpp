@@ -6,7 +6,7 @@
 
 namespace Rand
 {
-    class RAND_API Log
+    class Log
     {
       public:
         static void init();
