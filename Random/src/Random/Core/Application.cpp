@@ -40,6 +40,16 @@ namespace Rand
 
             for (Layer* layer : m_LayerStack)
                 layer->onUpdate();
+
+            m_ImGuiLayer->begin();
+
+            for (Layer* layer : m_CoreLayerStack)
+                layer->onImGuiRender();
+
+            for (Layer* layer : m_LayerStack)
+                layer->onImGuiRender();
+
+            m_ImGuiLayer->end();
         }
     }
 

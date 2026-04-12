@@ -15,10 +15,13 @@ namespace Rand
         void onAttach() override;
         void onDetach() override;
 
-        void onUpdate() override;
         void onEvent(Event& event) override;
+        void onImGuiRender() override;
+
+        void begin();
+        void end();
 
       private:
-        float m_Time;
+        float m_Time{};
     };
 } // namespace Rand

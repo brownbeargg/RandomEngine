@@ -28,8 +28,8 @@ namespace Rand
 
     void WindowsWindow::onUpdate()
     {
-        glfwPollEvents();
         glfwSwapBuffers(m_Window);
+        glfwPollEvents();
     }
 
     void WindowsWindow::init(const WindowProps& props)
@@ -44,8 +44,8 @@ namespace Rand
 
         m_Data.Props = props;
 
-        m_Window = glfwCreateWindow((int)m_Data.Props.Width, (int)m_Data.Props.Height, m_Data.Props.Title.c_str(),
-                                    nullptr, nullptr);
+        m_Window = glfwCreateWindow(
+            (int)m_Data.Props.Width, (int)m_Data.Props.Height, m_Data.Props.Title.c_str(), nullptr, nullptr);
         glfwSetWindowUserPointer(m_Window, &m_Data);
         setVSync(true);
         glfwMakeContextCurrent(m_Window);
@@ -64,7 +64,7 @@ namespace Rand
         glfwSetWindowPos(m_Window, m_Data.Props.XPos, m_Data.Props.YPos);
 
         RAND_CORE_INFO("CREATING WINDOW {0} {1} by {2} pixels, at {3}, {4}", props.Title, props.Width, props.Height,
-                       m_Data.Props.XPos, m_Data.Props.YPos);
+            m_Data.Props.XPos, m_Data.Props.YPos);
 
         setEventCallbacks();
     }
@@ -77,7 +77,7 @@ namespace Rand
 
     GLFWmonitor* WindowsWindow::getMonitor()
     {
-        int           count;
+        int count;
         GLFWmonitor** monitors = glfwGetMonitors(&count);
 
         for (int i{}; i < count; i++)
@@ -99,8 +99,8 @@ namespace Rand
 
     void WindowsWindow::setEventCallbacks()
     {
-        glfwSetErrorCallback([](int error, const char* description)
-        { RAND_CORE_ERROR("GLFW ERROR ({0}): {1}", error, description); });
+        glfwSetErrorCallback(
+            [](int error, const char* description) { RAND_CORE_ERROR("GLFW ERROR ({0}): {1}", error, description); });
 
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
@@ -184,7 +184,7 @@ namespace Rand
 
         glfwSetWindowFocusCallback(m_Window, [](GLFWwindow* window, int focused)
         {
-            WindowData* data  = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+            WindowData* data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
             data->Props.Focus = focused;
 
             if (focused)

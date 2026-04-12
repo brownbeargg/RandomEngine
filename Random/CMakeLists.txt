@@ -27,7 +27,9 @@ target_include_directories(glad PUBLIC
 )
 
 file(GLOB IMGUI_SRC
-    vendor/imgui/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp
 )
 add_library(imgui STATIC ${IMGUI_SRC})
 target_include_directories(imgui PUBLIC
