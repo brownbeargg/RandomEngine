@@ -17,10 +17,10 @@ namespace Rand
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    std::pair<float, float> InputLayer::getMousePos() const
+    glm::vec2 InputLayer::getMousePos() const
     {
         double xPos, yPos;
         glfwGetCursorPos(static_cast<GLFWwindow*>(m_App.getWindow().getNativeWindow()), &xPos, &yPos);
-        return std::make_pair(xPos, yPos);
+        return glm::vec2(xPos, yPos);
     }
 } // namespace Rand
