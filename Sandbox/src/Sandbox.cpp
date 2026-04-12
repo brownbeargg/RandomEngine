@@ -1,7 +1,5 @@
 #include "Sandbox.hpp"
 
-#include <GLFW/glfw3.h>
-
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app) {}
 
 void SandboxLayer::onUpdate()
