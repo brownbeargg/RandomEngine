@@ -4,5 +4,6 @@
 #include "Random/Events/Event.hpp"
 #include "Random/Events/KeyEvent.hpp"
 #include "Random/Events/MouseEvent.hpp"
-#include "Random/ImGui/ImguiLayer.hpp"
+#include "Random/Layers/ImGuiLayer.hpp"
+#include "Random/Layers/InputLayer.hpp"
 #include "RandomPch.hpp"

@@ -11,3 +11,7 @@ CMakePresets.json
 # VISUAL STUDIO
 
 .vs/
+
+# VSCODE
+
+.vscode/

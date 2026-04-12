@@ -1,20 +1,24 @@
 #include "Random/Core/Application.hpp"
 
+#include "Random/Layers/ImGuiLayer.hpp"
+#include "Random/Layers/InputLayer.hpp"
 #include "Random/Core/Log.hpp"
 #include "RandomPch.hpp"
 
 #include <glad/glad.h>
 
-#include <chrono>
-using namespace std::chrono_literals;
-#include <thread>
-
 namespace Rand
 {
-    Application::Application() : m_LayerStack(*this)
+    Application::Application() : m_LayerStack(*this), m_CoreLayerStack(*this)
     {
         m_Window = std::unique_ptr<Window>(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
+
+        m_ImGuiLayer = new ImGuiLayer(*this);
+        m_CoreLayerStack.pushOverlay(m_ImGuiLayer);
+
+        m_InputLayer = new InputLayer(*this);
+        m_CoreLayerStack.pushLayer(m_InputLayer);
     }
 
     Application::~Application() {}
@@ -30,6 +34,9 @@ namespace Rand
 
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(0.5, 0.0, 0.2, 1.0);
+
+            for (Layer* layer : m_CoreLayerStack)
+                layer->onUpdate();
 
             for (Layer* layer : m_LayerStack)
                 layer->onUpdate();

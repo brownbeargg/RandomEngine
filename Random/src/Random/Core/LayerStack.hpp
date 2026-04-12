@@ -10,16 +10,8 @@ namespace Rand
         LayerStack(const Application& app);
         ~LayerStack();
 
-        void pushLayer(Layer* const layer)
-        {
-            layer->onAttach();
-            m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
-        }
-        void pushOverlay(Layer* const overlay)
-        {
-            overlay->onAttach();
-            m_Layers.push_back(overlay);
-        }
+        void pushLayer(Layer* const layer);
+        void pushOverlay(Layer* const overlay);
 
         void popLayer(Layer* const layer);
         void popOverlay(Layer* const overlay);
@@ -32,6 +24,6 @@ namespace Rand
 
       private:
         std::vector<Layer*> m_Layers{};
-        std::vector<Layer*>::iterator m_LayerInsert{};
+        size_t m_LayerInsertIndex{};
     };
 } // namespace Rand
