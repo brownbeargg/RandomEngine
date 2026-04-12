@@ -6,7 +6,7 @@ namespace Rand
 {
     class Application;
 
-    class  Layer
+    class Layer
     {
       public:
         virtual ~Layer() {}

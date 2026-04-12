@@ -4,7 +4,7 @@
 
 namespace Rand
 {
-    std::shared_ptr<spdlog::logger> Log::s_CoreLogger   = nullptr;
+    std::shared_ptr<spdlog::logger> Log::s_CoreLogger = nullptr;
     std::shared_ptr<spdlog::logger> Log::s_ClientLogger = nullptr;
 
     void Log::init()

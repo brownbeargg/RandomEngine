@@ -58,7 +58,7 @@ namespace Rand
         return category;                                                                                               \
     }
 
-    class  Event
+    class Event
     {
       public:
         inline virtual EventType getEventType() const = 0;
@@ -78,7 +78,7 @@ namespace Rand
         friend class EventDispatcher;
     };
 
-    class  EventDispatcher
+    class EventDispatcher
     {
       private:
         template <typename T>

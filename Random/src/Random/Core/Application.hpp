@@ -12,7 +12,7 @@
 
 namespace Rand
 {
-    class  Application
+    class Application
     {
       public:
         Application();

@@ -6,7 +6,7 @@
 
 namespace Rand
 {
-    class  ImGuiLayer : public Layer
+    class ImGuiLayer : public Layer
     {
       public:
         explicit ImGuiLayer(const Application&);
