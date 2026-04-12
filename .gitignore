@@ -7,3 +7,7 @@ imgui.ini
 build/
 .cache/
 CMakePresets.json
+
+# VISUAL STUDIO
+
+.vs/

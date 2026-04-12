@@ -15,8 +15,8 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Random/include/Client
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Random/src/Client
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Random)

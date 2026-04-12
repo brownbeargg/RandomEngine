@@ -44,7 +44,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
@@ -62,5 +62,5 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 )
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/Random/RandomPch.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Random/RandomPch.hpp
 )

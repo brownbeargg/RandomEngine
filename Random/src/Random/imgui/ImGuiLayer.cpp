@@ -41,12 +41,12 @@ namespace Rand
 
     void ImGuiLayer::onUpdate()
     {
-        ImGuiIO& io    = ImGui::GetIO();
+        ImGuiIO& io = ImGui::GetIO();
         io.DisplaySize = ImVec2(m_App.getWindow().getWidth(), m_App.getWindow().getHeight());
 
-        float dt     = (float)glfwGetTime();
+        float dt = (float)glfwGetTime();
         io.DeltaTime = m_Time ? dt - m_Time : 1.0f / 60.0f;
-        m_Time       = dt;
+        m_Time = dt;
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
