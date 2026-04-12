@@ -1,6 +1,6 @@
-#include "Random/imgui/ImguiLayer.hpp"
+#include "Random/ImGui/ImguiLayer.hpp"
 
-#include "Random/Application.hpp"
+#include "Random/Core/Application.hpp"
 
 #include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
 #include "Platform/OpenGL/ImGuiGLFWWindow.h"

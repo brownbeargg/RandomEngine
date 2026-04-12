@@ -62,5 +62,5 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 )
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Random/RandomPch.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/RandomPch.hpp
 )

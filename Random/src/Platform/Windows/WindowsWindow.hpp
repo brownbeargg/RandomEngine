@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Window.hpp"
+#include "Random/Core/Window.hpp"
 
 #include <GLFW/glfw3.h>
 

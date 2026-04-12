@@ -1,9 +1,9 @@
 #include "Platform/Windows/WindowsWindow.hpp"
 
-#include "Random/Core.hpp"
-#include "Random/events/ApplicationEvent.hpp"
-#include "Random/events/KeyEvent.hpp"
-#include "Random/events/MouseEvent.hpp"
+#include "Random/Core/Core.hpp"
+#include "Random/Events/ApplicationEvent.hpp"
+#include "Random/Events/KeyEvent.hpp"
+#include "Random/Events/MouseEvent.hpp"
 
 #include <glad/glad.h>
 

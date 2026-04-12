@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Random/Core.hpp"
-#include "Random/events/ApplicationEvent.hpp"
-#include "Random/events/Event.hpp"
-#include "Random/events/KeyEvent.hpp"
-#include "Random/events/MouseEvent.hpp"
-#include "Random/LayerStack.hpp"
-#include "Random/Window.hpp"
+#include "Random/Core/Core.hpp"
+#include "Random/Events/ApplicationEvent.hpp"
+#include "Random/Events/Event.hpp"
+#include "Random/Events/KeyEvent.hpp"
+#include "Random/Events/MouseEvent.hpp"
+#include "Random/Core/LayerStack.hpp"
+#include "Random/Core/Window.hpp"
 
 namespace Rand
 {

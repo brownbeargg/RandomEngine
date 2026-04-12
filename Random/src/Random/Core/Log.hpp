@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core.hpp"
+#include "Random/Core/Core.hpp"
 
 #include "spdlog/spdlog.h"
 

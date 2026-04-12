@@ -1,7 +1,7 @@
-#include "Random/Application.hpp"
+#include "Random/Core/Application.hpp"
 
-#include "Random/Log.hpp"
-#include "Random/RandomPch.hpp"
+#include "Random/Core/Log.hpp"
+#include "RandomPch.hpp"
 
 #include <glad/glad.h>
 

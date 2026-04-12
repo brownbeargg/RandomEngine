@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Random/Application.hpp"
-#include "Random/Layer.hpp"
+#include "Random/Core/Application.hpp"
+#include "Random/Core/Layer.hpp"
 
 #include <imgui.h>
 

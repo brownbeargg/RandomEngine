@@ -12,7 +12,7 @@
 
 #define RAND_ENABLE_ASSERTS
 
-#include "Random/Log.hpp"
+#include "Random/Core/Log.hpp"
 
 #if defined(RAND_ENABLE_ASSERTS)
     #define RAND_CORE_ASSERT(x, ...)                                                                                   \
