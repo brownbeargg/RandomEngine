@@ -2,7 +2,7 @@
 #include "Random.hpp"
 #include "Sandbox.hpp"
 
-std::unique_ptr<Rand::Application> Rand::createApplication()
+Rand::Application* Rand::createApplication()
 {
-    return std::make_unique<Sandbox>();
+    return new Sandbox;
 }

@@ -4,7 +4,7 @@
 
 namespace Rand
 {
-    class LayerStack
+    class LayerStack final
     {
       public:
         LayerStack(const Application& app);

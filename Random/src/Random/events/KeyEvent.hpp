@@ -7,6 +7,8 @@ namespace Rand
     class KeyEvent : public Event
     {
       public:
+        ~KeyEvent() {}
+
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Input | (int)EventCategory::Keyboard)
 
         int getKeyCode() const { return m_KeyCode; }
@@ -18,7 +20,7 @@ namespace Rand
         uint16_t m_KeyCode;
     };
 
-    class KeyPressedEvent : public KeyEvent
+    class KeyPressedEvent final : public KeyEvent
     {
       public:
         explicit KeyPressedEvent(uint16_t keyCode, int repeatCount) : KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
@@ -36,7 +38,7 @@ namespace Rand
         int m_RepeatCount;
     };
 
-    class KeyReleasedEvent : public KeyEvent
+    class KeyReleasedEvent final : public KeyEvent
     {
       public:
         explicit KeyReleasedEvent(uint16_t keyCode) : KeyEvent(keyCode) {}

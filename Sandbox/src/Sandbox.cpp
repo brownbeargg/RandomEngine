@@ -2,10 +2,7 @@
 
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app) {}
 
-void SandboxLayer::onUpdate()
-{
-    RAND_INFO("SandboxLayer::OnUpdate");
-}
+void SandboxLayer::onUpdate() {}
 
 void SandboxLayer::onEvent(Rand::Event& event)
 {

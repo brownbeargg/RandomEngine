@@ -9,6 +9,8 @@
 #include "Random/Events/MouseEvent.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
+#include "Random/Renderer/Buffer.hpp"
+#include "Random/Renderer/Shader.hpp"
 
 namespace Rand
 {
@@ -34,6 +36,7 @@ namespace Rand
 
       private:
         bool onWindowClose(WindowCloseEvent& event);
+        bool onWindowResize(WindowResizeEvent& event);
 
       private:
         std::unique_ptr<Window> m_Window;
@@ -43,7 +46,13 @@ namespace Rand
         LayerStack m_CoreLayerStack;
         InputLayer* m_InputLayer;
         ImGuiLayer* m_ImGuiLayer;
+
+        // TEMP
+        uint32_t m_VAO;
+        std::unique_ptr<Rand::VertexBuffer> m_VBO;
+        std::unique_ptr<Rand::IndexBuffer> m_EBO;
+        std::unique_ptr<Shader> m_Shader;
     };
 
-    std::unique_ptr<Application> createApplication();
+    Rand::Application* createApplication();
 } // namespace Rand

@@ -1,12 +1,13 @@
 #include "Random/Core/Application.hpp"
 #include "Random/Core/Log.hpp"
-#include "RandomPch.hpp"
 
-extern std::unique_ptr<Rand::Application> Rand::createApplication();
+extern Rand::Application* Rand::createApplication();
 
 int main()
 {
-    Rand::Log::init();
-    auto app = Rand::createApplication();
+    using namespace Rand;
+
+    Log::init();
+    auto app = std::unique_ptr<Application>(createApplication());
     app->run();
 }

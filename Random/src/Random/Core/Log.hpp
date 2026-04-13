@@ -6,7 +6,7 @@
 
 namespace Rand
 {
-    class Log
+    class Log final
     {
       public:
         static void init();

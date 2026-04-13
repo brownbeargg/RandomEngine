@@ -7,6 +7,8 @@ namespace Rand
     class MouseButtonEvent : public Event
     {
       public:
+        ~MouseButtonEvent() {}
+
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Input | (int)EventCategory::Mouse)
 
         int getMouseButton() const { return m_Button; }
@@ -18,7 +20,7 @@ namespace Rand
         int m_Button;
     };
 
-    class MouseButtonPressedEvent : public MouseButtonEvent
+    class MouseButtonPressedEvent final : public MouseButtonEvent
     {
       public:
         explicit MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
@@ -33,7 +35,7 @@ namespace Rand
         }
     };
 
-    class MouseButtonReleasedEvent : public MouseButtonEvent
+    class MouseButtonReleasedEvent final : public MouseButtonEvent
     {
       public:
         MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}
@@ -48,7 +50,7 @@ namespace Rand
         }
     };
 
-    class MouseMovedEvent : public Event
+    class MouseMovedEvent final : public Event
     {
       public:
         explicit MouseMovedEvent(int xPos, int yPos) : m_XPos(xPos), m_YPos(yPos) {}
@@ -70,7 +72,7 @@ namespace Rand
         int m_XPos, m_YPos;
     };
 
-    class MouseScrolledEvent : public Event
+    class MouseScrolledEvent final : public Event
     {
       public:
         explicit MouseScrolledEvent(float xOffset, float yOffset) : m_XOffset(xOffset), m_YOffset(yOffset) {}

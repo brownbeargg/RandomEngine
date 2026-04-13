@@ -7,7 +7,7 @@
 
 namespace Rand
 {
-    class InputLayer : public Layer
+    class InputLayer final : public Layer
     {
       public:
         InputLayer(const Application& app) : Layer("InputLayer", app) {}

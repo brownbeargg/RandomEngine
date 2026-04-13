@@ -25,6 +25,12 @@
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
 
+/* Renderer */
+#include "Random/Renderer/Buffer.hpp"
+#include "Random/Renderer/GraphicsContext.hpp"
+#include "Random/Renderer/Renderer.hpp"
+#include "Random/Renderer/Shader.hpp"
+
 /* Precompiled Headers */
 
 #include "RandomPch.hpp"

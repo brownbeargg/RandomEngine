@@ -4,7 +4,7 @@
 
 namespace Rand
 {
-    class WindowCloseEvent : public Event
+    class WindowCloseEvent final : public Event
     {
       public:
         WindowCloseEvent() = default;
@@ -15,7 +15,7 @@ namespace Rand
         std::string toString() const override { return "WindowCloseEvent"; }
     };
 
-    class WindowResizeEvent : public Event
+    class WindowResizeEvent final : public Event
     {
       public:
         WindowResizeEvent(uint32_t width, uint32_t height) : m_Width(width), m_Height(height) {}
@@ -23,7 +23,7 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::WindowResize)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override
+        std::string toString() const override
         {
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
@@ -37,7 +37,7 @@ namespace Rand
         uint32_t m_Width, m_Height;
     };
 
-    class WindowFocusEvent : public Event
+    class WindowFocusEvent final : public Event
     {
       public:
         WindowFocusEvent() = default;
@@ -45,10 +45,10 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::WindowFocus)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override { return "WindowFocusEvent"; }
+        std::string toString() const override { return "WindowFocusEvent"; }
     };
 
-    class WindowLostFocusEvent : public Event
+    class WindowLostFocusEvent final : public Event
     {
       public:
         WindowLostFocusEvent() = default;
@@ -59,7 +59,7 @@ namespace Rand
         std::string toString() const override { return "WindowLostFocusEvent"; }
     };
 
-    class WindowMovedEvent : public Event
+    class WindowMovedEvent final : public Event
     {
       public:
         WindowMovedEvent(int xPos, int yPos) : m_XPos(xPos), m_YPos(yPos) {}
@@ -67,7 +67,7 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::WindowMoved)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override
+        std::string toString() const override
         {
             std::stringstream ss;
             ss << "WindowMovedEvent: " << m_XPos << ", " << m_YPos;
@@ -78,7 +78,7 @@ namespace Rand
         int m_XPos, m_YPos;
     };
 
-    class AppTickEvent : public Event
+    class AppTickEvent final : public Event
     {
       public:
         AppTickEvent() = default;
@@ -86,10 +86,10 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::AppTick)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override { return "AppTickEvent"; }
+        std::string toString() const override { return "AppTickEvent"; }
     };
 
-    class AppUpdateEvent : public Event
+    class AppUpdateEvent final : public Event
     {
       public:
         AppUpdateEvent() = default;
@@ -97,12 +97,12 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::AppTick)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override { return "AppUpdateEvent"; }
+        std::string toString() const override { return "AppUpdateEvent"; }
 
       private:
     };
 
-    class AppRenderEvent : public Event
+    class AppRenderEvent final : public Event
     {
       public:
         AppRenderEvent() = default;
@@ -110,6 +110,6 @@ namespace Rand
         RAND_EVENT_CLASS_TYPE(EventType::AppRender)
         RAND_EVENT_CLASS_CATEGORY((int)EventCategory::Application)
 
-        virtual inline std::string toString() const override { return "AppRenderEvent"; }
+        std::string toString() const override { return "AppRenderEvent"; }
     };
 } // namespace Rand
