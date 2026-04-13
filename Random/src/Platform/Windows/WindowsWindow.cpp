@@ -1,11 +1,11 @@
 #include "Platform/Windows/WindowsWindow.hpp"
 
+#include "Platform/OpenGL/OpenGLContext.hpp"
+
 #include "Random/Core/Core.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Events/KeyEvent.hpp"
 #include "Random/Events/MouseEvent.hpp"
-
-#include <glad/glad.h>
 
 namespace Rand
 {
@@ -28,7 +28,7 @@ namespace Rand
 
     void WindowsWindow::onUpdate()
     {
-        glfwSwapBuffers(m_Window);
+        m_Context->swapBuffers();
         glfwPollEvents();
     }
 
@@ -48,10 +48,9 @@ namespace Rand
             (int)m_Data.Props.Width, (int)m_Data.Props.Height, m_Data.Props.Title.c_str(), nullptr, nullptr);
         glfwSetWindowUserPointer(m_Window, &m_Data);
         setVSync(true);
-        glfwMakeContextCurrent(m_Window);
 
-        int gladLoadStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        RAND_CORE_ASSERT(gladLoadStatus, "Failed to initialize GLAD")
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->init();
 
         m_Data.Monitor = getMonitor();
 

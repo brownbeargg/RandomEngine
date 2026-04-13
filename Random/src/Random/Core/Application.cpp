@@ -3,9 +3,6 @@
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
 #include "Random/Core/Log.hpp"
-#include "RandomPch.hpp"
-
-#include <glad/glad.h>
 
 namespace Rand
 {
@@ -32,8 +29,6 @@ namespace Rand
         {
             m_Window->onUpdate();
 
-            glClearColor(0.5, 0.0, 0.2, 1.0);
-            glClear(GL_COLOR_BUFFER_BIT);
 
             //
             // Main updates

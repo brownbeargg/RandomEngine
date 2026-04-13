@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Random/Core/Core.hpp"
 #include "Random/Events/Event.hpp"
+#include "Random/Renderer/GraphicsContext.hpp"
 
 namespace Rand
 {
@@ -38,5 +38,8 @@ namespace Rand
         inline virtual void* getNativeWindow() const = 0;
 
         static Window* create(const WindowProps& props = WindowProps());
+
+      protected:
+        GraphicsContext* m_Context;
     };
 } // namespace Rand
