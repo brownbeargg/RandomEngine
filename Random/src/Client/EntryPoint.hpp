@@ -3,11 +3,17 @@
 
 extern Rand::Application* Rand::createApplication();
 
-int main()
-{
-    using namespace Rand;
+namespace Rand {
+    int main(int argc, char* argv[]){
+        Log::init();
+        auto app = std::unique_ptr<Application>(createApplication());
+        app->run();
 
-    Log::init();
-    auto app = std::unique_ptr<Application>(createApplication());
-    app->run();
+        return 0;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    return Rand::main(argc, argv);
 }
