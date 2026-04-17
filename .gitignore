@@ -6,10 +6,9 @@ imgui.ini
 
 build/
 .cache/
-CMakePresets.json
+compile_commands.json
 
 # DOCUMENTATION
-DoxygenDocs/
 html/
 latex/
 

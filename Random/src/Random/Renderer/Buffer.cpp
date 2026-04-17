@@ -2,11 +2,23 @@
 
 #include "Platform/OpenGL/OpenGLBuffer.hpp"
 
-#include "Random/Core/Core.hpp"
 #include "Random/Renderer/Renderer.hpp"
 
 namespace Rand
 {
+    void BufferLayout::calculateOffsetAndStride()
+    {
+        uint32_t offset = 0;
+        m_Stride = 0;
+
+        for (BufferElement& element : m_Elements)
+        {
+            element.Offset = offset;
+            offset += element.Size;
+            m_Stride += element.Size;
+        }
+    }
+
     VertexBuffer* VertexBuffer::create(float* vertices, uint32_t size)
     {
         switch (Renderer::getAPI())

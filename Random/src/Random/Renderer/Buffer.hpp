@@ -1,11 +1,63 @@
 #pragma once
 
+#include "Random/Core/Core.hpp"
+#include "Random/Renderer/Shader.hpp"
+
 namespace Rand
 {
+    struct BufferElement final
+    {
+        std::string Name;
+        ShaderDataType Type;
+        uint32_t Size;
+        uint32_t Count{};
+        size_t Offset{};
+        bool Normalized;
+
+        BufferElement(const std::string& name, ShaderDataType type, bool normalized = false)
+            : Name(name), Type(type), Size(shaderDataTypeSize(type)), Count(shaderDataTypeCount(type)),
+              Normalized(normalized)
+        {
+        }
+
+        uint32_t getCount() const { return Count; }
+    };
+
+    class BufferLayout
+    {
+      public:
+        BufferLayout(const std::initializer_list<BufferElement> elements) : m_Elements(elements)
+        {
+            calculateOffsetAndStride();
+        }
+
+        const std::vector<BufferElement>& getElements() { return m_Elements; }
+        const uint32_t getStride() { return m_Stride; }
+
+        const std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
+        const std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+
+        const std::vector<BufferElement>::reverse_iterator rbegin() { return m_Elements.rbegin(); }
+        const std::vector<BufferElement>::reverse_iterator rend() { return m_Elements.rend(); }
+
+      private:
+        void calculateOffsetAndStride();
+
+      private:
+        std::vector<BufferElement> m_Elements;
+        uint32_t m_Stride{};
+    };
+
     class VertexBuffer
     {
       public:
         virtual ~VertexBuffer() {}
+
+        virtual void bind() const = 0;
+        virtual void unbind() const = 0;
+
+        virtual const BufferLayout& getLayout() const = 0;
+        virtual void setLayout(const BufferLayout& layout) = 0;
 
         /**
          * @brief Sets data of an vertex buffer object
@@ -14,9 +66,6 @@ namespace Rand
          * @param size Size in bytes of the vertices array
          */
         virtual void setData(float* vertices, uint32_t size) = 0;
-
-        virtual void bind() const = 0;
-        virtual void unbind() const = 0;
 
         /**
          * @brief Initializes and sets the data of an vertex buffer object

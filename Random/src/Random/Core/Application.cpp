@@ -22,36 +22,31 @@ namespace Rand
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_CoreLayerStack.pushOverlay(m_ImGuiLayer);
 
-        glGenVertexArrays(1, &m_VAO);
-        glBindVertexArray(m_VAO);
-
-        float vertices[3 * 3]{
+        float vertices[]{
             // clang-format off
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
+            -0.5f, -0.5f, 0.0f, 0.8f, 0.4f, 0.1f, 1.0f,
+             0.5f, -0.5f, 0.0f, 0.2f, 0.0f, 0.8f, 1.0f,
+             0.0f,  0.5f, 0.0f, 0.5f, 0.0f, 0.5f, 1.0f,
             // clang-format on
         };
 
         uint32_t indices[]{0, 1, 2};
 
-        m_VBO = std::unique_ptr<VertexBuffer>(VertexBuffer::create(vertices, sizeof(vertices)));
-        m_EBO = std::unique_ptr<IndexBuffer>(IndexBuffer::create(indices, 3));
-
-        RAND_CORE_TRACE("Vertex count: {0}", m_EBO->getCount());
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        m_VAO.reset(VertexArray::create());
+        m_VAO->bind();
+        m_VBO.reset(VertexBuffer::create(vertices, sizeof(vertices)));
+        m_EBO.reset(IndexBuffer::create(indices, 3));
 
         std::string vertexSrc = R"(
             #version 330 core
 
             layout(location=0) in vec3 a_Pos;
-            out vec3 v_ColorPos;
+            layout(location=1) in vec4 a_Color;
+            out vec4 v_Color;
 
             void main()
             {
-               v_ColorPos=a_Pos;
+               v_Color = a_Color;
                gl_Position = vec4(a_Pos, 1.0); 
             }
         )";
@@ -60,15 +55,22 @@ namespace Rand
             #version 330 core
 
             out vec4 FragColor;
-            in vec3 v_ColorPos;
+            in vec4 v_Color;
 
             void main()
             {
-                FragColor = vec4(v_ColorPos + 0.5, 1.0);
+                FragColor = v_Color;
             }
         )";
 
         m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+        BufferLayout layout = {{"a_Pos", ShaderDataType::Float3}, {"a_Color", ShaderDataType::Float4}};
+
+        m_VBO->setLayout(layout);
+
+        m_VAO->addVertexBuffer(std::shared_ptr<VertexBuffer>(m_VBO.get()));
+        m_VAO->setIndexBuffer(std::shared_ptr<IndexBuffer>(m_EBO.get()));
     }
 
     Application::~Application() {}
@@ -82,8 +84,8 @@ namespace Rand
         {
             m_Window->onUpdate();
 
-            // TEMP
-            glBindVertexArray(m_VAO);
+            // FIXME: remove this from application class
+            m_VAO->bind();
             m_Shader->bind();
             glDrawElements(GL_TRIANGLES, m_EBO->getCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -119,6 +121,15 @@ namespace Rand
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
 
         RAND_CORE_TRACE("event is {0}", event.toString());
+
+        for (auto it = m_CoreLayerStack.rbegin(); it != m_CoreLayerStack.rend(); ++it)
+        {
+            (*it)->onEvent(event);
+            if (event.isHandled())
+            {
+                break;
+            }
+        }
 
         for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {

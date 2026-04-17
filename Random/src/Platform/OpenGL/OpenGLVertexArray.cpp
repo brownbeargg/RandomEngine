@@ -1,0 +1,39 @@
+#include "Platform/OpenGL/OpenGLVertexArray.hpp"
+
+#include "Random/Renderer/Shader.hpp"
+
+namespace Rand
+{
+    OpenGLVertexArray::OpenGLVertexArray()
+    {
+        glCreateVertexArrays(1, &m_RendererID);
+    }
+
+    void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+    {
+        glBindVertexArray(m_RendererID);
+        vertexBuffer->bind();
+
+        BufferLayout layout = vertexBuffer->getLayout();
+        RAND_CORE_ASSERT(layout.getElements().size(), "Vertex buffer has no elements")
+
+        uint32_t index{};
+        for (const BufferElement& element : layout)
+        {
+            glEnableVertexAttribArray(index);
+            glVertexAttribPointer(index, element.getCount(), shaderDataTypeToGLDataType(element.Type),
+                element.Normalized ? true : false, layout.getStride(), (const void*)element.Offset);
+            ++index;
+        }
+
+        m_VertexBuffers.push_back(vertexBuffer);
+    }
+
+    void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    {
+        glBindVertexArray(m_RendererID);
+        indexBuffer->bind();
+
+        m_IndexBuffer = indexBuffer;
+    }
+} // namespace Rand

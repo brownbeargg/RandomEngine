@@ -16,16 +16,21 @@ namespace Rand
         OpenGLVertexBuffer& operator=(OpenGLVertexBuffer&&) = delete;
         ~OpenGLVertexBuffer();
 
-        void setData(float* vertices, uint32_t size) override
-        {
-            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-        }
-
         void bind() const override { glBindBuffer(GL_ARRAY_BUFFER, m_RendererID); }
         void unbind() const override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
+        const BufferLayout& getLayout() const override { return m_Layout; }
+        void setLayout(const BufferLayout& layout) override { m_Layout = layout; }
+
+        void setData(float* vertices, uint32_t size) override
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        }
+
       private:
         uint32_t m_RendererID;
+        BufferLayout m_Layout;
     };
 
     class OpenGLIndexBuffer final : public IndexBuffer
@@ -40,7 +45,10 @@ namespace Rand
 
         void setData(uint32_t* indices, uint32_t count) override
         {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+
+            m_Count = count;
         }
 
         void bind() const override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID); }

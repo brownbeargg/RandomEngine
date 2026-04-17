@@ -5,6 +5,12 @@
 
 namespace Rand
 {
+    /**
+     * @brief Create shader from shader source code
+     *
+     * @param vertexSource Source code of the vertex shader
+     * @param fragmentSource Source code of the fragment shader
+     */
     Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource)
     {
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);

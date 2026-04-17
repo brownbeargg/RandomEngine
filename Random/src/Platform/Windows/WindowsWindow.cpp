@@ -62,8 +62,8 @@ namespace Rand
 
         glfwSetWindowPos(m_Window, m_Data.Props.XPos, m_Data.Props.YPos);
 
-        RAND_CORE_INFO("CREATING WINDOW {0} {1} by {2} pixels, at {3}, {4}", props.Title, props.Width, props.Height,
-            m_Data.Props.XPos, m_Data.Props.YPos);
+        Log ::getCoreLogger()->info("CREATING WINDOW {0} {1} by {2} pixels, at {3}, {4}", props.Title, props.Width,
+            props.Height, m_Data.Props.XPos, m_Data.Props.YPos);
 
         setEventCallbacks();
     }

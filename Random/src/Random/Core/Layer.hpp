@@ -6,6 +6,9 @@ namespace Rand
 {
     class Application;
 
+    /**
+     * @brief An interface for every layer
+    */
     class Layer
     {
       public:

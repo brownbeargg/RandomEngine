@@ -1,27 +1,39 @@
 #pragma once
 
-#include "Random/Core/Core.hpp"
 #include "Random/Core/LayerStack.hpp"
 #include "Random/Core/Window.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Events/Event.hpp"
-#include "Random/Events/KeyEvent.hpp"
-#include "Random/Events/MouseEvent.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
 #include "Random/Renderer/Buffer.hpp"
 #include "Random/Renderer/Shader.hpp"
+#include "Random/Renderer/VertexArray.hpp"
 
 namespace Rand
 {
     class Application
     {
       public:
+        /**
+         * @brief Initializes state of the Application object e.g. the window
+         */
         Application();
         virtual ~Application();
 
+        /**
+         * @brief Contains the main application loop
+         *
+         * Calls onUpdate() on every layer
+         * Calls onImGuiRender() on every layer
+         */
         void run();
 
+        /**
+         * @brief Gets called on every event
+         *
+         * @param event A reference to the Event that just happened
+         */
         void onEvent(Event& event);
 
         void pushLayer(Layer* const layer) { m_LayerStack.pushLayer(layer); }
@@ -47,12 +59,17 @@ namespace Rand
         InputLayer* m_InputLayer;
         ImGuiLayer* m_ImGuiLayer;
 
-        // TEMP
-        uint32_t m_VAO;
-        std::unique_ptr<Rand::VertexBuffer> m_VBO;
-        std::unique_ptr<Rand::IndexBuffer> m_EBO;
-        std::unique_ptr<Shader> m_Shader;
+        // TODO: Remove this because this is temp
+        std::shared_ptr<VertexArray> m_VAO;
+        std::shared_ptr<VertexBuffer> m_VBO;
+        std::shared_ptr<IndexBuffer> m_EBO;
+        std::shared_ptr<Shader> m_Shader;
     };
 
+    /**
+     * @brief Creates an application (this function will be defined in the client)
+     *
+     * @return A raw pointer to a new application object
+     */
     Rand::Application* createApplication();
 } // namespace Rand

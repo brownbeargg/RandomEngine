@@ -8,6 +8,9 @@ namespace Rand
     {
         constexpr uint16_t translate(uint16_t key);
 
+        /**
+         * @brief Defines all key codes for Random Engine
+         */
         enum : KeyCode
         {
             Space = 32,

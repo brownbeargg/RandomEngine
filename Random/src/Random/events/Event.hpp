@@ -72,6 +72,8 @@ namespace Rand
         }
         bool isHandled() { return m_Handled; }
 
+        void operator<<(std::ostream& os) const { os << toString(); }
+
       private:
         bool m_Handled;
 

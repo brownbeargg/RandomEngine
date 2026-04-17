@@ -2,9 +2,13 @@
 
 namespace Rand
 {
-    using MouseCode = uint16_t;
     namespace Mouse
     {
+        using MouseCode = uint16_t;
+
+        /**
+         * @brief All the mouse codes for the Random Engine
+         */
         enum : MouseCode
         {
             Button0 = 0,
@@ -21,5 +25,5 @@ namespace Rand
             ButtonRight = Button1,
             ButtonMiddle = Button2
         };
-    }
+    } // namespace Mouse
 } // namespace Rand
