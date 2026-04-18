@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Random/Core/LayerStack.hpp"
+#include "Random/Core/Ref.hpp"
 #include "Random/Core/Window.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Events/Event.hpp"
@@ -12,7 +13,7 @@
 
 namespace Rand
 {
-    class Application
+    class Application : public RefCount
     {
       public:
         /**
@@ -44,14 +45,14 @@ namespace Rand
 
         const InputLayer& getInputLayer() const { return *m_InputLayer; }
 
-        Window& getWindow() const { return *m_Window; }
+        Window& getWindow() const { return *m_Window.get(); }
 
       private:
         bool onWindowClose(WindowCloseEvent& event);
         bool onWindowResize(WindowResizeEvent& event);
 
       private:
-        std::unique_ptr<Window> m_Window;
+        Ref<Window> m_Window;
         bool m_Running = true;
 
         LayerStack m_LayerStack;
@@ -60,10 +61,10 @@ namespace Rand
         ImGuiLayer* m_ImGuiLayer;
 
         // TODO: Remove this because this is temp
-        std::shared_ptr<VertexArray> m_VAO;
-        std::shared_ptr<VertexBuffer> m_VBO;
-        std::shared_ptr<IndexBuffer> m_EBO;
-        std::shared_ptr<Shader> m_Shader;
+        Ref<VertexArray> m_VAO;
+        Ref<VertexBuffer> m_VBO;
+        Ref<IndexBuffer> m_EBO;
+        Ref<Shader> m_Shader;
     };
 
     /**

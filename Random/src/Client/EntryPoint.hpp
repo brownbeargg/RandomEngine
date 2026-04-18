@@ -11,7 +11,7 @@ namespace Rand
     int main(int argc, char* argv[])
     {
         Log::init();
-        auto app = std::unique_ptr<Application>(createApplication());
+        Ref<Application> app = createApplication();
         app->run();
 
         return 0;

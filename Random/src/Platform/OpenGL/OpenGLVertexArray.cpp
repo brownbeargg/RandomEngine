@@ -1,5 +1,6 @@
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 
+#include "Random/Core/Ref.hpp"
 #include "Random/Renderer/Shader.hpp"
 
 namespace Rand
@@ -9,7 +10,7 @@ namespace Rand
         glCreateVertexArrays(1, &m_RendererID);
     }
 
-    void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+    void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> vertexBuffer)
     {
         glBindVertexArray(m_RendererID);
         vertexBuffer->bind();
@@ -29,7 +30,7 @@ namespace Rand
         m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer> indexBuffer)
     {
         glBindVertexArray(m_RendererID);
         indexBuffer->bind();

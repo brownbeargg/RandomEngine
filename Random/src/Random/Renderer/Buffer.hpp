@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core/Core.hpp"
+#include "Random/Core/Ref.hpp"
 #include "Random/Renderer/Shader.hpp"
 
 namespace Rand
@@ -23,13 +23,47 @@ namespace Rand
         uint32_t getCount() const { return Count; }
     };
 
-    class BufferLayout
+    class BufferLayout : public RefCount
     {
       public:
         BufferLayout(const std::initializer_list<BufferElement> elements) : m_Elements(elements)
         {
             calculateOffsetAndStride();
         }
+
+        BufferLayout(const BufferLayout& other)
+        {
+            m_Elements = other.m_Elements;
+            m_Stride = other.m_Stride;
+        }
+
+        BufferLayout(BufferLayout&& rhs)
+        {
+            if (this == &rhs)
+                return;
+
+            m_Elements = std::move(rhs.m_Elements);
+            m_Stride = std::move(rhs.m_Stride);
+        }
+
+        BufferLayout& operator=(const BufferLayout& other)
+        {
+            m_Elements = other.m_Elements;
+            m_Stride = other.m_Stride;
+            return *this;
+        }
+
+        BufferLayout& operator=(BufferLayout&& rhs)
+        {
+            if (this == &rhs)
+                return *this;
+
+            m_Elements = std::move(rhs.m_Elements);
+            m_Stride = std::move(rhs.m_Stride);
+            return *this;
+        }
+
+        ~BufferLayout() = default;
 
         const std::vector<BufferElement>& getElements() { return m_Elements; }
         const uint32_t getStride() { return m_Stride; }
@@ -48,7 +82,7 @@ namespace Rand
         uint32_t m_Stride{};
     };
 
-    class VertexBuffer
+    class VertexBuffer : public RefCount
     {
       public:
         virtual ~VertexBuffer() {}
@@ -78,7 +112,7 @@ namespace Rand
         static VertexBuffer* create(float* vertices, uint32_t size);
     };
 
-    class IndexBuffer
+    class IndexBuffer : public RefCount
     {
       public:
         virtual ~IndexBuffer() {}

@@ -11,6 +11,7 @@
 
 #include "Random/Core/Core.hpp"
 #include "Random/Core/Log.hpp"
+#include "Random/Core/Ref.hpp"
 
 /* Events */
 

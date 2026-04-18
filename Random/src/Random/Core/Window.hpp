@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Random/Core/Ref.hpp"
 #include "Random/Events/Event.hpp"
 #include "Random/Renderer/GraphicsContext.hpp"
 
@@ -19,7 +20,7 @@ namespace Rand
         }
     };
 
-    class Window
+    class Window : public RefCount
     {
       protected:
         using EventCallbackFn = std::function<void(Event&)>;

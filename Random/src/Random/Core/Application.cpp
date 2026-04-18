@@ -13,7 +13,7 @@ namespace Rand
 
     Application::Application() : m_LayerStack(*this), m_CoreLayerStack(*this)
     {
-        m_Window = std::unique_ptr<Window>(Window::create());
+        m_Window.reset(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
 
         m_InputLayer = new InputLayer(*this);
@@ -69,8 +69,8 @@ namespace Rand
 
         m_VBO->setLayout(layout);
 
-        m_VAO->addVertexBuffer(std::shared_ptr<VertexBuffer>(m_VBO.get()));
-        m_VAO->setIndexBuffer(std::shared_ptr<IndexBuffer>(m_EBO.get()));
+        m_VAO->addVertexBuffer(Ref<VertexBuffer>(m_VBO.get()));
+        m_VAO->setIndexBuffer(Ref<IndexBuffer>(m_EBO.get()));
     }
 
     Application::~Application() {}

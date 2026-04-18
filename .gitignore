@@ -9,8 +9,7 @@ build/
 compile_commands.json
 
 # DOCUMENTATION
-html/
-latex/
+Docs/
 
 # VISUAL STUDIO
 

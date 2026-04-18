@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Random/Core/Core.hpp"
+#include "Random/Core/Ref.hpp"
 
 #include <glad/glad.h>
 
 namespace Rand
 {
-    class Shader final
+    class Shader final : public RefCount
     {
       public:
         Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
