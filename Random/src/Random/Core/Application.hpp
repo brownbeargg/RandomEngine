@@ -8,6 +8,7 @@
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
 #include "Random/Renderer/Buffer.hpp"
+#include "Random/Renderer/OrthographicCamera.hpp"
 #include "Random/Renderer/Shader.hpp"
 #include "Random/Renderer/VertexArray.hpp"
 
@@ -45,7 +46,7 @@ namespace Rand
 
         const InputLayer& getInputLayer() const { return *m_InputLayer; }
 
-        Window& getWindow() const { return *m_Window.get(); }
+        const Window& getWindow() const { return *m_Window.get(); }
 
       private:
         bool onWindowClose(WindowCloseEvent& event);
@@ -60,11 +61,12 @@ namespace Rand
         InputLayer* m_InputLayer;
         ImGuiLayer* m_ImGuiLayer;
 
-        // TODO: Remove this because this is temp
+        /// @todo Remove the temporary member variables
         Ref<VertexArray> m_VAO;
         Ref<VertexBuffer> m_VBO;
         Ref<IndexBuffer> m_EBO;
         Ref<Shader> m_Shader;
+        Ref<OrthographicCamera> m_Camera;
     };
 
     /**

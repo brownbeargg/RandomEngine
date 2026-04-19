@@ -32,7 +32,7 @@ namespace Rand
 
         void setVSync(const bool enabled) override
         {
-            m_Data.VSync = true;
+            m_Data.VSync = enabled;
             glfwSwapInterval(enabled);
         }
 

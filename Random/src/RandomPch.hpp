@@ -20,6 +20,7 @@
 #include <functional>
 #include <iterator>
 #include <utility>
+#include <optional>
 
 #include <fstream>
 #include <iostream>

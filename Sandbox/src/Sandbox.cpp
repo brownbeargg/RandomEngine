@@ -3,7 +3,6 @@
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app) {}
 
 void SandboxLayer::onUpdate() {
-    RAND_WARN("updated sandbox");
 }
 
 void SandboxLayer::onEvent(Rand::Event& event)

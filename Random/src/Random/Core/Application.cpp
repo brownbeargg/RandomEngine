@@ -23,6 +23,8 @@ namespace Rand
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_CoreLayerStack.pushOverlay(m_ImGuiLayer);
 
+        m_Camera = new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f);
+
         float vertices[]{
             // clang-format off
             -0.5f, -0.5f, 0.0f, 0.8f, 0.4f, 0.1f, 1.0f,
@@ -45,10 +47,12 @@ namespace Rand
             layout(location=1) in vec4 a_Color;
             out vec4 v_Color;
 
+            uniform mat4 u_VP;
+
             void main()
             {
                v_Color = a_Color;
-               gl_Position = vec4(a_Pos, 1.0); 
+               gl_Position = u_VP * vec4(a_Pos, 1.0); 
             }
         )";
 
@@ -88,14 +92,11 @@ namespace Rand
             RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
             RenderCommand::clear();
 
-            Renderer::beginScene();
+            Renderer::beginScene(*m_Camera.get());
             {
-                m_Shader->bind();
-                Renderer::submit(m_VAO);
+                m_Camera->setRotation(m_Camera->getRotation() + glm::vec3(0.2f, 0.01f, 0.09f));
 
-                //
-                // Main updates
-                //
+                Renderer::submit(m_Shader, m_VAO);
 
                 for (Layer* layer : m_CoreLayerStack)
                     layer->onUpdate();
@@ -105,18 +106,14 @@ namespace Rand
             }
             Renderer::endScene();
 
-            //
-            // ImGui
-            //
-
             m_ImGuiLayer->begin();
+            {
+                for (Layer* layer : m_CoreLayerStack)
+                    layer->onImGuiRender();
 
-            for (Layer* layer : m_CoreLayerStack)
-                layer->onImGuiRender();
-
-            for (Layer* layer : m_LayerStack)
-                layer->onImGuiRender();
-
+                for (Layer* layer : m_LayerStack)
+                    layer->onImGuiRender();
+            }
             m_ImGuiLayer->end();
 
             m_Window->onUpdate();

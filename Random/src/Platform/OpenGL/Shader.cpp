@@ -1,7 +1,7 @@
 #include "Random/Core/Core.hpp"
 #include "Random/Renderer/Shader.hpp"
 
-#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Rand
 {
@@ -122,5 +122,10 @@ namespace Rand
     void Shader::unbind() const
     {
         glUseProgram(0);
+    }
+
+    void Shader::uMat4(const char* name, const glm::mat4& matrix) const
+    {
+        glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 } // namespace Rand

@@ -4,6 +4,7 @@
 #include "Random/Core/Ref.hpp"
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 namespace Rand
 {
@@ -19,6 +20,8 @@ namespace Rand
 
         void bind() const;
         void unbind() const;
+
+        void uMat4(const char* name, const glm::mat4& matrix) const;
 
       private:
         uint32_t m_RendererID;

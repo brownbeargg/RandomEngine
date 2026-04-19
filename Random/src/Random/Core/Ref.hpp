@@ -45,12 +45,13 @@ namespace Rand
         Ref<T>& operator=(const Ref& other) { return reset(other.m_Ref); }
         Ref<T>& operator=(Ref&& rhs) noexcept { return move(rhs); };
         Ref<T>& operator=(const T* const obj) { return reset(obj); }
+        Ref<T>& operator=(T* obj) { return reset(obj); }
         Ref<T>& operator=(const std::shared_ptr<T>& shared_ptr) { return reset(*shared_ptr); }
         ~Ref() { destroy(); }
 
-        T& operator*() const { return dereference(); }
-        T& operator*() { return dereference(); }
-        T* operator->() const { return get(); }
+        const std::optional<T&> operator*() const { return dereference(); }
+        std::optional<T&> operator*() { return const_cast<T&>(dereference()); }
+        const T* operator->() const { return get(); }
         T* operator->() { return get(); }
 
         Ref<T>& reset(T* obj);
@@ -61,11 +62,13 @@ namespace Rand
          */
         void destroy() const;
 
-        T* get() const { return m_Ref; }
+        const T* get() const { return m_Ref; }
         T* get() { return m_Ref; }
 
       private:
-        T& dereference() const;
+        const std::optional<T&> dereference() const;
+        std::optional<T&> dereference() { return const_cast<T&>(as_const(m_Ref).dereference()); }
+
         Ref& move(Ref&& rhs) noexcept;
 
       private:
@@ -108,7 +111,7 @@ namespace Rand
 
     template <typename T>
         requires std::derived_from<T, RefCount>
-    T& Ref<T>::dereference() const
+    const std::optional<T&> Ref<T>::dereference() const
     {
         if (m_Ref)
             return *m_Ref;

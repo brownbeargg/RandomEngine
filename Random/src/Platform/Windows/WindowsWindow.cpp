@@ -7,6 +7,8 @@
 #include "Random/Events/KeyEvent.hpp"
 #include "Random/Events/MouseEvent.hpp"
 
+#include <glad/glad.h>
+
 namespace Rand
 {
     static bool isGLFWInitialized = false;
@@ -205,5 +207,8 @@ namespace Rand
             WindowMovedEvent event(xPos, yPos);
             data->EventCallback(event);
         });
+
+        glfwSetFramebufferSizeCallback(
+            m_Window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); });
     }
 } // namespace Rand
