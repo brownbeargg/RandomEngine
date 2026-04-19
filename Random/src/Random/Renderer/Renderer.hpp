@@ -2,6 +2,9 @@
 
 namespace Rand
 {
+    /**
+     * @brief Possible renderAPI's
+     */
     enum class RendererAPI
     {
         None = 0,
@@ -11,6 +14,9 @@ namespace Rand
     class Renderer
     {
       public:
+        /**
+         * @return The currently used RenderAPI
+         */
         static RendererAPI getAPI() { return s_RendererAPI; }
 
       private:

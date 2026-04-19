@@ -6,6 +6,9 @@
 
 namespace Rand
 {
+    /**
+     * @brief a struct that contains information about the window
+     */
     struct WindowProps
     {
         std::string Title{};
@@ -36,8 +39,25 @@ namespace Rand
         inline virtual void setEventCallback(const EventCallbackFn& func) = 0;
         inline virtual void setVSync(const bool enabled) = 0;
         inline virtual bool isVSync() const = 0;
+
+        /**
+         * @brief Gets the window object
+         *
+         * This function should be used with caution because if the platform / graphicsAPI isn't clear you will read
+         * from memory wrong (because void* is used), which is ofcourse unsafe
+         *
+         * @return A handle to the window object
+         */
         inline virtual void* getNativeWindow() const = 0;
 
+        /**
+         * @brief Creates a window object
+         *
+         * This function should be defined in other compiled c++ files instead of here because it is made to be a
+         * cross-platform alternative instead of a lot of #ifdefs
+         *
+         * @param props The properties of the window
+         */
         static Window* create(const WindowProps& props = WindowProps());
 
       protected:

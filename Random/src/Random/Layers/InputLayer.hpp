@@ -7,6 +7,12 @@
 
 namespace Rand
 {
+    /**
+     * @brief Layer to handle input
+     *
+     * This class should mostly be defined in a compiled c++ in the Platform directory so it's implementation will
+     * always be cross-platform
+     */
     class InputLayer final : public Layer
     {
       public:

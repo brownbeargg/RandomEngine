@@ -6,6 +6,9 @@ namespace Rand
 {
 #define RAND_BIND_EVENT_FN(eventFn) std::bind(&eventFn, this, std::placeholders::_1)
 
+    /**
+     * @brief the type of an event e.g. WindowClose
+     */
     enum class EventType
     {
         None = 0,
@@ -29,6 +32,9 @@ namespace Rand
         AppRender,
     };
 
+    /**
+     * @brief A broader category of the event e.g. Application
+     */
     enum class EventCategory
     {
         None = 0,
@@ -70,6 +76,7 @@ namespace Rand
         {
             return getCategoryFlags() & static_cast<int>(category);
         }
+
         bool isHandled() { return m_Handled; }
 
         void operator<<(std::ostream& os) const { os << toString(); }
@@ -90,6 +97,11 @@ namespace Rand
       public:
         explicit EventDispatcher(Event& event) : m_Event(event) {}
 
+        /**
+         * @brief Tries to handle an event by calling the function param if the type of m_Event == the type of T
+         *
+         * @param func A function that returns a bool and has a T, which is an Event, param
+         */
         template <typename T>
             requires std::derived_from<T, Event>
         bool dispatch(EventFn<T> func)
@@ -106,9 +118,9 @@ namespace Rand
       private:
         Event& m_Event;
     };
-
-    inline std::ostream& operator<<(std::ostream& os, const Event& event)
-    {
-        return os << event.toString();
-    }
 } // namespace Rand
+
+inline std::ostream& operator<<(std::ostream& os, const Rand::Event& event)
+{
+    return os << event.toString();
+}

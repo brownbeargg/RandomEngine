@@ -18,9 +18,9 @@ namespace Rand
         RefCount& operator=(RefCount&& rhs) noexcept;
         virtual ~RefCount() = default;
 
-      private:
         uint32_t getRefCount() const { return m_RefCounted; }
 
+      private:
         void incRefCount() const { ++m_RefCounted; }
         void decRefCount() const { --m_RefCounted; }
 
@@ -56,6 +56,11 @@ namespace Rand
         Ref<T>& reset(T* obj);
         Ref<T>& reset(const std::shared_ptr<T>& shared_ptr);
 
+        /**
+         * @brief Removes the current reference and checks if it should be deleted
+         */
+        void destroy() const;
+
         T* get() const { return m_Ref; }
         T* get() { return m_Ref; }
 
@@ -63,10 +68,8 @@ namespace Rand
         T& dereference() const;
         Ref& move(Ref&& rhs) noexcept;
 
-        void destroy() const;
-
       private:
-        T* m_Ref = nullptr;
+        mutable T* m_Ref = nullptr;
     };
 
     template <typename T>
@@ -135,5 +138,7 @@ namespace Rand
             if (!m_Ref->getRefCount())
                 delete m_Ref;
         }
+
+        m_Ref = nullptr;
     }
 } // namespace Rand

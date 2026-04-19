@@ -19,6 +19,9 @@ namespace Rand
         virtual const Ref<IndexBuffer>& getIndexBuffer() const = 0;
         virtual void setIndexBuffer(const Ref<IndexBuffer> indexBuffer) = 0;
 
+        /**
+         * @return The right VertexArray type for the current renderAPI
+         */
         static VertexArray* create();
     };
 } // namespace Rand

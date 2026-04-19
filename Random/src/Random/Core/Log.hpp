@@ -13,6 +13,9 @@ namespace Rand
         static std::shared_ptr<spdlog::logger> getCoreLogger() { return get().m_CoreLogger; }
         static std::shared_ptr<spdlog::logger> getClientLogger() { return get().m_ClientLogger; }
 
+        /**
+         * @brief Initializes the client logger and core logger
+         */
         static void init()
         {
             spdlog::set_pattern("%^[%T:%e] %n (%l) : %v%$");

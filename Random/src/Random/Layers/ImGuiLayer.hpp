@@ -12,13 +12,27 @@ namespace Rand
         explicit ImGuiLayer(const Application&);
         ~ImGuiLayer();
 
+        /**
+         * @brief Initializes ImGui with the params of the engine
+         */
         void onAttach() override;
+
+        /**
+         * @brief Shuts down ImGui
+         */
         void onDetach() override;
 
         void onEvent(Event& event) override;
         void onImGuiRender() override;
 
+        /**
+         * @brief Starts an ImGui frame
+         */
         void begin();
+
+        /**
+         * @brief Ends an ImGui frame and renders it
+         */
         void end();
 
       private:

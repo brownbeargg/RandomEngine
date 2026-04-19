@@ -24,6 +24,9 @@ namespace Rand
         uint32_t m_RendererID;
     };
 
+    /**
+     * @brief Possible shader data types
+     */
     enum class ShaderDataType : uint8_t
     {
         None = 0,
@@ -44,6 +47,9 @@ namespace Rand
         Mat4
     };
 
+    /**
+     * @return Size of shader data type
+     */
     constexpr uint32_t shaderDataTypeSize(const ShaderDataType type)
     {
         switch (type)
@@ -77,6 +83,9 @@ namespace Rand
         RAND_CORE_ASSERT(false, "Unknown shader data type")
     }
 
+    /**
+     * @return The count of the shader data type
+     */
     constexpr uint32_t shaderDataTypeCount(const ShaderDataType type)
     {
         switch (type)
@@ -110,6 +119,9 @@ namespace Rand
         RAND_CORE_ASSERT(false, "Unknown shader data type")
     }
 
+    /**
+     * @return The shader data type in OpenGL terms
+     */
     constexpr GLenum shaderDataTypeToGLDataType(ShaderDataType type)
     {
         switch (type)
