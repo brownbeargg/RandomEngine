@@ -4,13 +4,9 @@
 #include "Random/Core/Ref.hpp"
 #include "Random/Core/Window.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
-#include "Random/Events/Event.hpp"
+#include "Random/Core/Event.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
 #include "Random/Layers/InputLayer.hpp"
-#include "Random/Renderer/Buffer.hpp"
-#include "Random/Renderer/OrthographicCamera.hpp"
-#include "Random/Renderer/Shader.hpp"
-#include "Random/Renderer/VertexArray.hpp"
 
 namespace Rand
 {
@@ -60,13 +56,6 @@ namespace Rand
         LayerStack m_CoreLayerStack;
         InputLayer* m_InputLayer;
         ImGuiLayer* m_ImGuiLayer;
-
-        /// @todo Remove the temporary member variables
-        Ref<VertexArray> m_VAO;
-        Ref<VertexBuffer> m_VBO;
-        Ref<IndexBuffer> m_EBO;
-        Ref<Shader> m_Shader;
-        Ref<OrthographicCamera> m_Camera;
     };
 
     /**

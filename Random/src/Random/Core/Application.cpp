@@ -23,60 +23,7 @@ namespace Rand
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_CoreLayerStack.pushOverlay(m_ImGuiLayer);
 
-        m_Camera = new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f);
-
-        float vertices[]{
-            // clang-format off
-            -0.5f, -0.5f, 0.0f, 0.8f, 0.4f, 0.1f, 1.0f,
-             0.5f, -0.5f, 0.0f, 0.2f, 0.0f, 0.8f, 1.0f,
-             0.0f,  0.5f, 0.0f, 0.5f, 0.0f, 0.5f, 1.0f,
-            // clang-format on
-        };
-
-        uint32_t indices[]{0, 1, 2};
-
-        m_VAO.reset(VertexArray::create());
-        m_VAO->bind();
-        m_VBO.reset(VertexBuffer::create(vertices, sizeof(vertices)));
-        m_EBO.reset(IndexBuffer::create(indices, 3));
-
-        std::string vertexSrc = R"(
-            #version 330 core
-
-            layout(location=0) in vec3 a_Pos;
-            layout(location=1) in vec4 a_Color;
-            out vec4 v_Color;
-
-            uniform mat4 u_VP;
-
-            void main()
-            {
-               v_Color = a_Color;
-               gl_Position = u_VP * vec4(a_Pos, 1.0); 
-            }
-        )";
-
-        std::string fragmentSrc = R"(
-            #version 330 core
-
-            out vec4 FragColor;
-            in vec4 v_Color;
-
-            void main()
-            {
-                FragColor = v_Color;
-            }
-        )";
-
-        m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
-
-        BufferLayout layout = {{"a_Pos", ShaderDataType::Float3}, {"a_Color", ShaderDataType::Float4}};
-
-        m_VBO->setLayout(layout);
-
-        m_VAO->addVertexBuffer(Ref<VertexBuffer>(m_VBO.get()));
-        m_VAO->setIndexBuffer(Ref<IndexBuffer>(m_EBO.get()));
-    }
+   }
 
     Application::~Application() {}
 
@@ -86,25 +33,13 @@ namespace Rand
         RAND_TRACE("APPLICATION IS RUNNING");
 
         /// @todo remove clutter
-        /// @todo add renderer
         while (m_Running)
         {
-            RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
-            RenderCommand::clear();
+            for (Layer* layer : m_CoreLayerStack)
+                layer->onUpdate();
 
-            Renderer::beginScene(*m_Camera.get());
-            {
-                m_Camera->setRotation(m_Camera->getRotation() + glm::vec3(0.2f, 0.01f, 0.09f));
-
-                Renderer::submit(m_Shader, m_VAO);
-
-                for (Layer* layer : m_CoreLayerStack)
-                    layer->onUpdate();
-
-                for (Layer* layer : m_LayerStack)
-                    layer->onUpdate();
-            }
-            Renderer::endScene();
+            for (Layer* layer : m_LayerStack)
+                layer->onUpdate();
 
             m_ImGuiLayer->begin();
             {

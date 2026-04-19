@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Events/Event.hpp"
+#include "Random/Core/Event.hpp"
 
 namespace Rand
 {
