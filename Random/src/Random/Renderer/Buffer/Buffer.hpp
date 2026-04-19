@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Random/Core/Ref.hpp"
-#include "Random/Renderer/Layout.hpp"
+#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Renderer/Buffer/Layout.hpp"
 
 namespace Rand
 {

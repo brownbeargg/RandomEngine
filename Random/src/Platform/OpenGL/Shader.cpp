@@ -1,5 +1,5 @@
 #include "Random/Core/Core.hpp"
-#include "Random/Renderer/Shader.hpp"
+#include "Random/Renderer/Graphics/Shader.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 

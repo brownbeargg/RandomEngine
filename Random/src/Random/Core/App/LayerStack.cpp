@@ -1,4 +1,4 @@
-#include "Random/Core/LayerStack.hpp"
+#include "Random/Core/App/LayerStack.hpp"
 
 namespace Rand
 {

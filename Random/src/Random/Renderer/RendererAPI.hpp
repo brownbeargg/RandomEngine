@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Renderer/VertexArray.hpp"
+#include "Random/Renderer/Buffer/VertexArray.hpp"
 
 #include <glm/glm.hpp>
 

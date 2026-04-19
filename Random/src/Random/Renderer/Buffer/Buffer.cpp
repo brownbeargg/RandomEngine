@@ -1,4 +1,4 @@
-#include "Random/Renderer/Buffer.hpp"
+#include "Random/Renderer/Buffer/Buffer.hpp"
 
 #include "Platform/OpenGL/OpenGLBuffer.hpp"
 

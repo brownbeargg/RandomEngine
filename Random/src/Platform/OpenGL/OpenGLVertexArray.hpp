@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Random/Core/Ref.hpp"
-#include "Random/Renderer/VertexArray.hpp"
+#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Renderer/Buffer/VertexArray.hpp"
 
 namespace Rand
 {

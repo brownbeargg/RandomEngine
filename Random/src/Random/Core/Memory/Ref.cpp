@@ -1,4 +1,4 @@
-#include "Random/Core/Ref.hpp"
+#include "Random/Core/Memory/Ref.hpp"
 
 namespace Rand
 {
@@ -7,7 +7,7 @@ namespace Rand
         m_RefCounted.store(other.m_RefCounted);
     }
 
-    RefCount::RefCount(RefCount&& rhs)noexcept
+    RefCount::RefCount(RefCount&& rhs) noexcept
     {
         m_RefCounted.store(std::move(rhs.m_RefCounted));
     }
@@ -18,7 +18,7 @@ namespace Rand
         return *this;
     }
 
-    RefCount& RefCount::operator=(RefCount&& rhs)noexcept
+    RefCount& RefCount::operator=(RefCount&& rhs) noexcept
     {
         if (this == &rhs)
             return *this;

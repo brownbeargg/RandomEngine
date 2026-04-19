@@ -1,4 +1,4 @@
-#include "Random/Renderer/VertexArray.hpp"
+#include "Random/Renderer/Buffer/VertexArray.hpp"
 
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 

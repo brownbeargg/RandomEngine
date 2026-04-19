@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Renderer/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/RendererAPI.hpp"
 

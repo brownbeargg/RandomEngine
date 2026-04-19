@@ -1,4 +1,4 @@
-#include "Random/Renderer/GraphicsContext.hpp"
+#include "Random/Renderer/Graphics/GraphicsContext.hpp"
 
 #include <GLFW/glfw3.h>
 

@@ -1,7 +1,7 @@
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 
-#include "Random/Core/Ref.hpp"
-#include "Random/Renderer/Shader.hpp"
+#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Renderer/Graphics/Shader.hpp"
 
 namespace Rand
 {

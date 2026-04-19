@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Renderer/Shader.hpp"
+#include "Random/Renderer/Graphics/Shader.hpp"
 
 namespace Rand
 {

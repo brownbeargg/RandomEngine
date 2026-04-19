@@ -1,6 +1,6 @@
 /* Application */
 
-#include "Random/Core/Application.hpp"
+#include "Random/Core/App/Application.hpp"
 
 /* Key | Mouse Codes */
 
@@ -10,9 +10,9 @@
 /* Core */
 
 #include "Random/Core/Core.hpp"
-#include "Random/Core/Log.hpp"
-#include "Random/Core/Ref.hpp"
 #include "Random/Core/Event.hpp"
+#include "Random/Core/Log.hpp"
+#include "Random/Core/Memory/Ref.hpp"
 
 /* Events */
 
@@ -22,19 +22,18 @@
 
 /* Layers */
 
-#include "Random/Core/Layer.hpp"
+#include "Random/Core/App/Layer.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
-#include "Random/Layers/InputLayer.hpp"
 
 /* Renderer */
-#include "Random/Renderer/Buffer.hpp"
-#include "Random/Renderer/GraphicsContext.hpp"
-#include "Random/Renderer/Layout.hpp"
-#include "Random/Renderer/OrthographicCamera.hpp"
+#include "Random/Renderer/Buffer/Buffer.hpp"
+#include "Random/Renderer/Buffer/Layout.hpp"
+#include "Random/Renderer/Buffer/VertexArray.hpp"
+#include "Random/Renderer/Graphics/GraphicsContext.hpp"
+#include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/Shader.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/Renderer.hpp"
-#include "Random/Renderer/Shader.hpp"
-#include "Random/Renderer/VertexArray.hpp"
 
 /* Precompiled Headers */
 

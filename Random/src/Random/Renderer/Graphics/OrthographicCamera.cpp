@@ -1,4 +1,4 @@
-#include "Random/Renderer/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 
 #include <glm/ext.hpp>
 

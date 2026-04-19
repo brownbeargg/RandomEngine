@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Random/Core/LayerStack.hpp"
-#include "Random/Core/Ref.hpp"
-#include "Random/Core/Window.hpp"
-#include "Random/Events/ApplicationEvent.hpp"
+#include "Random/Core/App/LayerStack.hpp"
+#include "Random/Core/App/Window.hpp"
+#include "Random/Core/Memory/Ref.hpp"
 #include "Random/Core/Event.hpp"
+#include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
-#include "Random/Layers/InputLayer.hpp"
 
 namespace Rand
 {
@@ -40,7 +39,7 @@ namespace Rand
         void popLayer(Layer* const layer) { m_LayerStack.popLayer(layer); }
         void popOverlay(Layer* const overlay) { m_LayerStack.popOverlay(overlay); }
 
-        const InputLayer& getInputLayer() const { return *m_InputLayer; }
+        const Input& getInput() const { return m_Window->getInput(); }
 
         const Window& getWindow() const { return *m_Window.get(); }
 
@@ -53,8 +52,6 @@ namespace Rand
         bool m_Running = true;
 
         LayerStack m_LayerStack;
-        LayerStack m_CoreLayerStack;
-        InputLayer* m_InputLayer;
         ImGuiLayer* m_ImGuiLayer;
     };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random.hpp"
+#include <Random.hpp>
 
 class SandboxLayer : public Rand::Layer
 {

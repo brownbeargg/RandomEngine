@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core/Window.hpp"
+#include "Random/Core/App/Window.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -38,7 +38,7 @@ namespace Rand
 
         bool isVSync() const override { return m_Data.VSync; }
 
-        void* getNativeWindow() const override { return m_Window; }
+        const void* getNativeWindow() const override { return m_Window; }
 
       private:
         void init(const WindowProps& props);

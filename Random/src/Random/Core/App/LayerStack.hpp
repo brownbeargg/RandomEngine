@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core/Layer.hpp"
+#include "Random/Core/App/Layer.hpp"
 
 namespace Rand
 {

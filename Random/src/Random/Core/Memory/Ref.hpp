@@ -42,11 +42,11 @@ namespace Rand
         Ref(const Ref& other) { reset(other.m_Ref); }
         Ref(Ref&& rhs) noexcept { move(std::move(rhs)); }
         Ref(const std::shared_ptr<T>& shared_ptr) { return reset(*shared_ptr); }
-        Ref<T>& operator=(const Ref& other) { return reset(other.m_Ref); }
-        Ref<T>& operator=(Ref&& rhs) noexcept { return move(rhs); };
-        Ref<T>& operator=(const T* const obj) { return reset(obj); }
-        Ref<T>& operator=(T* obj) { return reset(obj); }
-        Ref<T>& operator=(const std::shared_ptr<T>& shared_ptr) { return reset(*shared_ptr); }
+        Ref& operator=(const Ref& other) { return reset(other.m_Ref); }
+        Ref& operator=(Ref&& rhs) noexcept { return move(rhs); };
+        Ref& operator=(const T* const obj) { return reset(obj); }
+        Ref& operator=(T* obj) { return reset(obj); }
+        Ref& operator=(const std::shared_ptr<T>& shared_ptr) { return reset(*shared_ptr); }
         ~Ref() { destroy(); }
 
         const std::optional<T&> operator*() const { return dereference(); }
@@ -54,8 +54,8 @@ namespace Rand
         const T* operator->() const { return get(); }
         T* operator->() { return get(); }
 
-        Ref<T>& reset(T* obj);
-        Ref<T>& reset(const std::shared_ptr<T>& shared_ptr);
+        Ref& reset(T* obj);
+        Ref& reset(const std::shared_ptr<T>& shared_ptr);
 
         /**
          * @brief Removes the current reference and checks if it should be deleted

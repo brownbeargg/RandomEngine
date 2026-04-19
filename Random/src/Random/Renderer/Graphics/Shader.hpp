@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Random/Core/Core.hpp"
-#include "Random/Core/Ref.hpp"
+#include "Random/Core/Memory/Ref.hpp"
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>

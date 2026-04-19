@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core/Ref.hpp"
+#include "Random/Core/Memory/Ref.hpp"
 
 #include <glm/glm.hpp>
 

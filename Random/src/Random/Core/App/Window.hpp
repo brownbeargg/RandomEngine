@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Random/Core/Ref.hpp"
 #include "Random/Core/Event.hpp"
-#include "Random/Renderer/GraphicsContext.hpp"
+#include "Random/Core/App/Input.hpp"
+#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Renderer/Graphics/GraphicsContext.hpp"
 
 namespace Rand
 {
@@ -40,6 +41,8 @@ namespace Rand
         inline virtual void setVSync(const bool enabled) = 0;
         inline virtual bool isVSync() const = 0;
 
+        const Input& getInput() const { return *m_Input.get(); }
+
         /**
          * @brief Gets the window object
          *
@@ -48,7 +51,7 @@ namespace Rand
          *
          * @return A handle to the window object
          */
-        inline virtual void* getNativeWindow() const = 0;
+        inline virtual const void* getNativeWindow() const = 0;
 
         /**
          * @brief Creates a window object
@@ -62,5 +65,6 @@ namespace Rand
 
       protected:
         GraphicsContext* m_Context;
+        Ref<Input> m_Input;
     };
 } // namespace Rand

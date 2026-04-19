@@ -1,4 +1,4 @@
-#include "Random/Core/Application.hpp"
+#include "Random/Core/App/Application.hpp"
 #include "Random/Core/Log.hpp"
 
 extern Rand::Application* Rand::createApplication();

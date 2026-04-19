@@ -1,6 +1,6 @@
 #include "Random/Layers/ImGuiLayer.hpp"
 
-#include "Random/Core/Application.hpp"
+#include "Random/Core/App/Application.hpp"
 
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
@@ -35,7 +35,8 @@ namespace Rand
         }
 
         ImGui_ImplOpenGL3_Init("#version 410");
-        ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(m_App.getWindow().getNativeWindow()), true);
+        ImGui_ImplGlfw_InitForOpenGL(
+            static_cast<GLFWwindow*>(const_cast<void*>(m_App.getWindow().getNativeWindow())), true);
     }
 
     void ImGuiLayer::onDetach()
