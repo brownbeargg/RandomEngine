@@ -10,9 +10,9 @@ namespace Rand
     {
         switch (Renderer::getAPI())
         {
-        case RendererAPI::None:
+        case RendererAPI::API::None:
             return nullptr;
-        case RendererAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return new OpenGLVertexArray;
         }
 

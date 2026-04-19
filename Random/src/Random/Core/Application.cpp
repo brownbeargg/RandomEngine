@@ -1,15 +1,16 @@
 #include "Random/Core/Application.hpp"
 
-#include "Random/Layers/ImGuiLayer.hpp"
-#include "Random/Layers/InputLayer.hpp"
 #include "Random/Core/Log.hpp"
 
-// TEMP
-#include <glad/glad.h>
+#include "Random/Layers/ImGuiLayer.hpp"
+#include "Random/Layers/InputLayer.hpp"
+
+#include "Random/Renderer/RenderCommand.hpp"
+#include "Random/Renderer/Renderer.hpp"
 
 namespace Rand
 {
-    // TODO:make code "cleaner" and less cluttered in application
+    /// @todo make code "cleaner" and less cluttered in application
 
     Application::Application() : m_LayerStack(*this), m_CoreLayerStack(*this)
     {
@@ -80,24 +81,29 @@ namespace Rand
         RAND_CORE_WARN("RANDOM ENGINE IS RUNNING!");
         RAND_TRACE("APPLICATION IS RUNNING");
 
+        /// @todo remove clutter
+        /// @todo add renderer
         while (m_Running)
         {
-            m_Window->onUpdate();
+            RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
+            RenderCommand::clear();
 
-            // FIXME: remove this from application class
-            m_VAO->bind();
-            m_Shader->bind();
-            glDrawElements(GL_TRIANGLES, m_EBO->getCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::beginScene();
+            {
+                m_Shader->bind();
+                Renderer::submit(m_VAO);
 
-            //
-            // Main updates
-            //
+                //
+                // Main updates
+                //
 
-            for (Layer* layer : m_CoreLayerStack)
-                layer->onUpdate();
+                for (Layer* layer : m_CoreLayerStack)
+                    layer->onUpdate();
 
-            for (Layer* layer : m_LayerStack)
-                layer->onUpdate();
+                for (Layer* layer : m_LayerStack)
+                    layer->onUpdate();
+            }
+            Renderer::endScene();
 
             //
             // ImGui
@@ -112,6 +118,8 @@ namespace Rand
                 layer->onImGuiRender();
 
             m_ImGuiLayer->end();
+
+            m_Window->onUpdate();
         }
     }
 

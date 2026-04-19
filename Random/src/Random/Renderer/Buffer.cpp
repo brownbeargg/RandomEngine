@@ -23,10 +23,10 @@ namespace Rand
     {
         switch (Renderer::getAPI())
         {
-        case RendererAPI::None:
+        case RendererAPI::API::None:
             RAND_CORE_ASSERT(false, "No RendererAPI");
 
-        case RendererAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return new OpenGLVertexBuffer(vertices, size);
         }
 
@@ -37,10 +37,10 @@ namespace Rand
     {
         switch (Renderer::getAPI())
         {
-        case RendererAPI::None:
+        case RendererAPI::API::None:
             RAND_CORE_ASSERT(false, "No RendererAPI");
 
-        case RendererAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return new OpenGLIndexBuffer(indices, count);
         }
 
