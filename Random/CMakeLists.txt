@@ -11,7 +11,7 @@ if (WIN32)
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/*.cpp
     ) 
 else ()
-    message(FATAL_ERROR "Hazel doesn't support this platform")
+    message(FATAL_ERROR "Random doesn't support this platform")
 endif ()
 
 add_library(${PROJECT_NAME} STATIC

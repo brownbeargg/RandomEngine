@@ -1,5 +1,6 @@
 #include "Random/Core/App/Application.hpp"
 
+#include "Random/Core/DeltaTime.hpp"
 #include "Random/Core/Log.hpp"
 
 #include "Random/Layers/ImGuiLayer.hpp"
@@ -19,14 +20,14 @@ namespace Rand
 
     void Application::run()
     {
-        RAND_CORE_WARN("RANDOM ENGINE IS RUNNING!");
-        RAND_TRACE("APPLICATION IS RUNNING");
+        DeltaTime dt;
 
-        /// @todo remove clutter
         while (m_Running)
         {
+            dt.recalculate(m_LastTime);
+
             for (Layer* layer : m_LayerStack)
-                layer->onUpdate();
+                layer->onUpdate(dt);
 
             m_ImGuiLayer->begin();
             {
@@ -43,8 +44,6 @@ namespace Rand
     {
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
-
-        RAND_CORE_TRACE("event is {0}", event.toString());
 
         for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {

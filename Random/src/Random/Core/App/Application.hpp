@@ -51,6 +51,8 @@ namespace Rand
         Ref<Window> m_Window;
         bool m_Running = true;
 
+        float m_LastTime{};
+
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;
     };

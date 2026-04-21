@@ -17,7 +17,7 @@ namespace Rand
         virtual void onAttach() {}
         virtual void onDetach() {}
 
-        virtual void onUpdate() {}
+        virtual void onUpdate(float deltaTime) {}
         virtual void onEvent(Event& event) {}
         virtual void onImGuiRender() {}
 

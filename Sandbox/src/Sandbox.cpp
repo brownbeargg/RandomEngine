@@ -1,5 +1,8 @@
 #include "Sandbox.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app)
 {
     m_Camera = new Rand::OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f);
@@ -26,12 +29,12 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
             layout(location=1) in vec4 a_Color;
             out vec4 v_Color;
 
-            uniform mat4 u_VP;
+            uniform mat4 u_MVP;
 
             void main()
             {
                v_Color = a_Color;
-               gl_Position = u_VP * vec4(a_Pos, 1.0); 
+               gl_Position = u_MVP * vec4(a_Pos, 1.0); 
             }
         )";
 
@@ -57,16 +60,33 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
     m_VAO->setIndexBuffer(Rand::Ref<Rand::IndexBuffer>(m_EBO.get()));
 }
 
-void SandboxLayer::onUpdate()
+void SandboxLayer::onUpdate(float deltaTime)
 {
     Rand::RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
     Rand::RenderCommand::clear();
 
+    constexpr float camSpeed = 3.0f;
+    if (m_App.getInput().isKeyPressed(Rand::Key::W))
+        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(0.0f, camSpeed * deltaTime, 0.0f));
+    else if (m_App.getInput().isKeyPressed(Rand::Key::S))
+        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(0.0f, -camSpeed * deltaTime, 0.0f));
+    if (m_App.getInput().isKeyPressed(Rand::Key::A))
+        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(-camSpeed * deltaTime, 0.0f, 0.0f));
+    else if (m_App.getInput().isKeyPressed(Rand::Key::D))
+        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(camSpeed * deltaTime, 0.0f, 0.0f));
+
     Rand::Renderer::beginScene(*m_Camera.get());
     {
-        m_Camera->setRotation(m_Camera->getRotation() + glm::vec3(0.2f, 0.01f, 0.09f));
+        glm::mat4 transform(1.0f);
+        transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::scale(transform, glm::vec3(0.5f));
+        transform = glm::translate(transform, glm::vec3(-1.0f));
+        Rand::Renderer::submit(m_Shader, m_VAO, transform);
 
-        Rand::Renderer::submit(m_Shader, m_VAO);
+        transform = glm::mat4(1.0f);
+        transform = glm::rotate(transform, glm::radians(60.0f), glm::vec3(0.5f, 0.5f, 0.0f));
+        transform = glm::translate(transform, glm::vec3(0.5f));
+        Rand::Renderer::submit(m_Shader, m_VAO, transform);
     }
     Rand::Renderer::endScene();
 }

@@ -65,6 +65,6 @@ namespace Rand
 
       protected:
         GraphicsContext* m_Context;
-        Ref<Input> m_Input;
+        Ref<Input> m_Input = new Input(this);
     };
 } // namespace Rand

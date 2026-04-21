@@ -39,6 +39,7 @@ namespace Rand
         bool isVSync() const override { return m_Data.VSync; }
 
         const void* getNativeWindow() const override { return m_Window; }
+        GLFWwindow* getWindowsWindow() const { return m_Window; }
 
       private:
         void init(const WindowProps& props);

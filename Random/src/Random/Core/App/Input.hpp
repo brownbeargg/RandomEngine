@@ -17,7 +17,7 @@ namespace Rand
     class Input final : public RefCount
     {
       public:
-        Input(Window* const window) : m_Window(window) {}
+        Input(const Window* window) : m_Window(window) {}
         ~Input() = default;
 
         bool isKeyPressed(int key) const;
@@ -28,6 +28,6 @@ namespace Rand
         float getMouseY() const { return getMousePos().y; }
 
       private:
-        Window* const m_Window;
+        const Window* const m_Window;
     };
 } // namespace Rand

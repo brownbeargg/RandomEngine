@@ -7,7 +7,7 @@ class SandboxLayer : public Rand::Layer
   public:
     SandboxLayer(const Rand::Application& app);
 
-    void onUpdate() override;
+    void onUpdate(float deltaTime) override;
     void onEvent(Rand::Event& event) override;
     void onImGuiRender() override;
 
