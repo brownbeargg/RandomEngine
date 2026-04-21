@@ -8,22 +8,17 @@
 
 namespace Rand
 {
-    class Shader final : public RefCount
+    class Shader : public RefCount
     {
       public:
-        Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
-        Shader(const Shader&) = delete;
-        Shader(Shader&&) = delete;
-        Shader& operator=(const Shader&) = delete;
-        Shader& operator=(Shader&&) = delete;
-        ~Shader();
+        virtual ~Shader() = default;
 
-        void bind() const;
-        void unbind() const;
+        virtual void bind() const {}
+        virtual void unbind() const {}
 
-        void uMat4(const char* name, const glm::mat4& matrix) const;
+        static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
-      private:
+      protected:
         uint32_t m_RendererID;
     };
 
@@ -155,5 +150,4 @@ namespace Rand
             return GL_FLOAT;
         }
     }
-
 } // namespace Rand
