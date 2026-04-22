@@ -1,7 +1,5 @@
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 
-#include <glm/ext.hpp>
-
 namespace Rand
 {
     OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)

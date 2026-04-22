@@ -59,10 +59,10 @@
         } while (0)
 #else
     #define RAND_CORE_ASSERT(x, ...)
-    #define RAND_CORE_VERIFY(x, ...) x;
+    #define RAND_CORE_VERIFY(x, ...) x
 
     #define RAND_ASSERT(x, ...)
-    #define RAND_VERIFY(x, ...) x;
+    #define RAND_VERIFY(x, ...) x
 #endif
 
 #define RAND_CORE_RELEASE_ASSERT(x, ...)                                                                               \

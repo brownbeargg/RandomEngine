@@ -2,10 +2,10 @@
 
 #include "Random/Core/Core.hpp"
 
-namespace Rand
-{
 #define RAND_BIND_EVENT_FN(eventFn) std::bind(&eventFn, this, std::placeholders::_1)
 
+namespace Rand
+{
     /**
      * @brief the type of an event e.g. WindowClose
      */
@@ -89,7 +89,6 @@ namespace Rand
 
     class EventDispatcher
     {
-      private:
         template <typename T>
             requires std::derived_from<T, Event>
         using EventFn = std::function<bool(T&)>;
