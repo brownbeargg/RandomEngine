@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Platform/OpenGL/OpenGLShader.hpp"
+
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/RendererAPI.hpp"
@@ -32,7 +34,7 @@ namespace Rand
             const Ref<Shader> shader, const Ref<VertexArray> vertexArray, const glm::mat4& transform = glm::mat4(1.0f))
         {
             shader->bind();
-            shader->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
+            static_cast<OpenGLShader*>(const_cast<Shader*>(shader.get()))->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
 
             vertexArray->bind();
             RenderCommand::drawIndexed(vertexArray);

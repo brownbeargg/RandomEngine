@@ -1,5 +1,4 @@
-#include "Random/Core/Core.hpp"
-#include "Random/Renderer/Graphics/Shader.hpp"
+#include "Platform/OpenGL/OpenGLShader.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -11,13 +10,13 @@ namespace Rand
      * @param vertexSource Source code of the vertex shader
      * @param fragmentSource Source code of the fragment shader
      */
-    Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource)
+    OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
     {
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
         // Send the vertex shader source code to GL
         // Note that std::string's .c_str is NULL character terminated.
-        const GLchar* source = (const GLchar*)vertexSource.c_str();
+        const GLchar* source = (const GLchar*)vertexSrc.c_str();
         glShaderSource(vertexShader, 1, &source, 0);
 
         // Compile the vertex shader
@@ -47,7 +46,7 @@ namespace Rand
 
         // Send the fragment shader source code to GL
         // Note that std::string's .c_str is NULL character terminated.
-        source = (const GLchar*)fragmentSource.c_str();
+        source = (const GLchar*)fragmentSrc.c_str();
         glShaderSource(fragmentShader, 1, &source, 0);
 
         // Compile the fragment shader
@@ -104,27 +103,42 @@ namespace Rand
             glDeleteShader(fragmentShader);
 
             // Use the infoLog as you see fit.
-            RAND_CORE_ERROR("Shader Linking failure");
+            RAND_CORE_ERROR("Shader Lining failure");
             RAND_CORE_ERROR("{0}", infoLog.data());
         }
     }
 
-    Shader::~Shader()
+    void OpenGLShader::uInt(const char* name, const int value)
     {
-        glDeleteProgram(m_RendererID);
+        glUniform1i(glGetUniformLocation(m_RendererID, name), value);
     }
 
-    void Shader::bind() const
+    void OpenGLShader::uFloat(const char* name, const float value)
     {
-        glUseProgram(m_RendererID);
+        glUniform1f(glGetUniformLocation(m_RendererID, name), value);
     }
 
-    void Shader::unbind() const
+    void OpenGLShader::uFloat2(const char* name, const glm::vec2& float2)
     {
-        glUseProgram(0);
+        glUniform2f(glGetUniformLocation(m_RendererID, name), float2.x, float2.y);
     }
 
-    void Shader::uMat4(const char* name, const glm::mat4& matrix) const
+    void OpenGLShader::uFloat3(const char* name, const glm::vec3& float3)
+    {
+        glUniform3f(glGetUniformLocation(m_RendererID, name), float3.x, float3.y, float3.z);
+    }
+
+    void OpenGLShader::uFloat4(const char* name, const glm::vec4& float4)
+    {
+        glUniform4f(glGetUniformLocation(m_RendererID, name), float4.x, float4.y, float4.z, float4.w);
+    }
+
+    void OpenGLShader::uMat3(const char* name, const glm::mat3& matrix)
+    {
+        glUniformMatrix3fv(glGetUniformLocation(m_RendererID, name), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    void OpenGLShader::uMat4(const char* name, const glm::mat4& matrix)
     {
         glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name), 1, GL_FALSE, glm::value_ptr(matrix));
     }

@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Platform/OpenGL/OpenGLShader.hpp"
+
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app)
 {
     m_Camera = new Rand::OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f);
@@ -23,34 +25,32 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
     m_EBO.reset(Rand::IndexBuffer::create(indices, 3));
 
     std::string vertexSrc = R"(
-            #version 330 core
+        #version 330 core
 
-            layout(location=0) in vec3 a_Pos;
-            layout(location=1) in vec4 a_Color;
-            out vec4 v_Color;
+        layout(location=0) in vec3 a_Pos;
+        layout(location=1) in vec4 a_Color;
 
-            uniform mat4 u_MVP;
+        uniform mat4 u_MVP;
 
-            void main()
-            {
-               v_Color = a_Color;
-               gl_Position = u_MVP * vec4(a_Pos, 1.0); 
-            }
-        )";
+        void main()
+        {
+           gl_Position = u_MVP * vec4(a_Pos, 1.0); 
+        }
+    )";
 
     std::string fragmentSrc = R"(
-            #version 330 core
+        #version 330 core
 
-            out vec4 FragColor;
-            in vec4 v_Color;
+        out vec4 FragColor;
+        uniform vec4 u_Color;
 
-            void main()
-            {
-                FragColor = v_Color;
-            }
-        )";
+        void main()
+        {
+            FragColor = u_Color;
+        }
+    )";
 
-    m_Shader.reset(new Rand::Shader(vertexSrc, fragmentSrc));
+    m_Shader.reset(Rand::Shader::Create(vertexSrc, fragmentSrc));
 
     Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_Color", Rand::ShaderDataType::Float4}};
 
@@ -77,11 +77,15 @@ void SandboxLayer::onUpdate(float deltaTime)
 
     Rand::Renderer::beginScene(*m_Camera.get());
     {
+        dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uFloat4("u_Color", glm::vec4(0.8, 0.2, 0.3, 1.0f));
+
         glm::mat4 transform(1.0f);
         transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         transform = glm::scale(transform, glm::vec3(0.5f));
         transform = glm::translate(transform, glm::vec3(-1.0f));
         Rand::Renderer::submit(m_Shader, m_VAO, transform);
+
+        dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uFloat4("u_Color", glm::vec4(0.3, 0.2, 0.8, 1.0f));
 
         transform = glm::mat4(1.0f);
         transform = glm::rotate(transform, glm::radians(60.0f), glm::vec3(0.5f, 0.5f, 0.0f));
