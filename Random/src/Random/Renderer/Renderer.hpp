@@ -11,6 +11,8 @@ namespace Rand
     class Renderer
     {
       public:
+        static void init();
+
         /**
          * @brief Starts current scene
          */
@@ -34,7 +36,8 @@ namespace Rand
             const Ref<Shader> shader, const Ref<VertexArray> vertexArray, const glm::mat4& transform = glm::mat4(1.0f))
         {
             shader->bind();
-            static_cast<OpenGLShader*>(const_cast<Shader*>(shader.get()))->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
+            static_cast<OpenGLShader*>(const_cast<Shader*>(shader.get()))
+                ->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
 
             vertexArray->bind();
             RenderCommand::drawIndexed(vertexArray);

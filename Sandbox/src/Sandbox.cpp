@@ -25,9 +25,6 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
     m_VBO.reset(Rand::VertexBuffer::create(vertices, sizeof(vertices)));
     m_EBO.reset(Rand::IndexBuffer::create(indices, 6));
 
-    m_Texture.reset(Rand::Texture2D::create("Assets/CheckerBoard.jpg"));
-    m_Texture->bind();
-
     std::string vertexSrc = R"(
         #version 330 core
 
@@ -61,6 +58,10 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
 
     m_Shader.reset(Rand::Shader::Create(vertexSrc, fragmentSrc));
     m_Shader->bind();
+
+    m_GrassTexture = Rand::Texture2D::create("Assets/Grass.png");
+    m_TreeTexture = Rand::Texture2D::create("Assets/Tree.png");
+
     dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uInt("u_Texture", 0);
 
     Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
@@ -89,7 +90,12 @@ void SandboxLayer::onUpdate(float deltaTime)
     Rand::Renderer::beginScene(*m_Camera.get());
     {
         m_Shader->bind();
+        m_GrassTexture->bind();
         glm::mat4 transform(1.0f);
+        Rand::Renderer::submit(m_Shader, m_VAO, transform);
+
+        m_TreeTexture->bind();
+        transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
         Rand::Renderer::submit(m_Shader, m_VAO, transform);
     }
     Rand::Renderer::endScene();

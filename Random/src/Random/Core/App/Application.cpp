@@ -5,12 +5,16 @@
 
 #include "Random/Layers/ImGuiLayer.hpp"
 
+#include "Random/Renderer/Renderer.hpp"
+
 namespace Rand
 {
     Application::Application() : m_LayerStack(*this)
     {
         m_Window.reset(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
+
+        Renderer::init();
 
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_LayerStack.pushOverlay(m_ImGuiLayer);

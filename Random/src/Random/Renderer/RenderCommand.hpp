@@ -7,6 +7,8 @@ namespace Rand
     class RenderCommand
     {
       public:
+        static void init() { s_RendererAPI->init(); }
+
         /**
          * @brief Clears the screen to specified color
          *

@@ -19,6 +19,8 @@ namespace Rand
         };
 
       public:
+        virtual void init() = 0;
+
         /**
          * @brief Clears the screen to specified color
          *
