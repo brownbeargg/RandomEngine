@@ -16,7 +16,7 @@ namespace Rand
         vertexBuffer->bind();
 
         BufferLayout layout = vertexBuffer->getLayout();
-        RAND_CORE_ASSERT(layout.getElements().size(), "Vertex buffer has no elements")
+        RAND_CORE_RELEASE_ASSERT(layout.getElements().size(), "Vertex buffer has no elements");
 
         uint32_t index{};
         for (const BufferElement& element : layout)

@@ -16,6 +16,6 @@ namespace Rand
             return new OpenGLVertexArray;
         }
 
-        RAND_CORE_ASSERT(false, "Unknown render API")
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown render API");
     }
 } // namespace Rand

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Random/Core/Memory/RefCount.hpp"
+#include "Random/Core/Assert.hpp"
+#include "RandomPch.hpp"
 
 namespace Rand
 {
@@ -14,13 +16,12 @@ namespace Rand
         Ref(const Ref& other) { reset(other.m_Ref); }
         Ref(Ref&& rhs) noexcept { move(std::move(rhs)); }
         Ref& operator=(const Ref& other) { return reset(other.m_Ref); }
-        Ref& operator=(Ref&& rhs) noexcept { return move(rhs); };
-        Ref& operator=(const T* const obj) { return reset(obj); }
+        Ref& operator=(Ref&& rhs) noexcept { return move(std::move(rhs)); }
         Ref& operator=(T* obj) { return reset(obj); }
         ~Ref() { destroy(); }
 
-        const std::optional<T&> operator*() const { return dereference(); }
-        std::optional<T&> operator*() { return const_cast<T&>(dereference()); }
+        const T& operator*() const { return dereference(); }
+        T& operator*() { return dereference(); }
         const T* operator->() const { return get(); }
         T* operator->() { return get(); }
 
@@ -29,19 +30,19 @@ namespace Rand
         /**
          * @brief Removes the current reference and checks if it should be deleted
          */
-        void destroy() const;
+        void destroy();
 
         const T* get() const { return m_Ref; }
         T* get() { return m_Ref; }
 
       private:
-        const std::optional<T&> dereference() const;
-        std::optional<T&> dereference() { return const_cast<T&>(as_const(m_Ref).dereference()); }
+        const T& dereference() const;
+        T& dereference() { return const_cast<T&>(std::as_const(*this).dereference()); }
 
         Ref& move(Ref&& rhs) noexcept;
 
       private:
-        mutable T* m_Ref = nullptr;
+        T* m_Ref = nullptr;
     };
 
     template <typename T>
@@ -56,6 +57,9 @@ namespace Rand
         requires std::derived_from<T, RefCount>
     Ref<T>& Ref<T>::reset(T* obj)
     {
+        if (m_Ref == obj)
+            return *this;
+
         destroy();
 
         m_Ref = obj;
@@ -67,12 +71,10 @@ namespace Rand
 
     template <typename T>
         requires std::derived_from<T, RefCount>
-    const std::optional<T&> Ref<T>::dereference() const
+    const T& Ref<T>::dereference() const
     {
-        if (m_Ref)
-            return *m_Ref;
-
-        RAND_CORE_ASSERT("Reference to nullptr");
+        RAND_CORE_RELEASE_ASSERT(m_Ref, "Reference to nullptr");
+        return *m_Ref;
     }
 
     template <typename T>
@@ -82,13 +84,17 @@ namespace Rand
         if (this == &rhs)
             return *this;
 
-        m_Ref = std::move(rhs.m_Ref);
+        destroy();
+
+        m_Ref = rhs.m_Ref;
+        rhs.m_Ref = nullptr;
+
         return *this;
     }
 
     template <typename T>
         requires std::derived_from<T, RefCount>
-    void Ref<T>::destroy() const
+    void Ref<T>::destroy()
     {
         if (m_Ref)
         {

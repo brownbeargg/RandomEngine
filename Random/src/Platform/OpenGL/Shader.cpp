@@ -39,7 +39,7 @@ namespace Rand
 
             // Use the infoLog as you see fit.
             RAND_CORE_ERROR("{0}", infoLog.data());
-            RAND_CORE_ASSERT(false, "Vertex shader compiling failure")
+            RAND_CORE_RELEASE_ASSERT(false, "Vertex shader compiling failure");
         }
 
         // Create an empty fragment shader handle
@@ -70,7 +70,7 @@ namespace Rand
 
             // Use the infoLog as you see fit.
             RAND_CORE_ERROR("{0}", infoLog.data());
-            RAND_CORE_ASSERT(false, "Fragment shader compiling failure");
+            RAND_CORE_RELEASE_ASSERT(false, "Fragment shader compiling failure");
         }
 
         // Vertex and fragment shaders are successfully compiled.

@@ -13,6 +13,6 @@ namespace Rand
         void swapBuffers() override;
 
       private:
-        GLFWwindow* m_WindowHandle;
+        GLFWwindow* m_Window;
     };
 } // namespace Rand

@@ -83,7 +83,7 @@ namespace Rand
             return 4 * 4 * 4;
         }
 
-        RAND_CORE_ASSERT(false, "Unknown shader data type")
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown shader data type");
     }
 
     /**
@@ -119,7 +119,7 @@ namespace Rand
             return 4;
         }
 
-        RAND_CORE_ASSERT(false, "Unknown shader data type")
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown shader data type");
     }
 
     /**

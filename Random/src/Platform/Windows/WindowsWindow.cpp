@@ -39,7 +39,7 @@ namespace Rand
         if (!isGLFWInitialized)
         {
             int glfwInitStatus = glfwInit();
-            RAND_CORE_ASSERT(glfwInitStatus, "Failed to initialize GLFW");
+            RAND_CORE_RELEASE_ASSERT(glfwInitStatus, "Failed to initialize GLFW");
 
             isGLFWInitialized = glfwInitStatus;
         }

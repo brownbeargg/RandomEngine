@@ -24,13 +24,13 @@ namespace Rand
         switch (Renderer::getAPI())
         {
         case RendererAPI::API::None:
-            RAND_CORE_ASSERT(false, "No RendererAPI");
+            RAND_CORE_RELEASE_ASSERT(false, "No RendererAPI");
 
         case RendererAPI::API::OpenGL:
             return new OpenGLVertexBuffer(vertices, size);
         }
 
-        RAND_CORE_ASSERT(false, "Unknown rendererAPI");
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown rendererAPI");
     }
 
     IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t count)
@@ -38,12 +38,12 @@ namespace Rand
         switch (Renderer::getAPI())
         {
         case RendererAPI::API::None:
-            RAND_CORE_ASSERT(false, "No RendererAPI");
+            RAND_CORE_RELEASE_ASSERT(false, "No RendererAPI");
 
         case RendererAPI::API::OpenGL:
             return new OpenGLIndexBuffer(indices, count);
         }
 
-        RAND_CORE_ASSERT(false, "Unknown rendererAPI");
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown rendererAPI");
     }
 } // namespace Rand
