@@ -11,29 +11,36 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
 
     float vertices[]{
         // clang-format off
-            -0.5f, -0.5f, 0.0f, 0.8f, 0.4f, 0.1f, 1.0f,
-             0.5f, -0.5f, 0.0f, 0.2f, 0.0f, 0.8f, 1.0f,
-             0.0f,  0.5f, 0.0f, 0.5f, 0.0f, 0.5f, 1.0f,
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
         // clang-format on
     };
 
-    uint32_t indices[]{0, 1, 2};
+    uint32_t indices[]{0, 1, 2, 2, 3, 0};
 
     m_VAO.reset(Rand::VertexArray::create());
     m_VAO->bind();
     m_VBO.reset(Rand::VertexBuffer::create(vertices, sizeof(vertices)));
-    m_EBO.reset(Rand::IndexBuffer::create(indices, 3));
+    m_EBO.reset(Rand::IndexBuffer::create(indices, 6));
+
+    m_Texture.reset(Rand::Texture2D::create("Assets/CheckerBoard.jpg"));
+    m_Texture->bind();
 
     std::string vertexSrc = R"(
         #version 330 core
 
         layout(location=0) in vec3 a_Pos;
-        layout(location=1) in vec4 a_Color;
+        layout(location=1) in vec2 a_TexCoord;
 
         uniform mat4 u_MVP;
 
+        out vec2 v_TexCoord;
+
         void main()
         {
+           v_TexCoord = a_TexCoord;
            gl_Position = u_MVP * vec4(a_Pos, 1.0); 
         }
     )";
@@ -42,22 +49,26 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         #version 330 core
 
         out vec4 FragColor;
-        uniform vec4 u_Color;
+
+        in vec2 v_TexCoord;
+        uniform sampler2D u_Texture;
 
         void main()
         {
-            FragColor = u_Color;
+            FragColor = texture(u_Texture, v_TexCoord);
         }
     )";
 
     m_Shader.reset(Rand::Shader::Create(vertexSrc, fragmentSrc));
+    m_Shader->bind();
+    dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uInt("u_Texture", 0);
 
-    Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_Color", Rand::ShaderDataType::Float4}};
+    Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
 
     m_VBO->setLayout(layout);
 
-    m_VAO->addVertexBuffer(Rand::Ref<Rand::VertexBuffer>(m_VBO.get()));
-    m_VAO->setIndexBuffer(Rand::Ref<Rand::IndexBuffer>(m_EBO.get()));
+    m_VAO->addVertexBuffer(m_VBO);
+    m_VAO->setIndexBuffer(m_EBO);
 }
 
 void SandboxLayer::onUpdate(float deltaTime)
@@ -77,27 +88,14 @@ void SandboxLayer::onUpdate(float deltaTime)
 
     Rand::Renderer::beginScene(*m_Camera.get());
     {
-        dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uFloat4("u_Color", glm::vec4(0.8, 0.2, 0.3, 1.0f));
-
+        m_Shader->bind();
         glm::mat4 transform(1.0f);
-        transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        transform = glm::scale(transform, glm::vec3(0.5f));
-        transform = glm::translate(transform, glm::vec3(-1.0f));
-        Rand::Renderer::submit(m_Shader, m_VAO, transform);
-
-        dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uFloat4("u_Color", glm::vec4(0.3, 0.2, 0.8, 1.0f));
-
-        transform = glm::mat4(1.0f);
-        transform = glm::rotate(transform, glm::radians(60.0f), glm::vec3(0.5f, 0.5f, 0.0f));
-        transform = glm::translate(transform, glm::vec3(0.5f));
         Rand::Renderer::submit(m_Shader, m_VAO, transform);
     }
     Rand::Renderer::endScene();
 }
 
 void SandboxLayer::onEvent(Rand::Event& event) {}
-
-void SandboxLayer::onImGuiRender() {}
 
 Sandbox::Sandbox()
 {

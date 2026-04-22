@@ -17,9 +17,6 @@ namespace Rand
         virtual void unbind() const {}
 
         static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
-
-      protected:
-        uint32_t m_RendererID;
     };
 
     /**

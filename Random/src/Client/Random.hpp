@@ -13,6 +13,7 @@
 #include "Random/Core/Event.hpp"
 #include "Random/Core/Log.hpp"
 #include "Random/Core/Memory/Ref.hpp"
+#include "Random/Core/Memory/RefCount.hpp"
 
 /* Events */
 
@@ -32,6 +33,7 @@
 #include "Random/Renderer/Graphics/GraphicsContext.hpp"
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 #include "Random/Renderer/Graphics/Shader.hpp"
+#include "Random/Renderer/Graphics/Texture.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/Renderer.hpp"
 

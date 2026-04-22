@@ -26,5 +26,8 @@ namespace Rand
 
         void uMat3(const char* name, const glm::mat3& matrix);
         void uMat4(const char* name, const glm::mat4& matrix);
+
+      private:
+        uint32_t m_RendererID;
     };
 } // namespace Rand

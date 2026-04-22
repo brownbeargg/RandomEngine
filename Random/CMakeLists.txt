@@ -3,6 +3,7 @@ project(Random)
 
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Random/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image/*.cpp
 )
 
 if (WIN32)
@@ -52,6 +53,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
 )
 

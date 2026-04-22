@@ -20,7 +20,7 @@
     #define RAND_CORE_ASSERT(x, ...)                                                                                   \
         do                                                                                                             \
         {                                                                                                              \
-            if (!x)                                                                                                    \
+            if (!(x))                                                                                                  \
             {                                                                                                          \
                 RAND_CORE_ERROR("Assertion Failed {0}", __VA_ARGS__);                                                  \
                 RAND_DEBUG_BREAK();                                                                                    \
@@ -30,7 +30,7 @@
     #define RAND_CORE_VERIFY(x, ...)                                                                                   \
         do                                                                                                             \
         {                                                                                                              \
-            if (!x)                                                                                                    \
+            if (!(x))                                                                                                  \
             {                                                                                                          \
                 RAND_CORE_ERROR("Verification Failed {0}", __VA_ARGS__);                                               \
                 RAND_DEBUG_BREAK();                                                                                    \
@@ -40,7 +40,7 @@
     #define RAND_ASSERT(x, ...)                                                                                        \
         do                                                                                                             \
         {                                                                                                              \
-            if (!x)                                                                                                    \
+            if (!(x))                                                                                                  \
             {                                                                                                          \
                 RAND_ERROR("Assertion Failed {0}", __VA_ARGS__);                                                       \
                 RAND_DEBUG_BREAK();                                                                                    \
@@ -50,7 +50,7 @@
     #define RAND_VERIFY(x, ...)                                                                                        \
         do                                                                                                             \
         {                                                                                                              \
-            if (!x)                                                                                                    \
+            if (!(x))                                                                                                  \
             {                                                                                                          \
                 RAND_ERROR("Verification Failed {0}", __VA_ARGS__);                                                    \
                 RAND_DEBUG_BREAK();                                                                                    \
@@ -68,7 +68,7 @@
 #define RAND_CORE_RELEASE_ASSERT(x, ...)                                                                               \
     do                                                                                                                 \
     {                                                                                                                  \
-        if (!x)                                                                                                        \
+        if (!(x))                                                                                                      \
         {                                                                                                              \
             RAND_CORE_ERROR("Assertion Failed {0}", __VA_ARGS__);                                                      \
             RAND_DEBUG_BREAK();                                                                                        \
@@ -79,7 +79,7 @@
 #define RAND_RELEASE_ASSERT(x, ...)                                                                                    \
     do                                                                                                                 \
     {                                                                                                                  \
-        if (!x)                                                                                                        \
+        if (!(x))                                                                                                      \
         {                                                                                                              \
             RAND_ERROR("Assertion Failed {0}", __VA_ARGS__);                                                           \
             RAND_DEBUG_BREAK();                                                                                        \
