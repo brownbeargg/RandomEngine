@@ -7,12 +7,12 @@ namespace Rand
       public:
         RefCount() = default;
         virtual ~RefCount() = default;
-        RefCount(const RefCount& other) { m_RefCounted.store(other.m_RefCounted); }
-        RefCount(RefCount&& rhs) noexcept { m_RefCounted.store(std::move(rhs.m_RefCounted)); }
+        RefCount(const RefCount& other) { m_RefCounted = other.m_RefCounted; }
+        RefCount(RefCount&& rhs) noexcept { m_RefCounted = std::move(rhs.m_RefCounted); }
 
         RefCount& operator=(const RefCount& other)
         {
-            m_RefCounted.store(other.m_RefCounted);
+            m_RefCounted = other.m_RefCounted;
             return *this;
         }
 
@@ -21,7 +21,7 @@ namespace Rand
             if (this == &rhs)
                 return *this;
 
-            m_RefCounted.store(std::move(rhs.m_RefCounted));
+            m_RefCounted = std::move(rhs.m_RefCounted);
             return *this;
         }
 
@@ -32,7 +32,7 @@ namespace Rand
         void decRefCount() const { --m_RefCounted; }
 
       private:
-        mutable std::atomic<uint32_t> m_RefCounted{};
+        mutable uint32_t m_RefCounted{};
 
         template <typename T>
             requires std::derived_from<T, RefCount>
