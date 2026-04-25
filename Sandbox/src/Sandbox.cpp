@@ -56,13 +56,13 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         }
     )";
 
-    m_Shader.reset(Rand::Shader::Create(vertexSrc, fragmentSrc));
-    m_Shader->bind();
+    Rand::Ref<Rand::Shader> basicShader = m_ShaderLib.add("basic", Rand::Shader::Create(vertexSrc, fragmentSrc));
+    basicShader->bind();
 
-    m_GrassTexture = Rand::Texture2D::create("Assets/Grass.png");
-    m_TreeTexture = Rand::Texture2D::create("Assets/Tree.png");
+    m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
+    m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
 
-    dynamic_cast<Rand::OpenGLShader*>(m_Shader.get())->uInt("u_Texture", 0);
+    dynamic_cast<Rand::OpenGLShader*>(basicShader.get())->uInt("u_Texture", 0);
 
     Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
 
@@ -89,14 +89,15 @@ void SandboxLayer::onUpdate(float deltaTime)
 
     Rand::Renderer::beginScene(*m_Camera.get());
     {
-        m_Shader->bind();
+        Rand::Ref<Rand::Shader> basicShader = m_ShaderLib.get("basic");
+        basicShader->bind();
         m_GrassTexture->bind();
         glm::mat4 transform(1.0f);
-        Rand::Renderer::submit(m_Shader, m_VAO, transform);
+        Rand::Renderer::submit(basicShader, m_VAO, transform);
 
         m_TreeTexture->bind();
         transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-        Rand::Renderer::submit(m_Shader, m_VAO, transform);
+        Rand::Renderer::submit(basicShader, m_VAO, transform);
     }
     Rand::Renderer::endScene();
 }

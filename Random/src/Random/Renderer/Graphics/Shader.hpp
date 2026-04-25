@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Random/Core/Core.hpp"
 #include "Random/Core/Memory/Ref.hpp"
 
 #include <glad/glad.h>
@@ -17,6 +16,28 @@ namespace Rand
         virtual void unbind() const {}
 
         static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+    };
+
+    class ShaderLibrary
+    {
+      public:
+        Ref<Shader> add(const std::string& name, const Ref<Shader>& shader)
+        {
+            RAND_CORE_ASSERT(!exists(name), "This shader already exists");
+            m_Shaders.insert({name, shader});
+            return shader;
+        }
+
+        Ref<Shader> get(const std::string& name)
+        {
+            RAND_CORE_ASSERT(exists(name), "This shader doesn't exist");
+            return m_Shaders.at(name);
+        }
+
+        bool exists(const std::string& name) { return m_Shaders.find(name) != m_Shaders.end(); }
+
+      private:
+        std::unordered_map<std::string, Ref<Shader>> m_Shaders;
     };
 
     /**
