@@ -14,6 +14,8 @@
 #include "Random/Core/Log.hpp"
 #include "Random/Core/Memory/Ref.hpp"
 #include "Random/Core/Memory/RefCount.hpp"
+#include "Random/Core/Memory/Scope.hpp"
+#include "Random/Core/Memory/Weak.hpp"
 
 /* Events */
 

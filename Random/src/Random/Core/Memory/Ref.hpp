@@ -2,7 +2,6 @@
 
 #include "Random/Core/Memory/RefCount.hpp"
 #include "Random/Core/Assert.hpp"
-#include "RandomPch.hpp"
 
 namespace Rand
 {
@@ -12,12 +11,12 @@ namespace Rand
     {
       public:
         Ref() = default;
-        Ref(T* obj);
-        Ref(const Ref& other) { reset(other.m_Ref); }
+        Ref(T* obj) { reset(obj); }
+        Ref(const Ref& other) { reset(other.m_Data); }
         Ref(Ref&& rhs) noexcept { move(std::move(rhs)); }
-        Ref& operator=(const Ref& other) { return reset(other.m_Ref); }
-        Ref& operator=(Ref&& rhs) noexcept { return move(std::move(rhs)); }
         Ref& operator=(T* obj) { return reset(obj); }
+        Ref& operator=(const Ref& other) { return reset(other.m_Data); }
+        Ref& operator=(Ref&& rhs) noexcept { return move(std::move(rhs)); }
         ~Ref() { destroy(); }
 
         const T& operator*() const { return dereference(); }
@@ -32,8 +31,8 @@ namespace Rand
          */
         void destroy();
 
-        const T* get() const { return m_Ref; }
-        T* get() { return m_Ref; }
+        const T* get() const { return m_Data; }
+        T* get() { return m_Data; }
 
       private:
         const T& dereference() const;
@@ -42,29 +41,25 @@ namespace Rand
         Ref& move(Ref&& rhs) noexcept;
 
       private:
-        T* m_Ref = nullptr;
-    };
+        T* m_Data = nullptr;
 
-    template <typename T>
-        requires std::derived_from<T, RefCount>
-    Ref<T>::Ref(T* obj) : m_Ref(obj)
-    {
-        if (obj)
-            m_Ref->incRefCount();
-    }
+        template <typename U>
+            requires std::derived_from<U, RefCount>
+        friend class Weak;
+    };
 
     template <typename T>
         requires std::derived_from<T, RefCount>
     Ref<T>& Ref<T>::reset(T* obj)
     {
-        if (m_Ref == obj)
+        if (m_Data == obj)
             return *this;
 
         destroy();
 
-        m_Ref = obj;
-        if (m_Ref)
-            m_Ref->incRefCount();
+        m_Data = obj;
+        if (m_Data)
+            m_Data->incRefCount();
 
         return *this;
     }
@@ -73,8 +68,8 @@ namespace Rand
         requires std::derived_from<T, RefCount>
     const T& Ref<T>::dereference() const
     {
-        RAND_CORE_RELEASE_ASSERT(m_Ref, "Reference to nullptr");
-        return *m_Ref;
+        RAND_CORE_RELEASE_ASSERT(m_Data, "Reference to nullptr");
+        return *m_Data;
     }
 
     template <typename T>
@@ -86,8 +81,8 @@ namespace Rand
 
         destroy();
 
-        m_Ref = rhs.m_Ref;
-        rhs.m_Ref = nullptr;
+        m_Data = rhs.m_Data;
+        rhs.m_Data = nullptr;
 
         return *this;
     }
@@ -96,14 +91,14 @@ namespace Rand
         requires std::derived_from<T, RefCount>
     void Ref<T>::destroy()
     {
-        if (m_Ref)
+        if (m_Data)
         {
-            m_Ref->decRefCount();
+            m_Data->decRefCount();
 
-            if (!m_Ref->getRefCount())
-                delete m_Ref;
+            if (!m_Data->getRefCount())
+                delete m_Data;
         }
 
-        m_Ref = nullptr;
+        m_Data = nullptr;
     }
 } // namespace Rand
