@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Core/Codes/KeyCodes.hpp"
+#include "Random/Core/Codes/MouseCodes.hpp"
+
+#include "Random/Core/Memory/RefCount.hpp"
 
 #include <glm/glm.hpp>
 
@@ -20,8 +23,8 @@ namespace Rand
         Input(const Window* window) : m_Window(window) {}
         ~Input() = default;
 
-        bool isKeyPressed(int key) const;
-        bool isMouseButtonPressed(int key) const;
+        bool isKeyPressed(const Key key) const;
+        bool isMouseButtonPressed(const Mouse button) const;
 
         glm::vec2 getMousePos() const;
         float getMouseX() const { return getMousePos().x; }

@@ -7,7 +7,8 @@
 
 SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer", app)
 {
-    m_Camera = new Rand::OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f);
+    m_Camera = new Rand::OrthographicCameraController(
+        (float)m_App.getWindow().getWidth() / (float)m_App.getWindow().getHeight(), m_App.getInput());
 
     float vertices[]{
         // clang-format off
@@ -20,10 +21,10 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
 
     uint32_t indices[]{0, 1, 2, 2, 3, 0};
 
-    m_VAO.reset(Rand::VertexArray::create());
+    m_VAO = Rand::VertexArray::create();
     m_VAO->bind();
-    m_VBO.reset(Rand::VertexBuffer::create(vertices, sizeof(vertices)));
-    m_EBO.reset(Rand::IndexBuffer::create(indices, 6));
+    m_VBO = Rand::VertexBuffer::create(vertices, sizeof(vertices));
+    m_EBO = Rand::IndexBuffer::create(indices, 6);
 
     std::string vertexSrc = R"(
         #version 330 core
@@ -56,7 +57,7 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         }
     )";
 
-    Rand::Ref<Rand::Shader> basicShader = m_ShaderLib.add("basic", Rand::Shader::Create(vertexSrc, fragmentSrc));
+    Rand::Weak basicShader = m_ShaderLib.add("basic", Rand::Shader::Create(vertexSrc, fragmentSrc));
     basicShader->bind();
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
@@ -64,7 +65,8 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
 
     dynamic_cast<Rand::OpenGLShader*>(basicShader.get())->uInt("u_Texture", 0);
 
-    Rand::BufferLayout layout = {{"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
+    Rand::BufferLayout layout = {
+        {"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
 
     m_VBO->setLayout(layout);
 
@@ -77,32 +79,27 @@ void SandboxLayer::onUpdate(float deltaTime)
     Rand::RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
     Rand::RenderCommand::clear();
 
-    constexpr float camSpeed = 3.0f;
-    if (m_App.getInput().isKeyPressed(Rand::Key::W))
-        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(0.0f, camSpeed * deltaTime, 0.0f));
-    else if (m_App.getInput().isKeyPressed(Rand::Key::S))
-        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(0.0f, -camSpeed * deltaTime, 0.0f));
-    if (m_App.getInput().isKeyPressed(Rand::Key::A))
-        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(-camSpeed * deltaTime, 0.0f, 0.0f));
-    else if (m_App.getInput().isKeyPressed(Rand::Key::D))
-        m_Camera->setPosition(m_Camera->getPosition() + glm::vec3(camSpeed * deltaTime, 0.0f, 0.0f));
+    m_Camera->onUpdate(deltaTime);
 
-    Rand::Renderer::beginScene(*m_Camera.get());
+    Rand::Renderer::beginScene(m_Camera->getCamera());
     {
-        Rand::Ref<Rand::Shader> basicShader = m_ShaderLib.get("basic");
+        Rand::Weak basicShader = m_ShaderLib.get("basic");
         basicShader->bind();
         m_GrassTexture->bind();
         glm::mat4 transform(1.0f);
-        Rand::Renderer::submit(basicShader, m_VAO, transform);
+        Rand::Renderer::submit(basicShader.lock(), m_VAO, transform);
 
         m_TreeTexture->bind();
         transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-        Rand::Renderer::submit(basicShader, m_VAO, transform);
+        Rand::Renderer::submit(basicShader.lock(), m_VAO, transform);
     }
     Rand::Renderer::endScene();
 }
 
-void SandboxLayer::onEvent(Rand::Event& event) {}
+void SandboxLayer::onEvent(Rand::Event& event)
+{
+    m_Camera->onEvent(event);
+}
 
 Sandbox::Sandbox()
 {

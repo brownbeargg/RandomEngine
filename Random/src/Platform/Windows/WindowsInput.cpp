@@ -6,15 +6,15 @@
 
 namespace Rand
 {
-    bool Input::isKeyPressed(const int key) const
+    bool Input::isKeyPressed(const Key key) const
     {
-        int state = glfwGetKey(static_cast<const WindowsWindow*>(m_Window)->getWindowsWindow(), key);
+        int state = glfwGetKey(static_cast<const WindowsWindow*>(m_Window)->getWindowsWindow(), (int)key);
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool Input::isMouseButtonPressed(const int button) const
+    bool Input::isMouseButtonPressed(const Mouse button) const
     {
-        int state = glfwGetMouseButton(static_cast<const WindowsWindow*>(m_Window)->getWindowsWindow(), button);
+        int state = glfwGetMouseButton(static_cast<const WindowsWindow*>(m_Window)->getWindowsWindow(), (int)button);
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 

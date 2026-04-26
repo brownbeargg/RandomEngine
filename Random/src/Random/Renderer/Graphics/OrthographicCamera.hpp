@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Random/Core/Memory/Ref.hpp"
+#include "Random/Core/Memory/RefCount.hpp"
 
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
@@ -11,6 +11,12 @@ namespace Rand
     {
       public:
         OrthographicCamera(float left, float right, float bottom, float top);
+
+        void setProjection(float left, float right, float bottom, float top)
+        {
+            m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+            calculateViewMatrix();
+        }
 
         const glm::vec3& getPosition() const { return m_Position; }
 
@@ -26,11 +32,6 @@ namespace Rand
         {
             m_Rotation = rotation;
             calculateViewMatrix();
-        }
-
-        void setProjectionMatrix(float left, float right, float bottom, float top)
-        {
-            m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
         }
 
         const glm::mat4& getProjectionMatrix() const { return m_ProjectionMatrix; }

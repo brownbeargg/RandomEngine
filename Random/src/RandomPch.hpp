@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include <array>
 #include <deque>
 #include <forward_list>

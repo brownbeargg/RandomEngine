@@ -34,6 +34,7 @@
 #include "Random/Renderer/Buffer/VertexArray.hpp"
 #include "Random/Renderer/Graphics/GraphicsContext.hpp"
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/OrthographicCameraController.hpp"
 #include "Random/Renderer/Graphics/Shader.hpp"
 #include "Random/Renderer/Graphics/Texture.hpp"
 #include "Random/Renderer/RenderCommand.hpp"

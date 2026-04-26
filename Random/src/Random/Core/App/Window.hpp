@@ -41,7 +41,7 @@ namespace Rand
         inline virtual void setVSync(const bool enabled) = 0;
         inline virtual bool isVSync() const = 0;
 
-        const Input& getInput() const { return *m_Input.get(); }
+        Ref<Input> getInput() const { return m_Input; }
 
         /**
          * @brief Gets the window object

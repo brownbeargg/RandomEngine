@@ -16,7 +16,7 @@ class SandboxLayer : public Rand::Layer
     Rand::Ref<Rand::IndexBuffer> m_EBO;
     Rand::ShaderLibrary m_ShaderLib;
     Rand::Ref<Rand::Texture2D> m_GrassTexture, m_TreeTexture;
-    Rand::Ref<Rand::OrthographicCamera> m_Camera;
+    Rand::Ref<Rand::OrthographicCameraController> m_Camera;
 };
 
 class Sandbox : public Rand::Application

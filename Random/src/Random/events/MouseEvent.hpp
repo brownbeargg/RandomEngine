@@ -87,6 +87,9 @@ namespace Rand
             return ss.str();
         }
 
+        float getYOffset(){return m_YOffset;}
+        float getXOffset(){return m_XOffset;}
+
       private:
         float m_XOffset, m_YOffset;
     };
