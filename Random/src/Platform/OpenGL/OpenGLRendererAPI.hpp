@@ -21,5 +21,10 @@ namespace Rand
         {
             glDrawElements(GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
         }
+
+        void setViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override
+        {
+            glViewport(x, y, width, height);
+        }
     };
 } // namespace Rand

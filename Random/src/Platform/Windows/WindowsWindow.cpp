@@ -207,8 +207,5 @@ namespace Rand
             WindowMovedEvent event(xPos, yPos);
             data->EventCallback(event);
         });
-
-        glfwSetFramebufferSizeCallback(
-            m_Window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); });
     }
 } // namespace Rand

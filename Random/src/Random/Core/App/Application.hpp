@@ -49,7 +49,9 @@ namespace Rand
 
       private:
         Ref<Window> m_Window;
+
         bool m_Running = true;
+        bool m_Minimized = false;
 
         float m_LastTime{};
 

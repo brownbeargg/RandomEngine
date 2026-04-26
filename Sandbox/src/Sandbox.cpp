@@ -57,7 +57,7 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         }
     )";
 
-    Rand::Weak basicShader = m_ShaderLib.add("basic", Rand::Shader::Create(vertexSrc, fragmentSrc));
+    Rand::Weak basicShader = m_ShaderLib.add("texture", Rand::Shader::Create(vertexSrc, fragmentSrc));
     basicShader->bind();
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
@@ -83,15 +83,21 @@ void SandboxLayer::onUpdate(float deltaTime)
 
     Rand::Renderer::beginScene(m_Camera->getCamera());
     {
-        Rand::Weak basicShader = m_ShaderLib.get("basic");
-        basicShader->bind();
-        m_GrassTexture->bind();
-        glm::mat4 transform(1.0f);
-        Rand::Renderer::submit(basicShader.lock(), m_VAO, transform);
+        Rand::Weak textureShader = m_ShaderLib.get("texture");
+        textureShader->bind();
 
-        m_TreeTexture->bind();
-        transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-        Rand::Renderer::submit(basicShader.lock(), m_VAO, transform);
+        for (int i{}; i < 10; ++i)
+        {
+            m_GrassTexture->bind();
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(i, 0, 0));
+            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+
+            m_TreeTexture->bind();
+            transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
+            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+            transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.0f));
+            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+        }
     }
     Rand::Renderer::endScene();
 }

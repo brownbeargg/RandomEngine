@@ -48,6 +48,7 @@ namespace Rand
     {
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
+        dispatcher.dispatch<WindowResizeEvent>(RAND_BIND_EVENT_FN(Application::onWindowResize));
 
         for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {
@@ -63,5 +64,20 @@ namespace Rand
     {
         m_Running = false;
         return true;
+    }
+
+    bool Application::onWindowResize(WindowResizeEvent& event)
+    {
+        if (!event.getWidth() || !event.getHeight())
+        {
+            m_Minimized = true;
+            return false;
+        }
+
+        m_Minimized = false;
+
+        Renderer::onWindowResize(event.getWidth(), event.getHeight());
+
+        return false;
     }
 } // namespace Rand

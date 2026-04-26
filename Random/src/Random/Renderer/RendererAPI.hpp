@@ -40,6 +40,8 @@ namespace Rand
          */
         virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
+        virtual void setViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+
         /**
          * @return The currently used RenderAPI
          */
