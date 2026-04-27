@@ -17,15 +17,15 @@ namespace Rand
         void bind() const override { glUseProgram(m_RendererID); }
         void unbind() const override { glUseProgram(0); }
 
-        void uInt(const char* name, const int value);
+        void uInt(const char* name, const int value) override;
 
-        void uFloat(const char* name, const float value);
-        void uFloat2(const char* name, const glm::vec2& float2);
-        void uFloat3(const char* name, const glm::vec3& float3);
-        void uFloat4(const char* name, const glm::vec4& float4);
+        void uFloat(const char* name, const float value) override;
+        void uFloat2(const char* name, const glm::vec2& float2) override;
+        void uFloat3(const char* name, const glm::vec3& float3) override;
+        void uFloat4(const char* name, const glm::vec4& float4) override;
 
-        void uMat3(const char* name, const glm::mat3& matrix);
-        void uMat4(const char* name, const glm::mat4& matrix);
+        void uMat3(const char* name, const glm::mat3& matrix) override;
+        void uMat4(const char* name, const glm::mat4& matrix) override;
 
       private:
         uint32_t m_RendererID;

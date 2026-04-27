@@ -16,6 +16,16 @@ namespace Rand
         virtual void unbind() const {}
 
         static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+
+        virtual void uInt(const char* name, const int value) = 0;
+
+        virtual void uFloat(const char* name, const float value) = 0;
+        virtual void uFloat2(const char* name, const glm::vec2& float2) = 0;
+        virtual void uFloat3(const char* name, const glm::vec3& float3) = 0;
+        virtual void uFloat4(const char* name, const glm::vec4& float4) = 0;
+
+        virtual void uMat3(const char* name, const glm::mat3& matrix) = 0;
+        virtual void uMat4(const char* name, const glm::mat4& matrix) = 0;
     };
 
     class ShaderLibrary

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Random/Core/Memory/RefCount.hpp"
+#include "Random/Renderer/Graphics/camera.hpp"
 
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 
 namespace Rand
 {
-    class OrthographicCamera : public RefCount
+    class OrthographicCamera final : public Camera, public RefCount
     {
       public:
         OrthographicCamera(float left, float right, float bottom, float top);
@@ -34,9 +35,9 @@ namespace Rand
             calculateViewMatrix();
         }
 
-        const glm::mat4& getProjectionMatrix() const { return m_ProjectionMatrix; }
-        const glm::mat4& getViewMatrix() const { return m_ViewMatrix; }
-        const glm::mat4& getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+        const glm::mat4& getProjectionMatrix() const override { return m_ProjectionMatrix; }
+        const glm::mat4& getViewMatrix() const override { return m_ViewMatrix; }
+        const glm::mat4& getViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
 
       private:
         void calculateViewMatrix();

@@ -8,17 +8,21 @@ namespace Rand
     /**
      * @brief The main entry point of Random Engine
      */
-    int main(int argc, char* argv[])
+    class Main
     {
-        Log::init();
-        Ref<Application> app = createApplication();
-        app->run();
+      public:
+        static int main(int argc, char* argv[])
+        {
+            Log::init();
+            Ref<Application> app = createApplication();
+            app->run();
 
-        return 0;
-    }
+            return 0;
+        }
+    };
 } // namespace Rand
 
 int main(int argc, char* argv[])
 {
-    return Rand::main(argc, argv);
+    return Rand::Main::main(argc, argv);
 }

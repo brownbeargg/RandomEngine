@@ -52,13 +52,13 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         }
     )";
 
-    Rand::Weak basicShader = m_ShaderLib.add("texture", Rand::Shader::Create(vertexSrc, fragmentSrc));
-    basicShader->bind();
+    Rand::Weak textureShader = m_ShaderLib.add("texture", Rand::Shader::Create(vertexSrc, fragmentSrc));
+    textureShader->bind();
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
     m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
 
-    dynamic_cast<Rand::OpenGLShader*>(basicShader.get())->uInt("u_Texture", 0);
+    textureShader->uInt("u_Texture", 0);
 
     Rand::BufferLayout layout = {
         {"a_Pos", Rand::ShaderDataType::Float3}, {"a_TexCoord", Rand::ShaderDataType::Float2}};
@@ -81,18 +81,19 @@ void SandboxLayer::onUpdate(float deltaTime)
         Rand::Weak textureShader = m_ShaderLib.get("texture");
         textureShader->bind();
 
-        for (int i{}; i < 10; ++i)
-        {
-            m_GrassTexture->bind();
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(i, 0, 0));
-            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+        for (int y{}; y < 10; ++y)
+            for (int x{}; x < 10; ++x)
+            {
+                m_GrassTexture->bind();
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
+                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
 
-            m_TreeTexture->bind();
-            transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-            transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.0f));
-            Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-        }
+                m_TreeTexture->bind();
+                transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.1f));
+                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+                transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.1f));
+                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+            }
     }
     Rand::Renderer::endScene();
 }
@@ -101,4 +102,3 @@ void SandboxLayer::onEvent(Rand::Event& event)
 {
     m_Camera->onEvent(event);
 }
-

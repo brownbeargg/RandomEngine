@@ -32,12 +32,11 @@ namespace Rand
          * @param vertexArray a Ref (so it won't get destroyed on a different thread) to the object which
          * contains the state of what you want to draw
          */
-        static void submit(const Ref<Shader> shader, const Ref<VertexArray> vertexArray,
+        static void submit(Ref<Shader> shader, const Ref<VertexArray> vertexArray,
             const glm::mat4& transform = glm::mat4(1.0f))
         {
             shader->bind();
-            static_cast<OpenGLShader*>(const_cast<Shader*>(shader.get()))
-                ->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
+            shader->uMat4("u_MVP", s_SceneData->ViewProjectionMatrix * transform);
 
             vertexArray->bind();
             RenderCommand::drawIndexed(vertexArray);
