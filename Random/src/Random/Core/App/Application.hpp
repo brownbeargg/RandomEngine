@@ -2,6 +2,7 @@
 
 #include "Random/Core/App/LayerStack.hpp"
 #include "Random/Core/App/Window.hpp"
+#include "Random/Core/DeltaTime.hpp"
 #include "Random/Core/Memory/Ref.hpp"
 #include "Random/Core/Event.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
@@ -53,6 +54,7 @@ namespace Rand
         bool m_Running = true;
         bool m_Minimized = false;
 
+        DeltaTime m_Dt{};
         float m_LastTime{};
 
         LayerStack m_LayerStack;

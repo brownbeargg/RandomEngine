@@ -1,6 +1,5 @@
 #include "Random/Core/App/Application.hpp"
 
-#include "Random/Core/DeltaTime.hpp"
 #include "Random/Core/Log.hpp"
 
 #include "Random/Layers/ImGuiLayer.hpp"
@@ -24,14 +23,12 @@ namespace Rand
 
     void Application::run()
     {
-        DeltaTime dt;
-
         while (m_Running)
         {
-            dt.recalculate(m_LastTime);
+            m_Dt.recalculate(m_LastTime);
 
             for (Layer* layer : m_LayerStack)
-                layer->onUpdate(dt);
+                layer->onUpdate(m_Dt);
 
             m_ImGuiLayer->begin();
             {

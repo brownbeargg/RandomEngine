@@ -17,6 +17,12 @@ namespace Rand
         glfwMakeContextCurrent(m_Window);
         int gladLoadStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         RAND_CORE_RELEASE_ASSERT(gladLoadStatus, "Failed to initialize glad");
+
+        int versionMajor{}, versionMinor;
+        glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+        glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+        RAND_CORE_RELEASE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5),
+            "Random requires at least OpenGL version 4.5");
     }
 
     void OpenGLContext::swapBuffers()
