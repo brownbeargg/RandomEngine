@@ -14,7 +14,7 @@ namespace Rand
         static int main(int argc, char* argv[])
         {
             Log::init();
-            Ref<Application> app = createApplication();
+            Ref app = createApplication();
             app->run();
 
             return 0;

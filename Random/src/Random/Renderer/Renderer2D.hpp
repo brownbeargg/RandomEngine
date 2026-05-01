@@ -2,6 +2,7 @@
 
 #include "Random/Core/Memory/Ref.hpp"
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/Texture.hpp"
 
 namespace Rand
 {
@@ -15,5 +16,6 @@ namespace Rand
         static void endScene();
 
         static void drawQuad(const glm::mat4& transform, const glm::vec4& color);
+        static void drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture);
     };
 } // namespace Rand
