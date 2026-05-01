@@ -6,6 +6,7 @@
 #include "Random/Core/Event.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
+#include "Random/Layers/ImGuiProfileLayer.hpp"
 
 namespace Rand
 {
@@ -39,6 +40,8 @@ namespace Rand
         void popLayer(Layer* const layer) { m_LayerStack.popLayer(layer); }
         void popOverlay(Layer* const overlay) { m_LayerStack.popOverlay(overlay); }
 
+        void pushProfileResult(Profiler::Result result) const { m_ImGuiProfileLayer->pushResult(result); }
+
         const Input& getInput() const { return m_Window->getInput(); }
 
         const Window& getWindow() const { return *m_Window.get(); }
@@ -55,6 +58,7 @@ namespace Rand
 
         LayerStack m_LayerStack;
         ImGuiLayer* m_ImGuiLayer;
+        ImGuiProfileLayer* m_ImGuiProfileLayer;
     };
 
     /**

@@ -18,6 +18,9 @@ namespace Rand
 
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_LayerStack.pushOverlay(m_ImGuiLayer);
+
+        m_ImGuiProfileLayer = new ImGuiProfileLayer(*this);
+        m_LayerStack.pushOverlay(m_ImGuiProfileLayer);
     }
 
     Application::~Application() {}
@@ -28,6 +31,8 @@ namespace Rand
 
         while (m_Running)
         {
+            Profiler::Timer profileTimer("Application::run main loop");
+
             dt.recalculate(m_LastTime);
 
             for (Layer* layer : m_LayerStack)
@@ -41,6 +46,8 @@ namespace Rand
             m_ImGuiLayer->end();
 
             m_Window->onUpdate();
+
+            pushProfileResult(profileTimer.stop());
         }
     }
 
