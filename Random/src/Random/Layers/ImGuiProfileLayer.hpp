@@ -17,13 +17,18 @@ namespace Rand
         {
             ImGui::Begin("Profiler");
             {
-                for (auto& [name, value] : m_ProfilerResults)
-                    ImGui::Value(name, value);
+                for (auto& [name, time] : m_ProfilerResults)
+                {
+                    char label[50];
+                    strcpy_s(label, name);
+                    strcat_s(label, "  %.3fms");
+                    ImGui::Text(label, time);
+                }
             }
             ImGui::End();
         }
 
-        void pushResult(const Profiler::Result& result) { m_ProfilerResults[result.Name] = result.Value; }
+        void pushResult(const Profiler::Result& result) { m_ProfilerResults[result.Time] = result.Value; }
 
       private:
         std::map<const char*, float> m_ProfilerResults;

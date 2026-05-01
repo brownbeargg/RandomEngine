@@ -76,24 +76,11 @@ void SandboxLayer::onUpdate(float deltaTime)
 
     m_Camera->onUpdate(deltaTime);
 
+    Rand::Profiler::Timer renderTimer("SandboxLayer::onUpdate rendering");
     Rand::Renderer::beginScene(m_Camera->getCamera());
     {
         Rand::Weak textureShader = m_ShaderLib.get("texture");
         textureShader->bind();
-
-        for (int y{}; y < 10; ++y)
-            for (int x{}; x < 10; ++x)
-            {
-                // m_GrassTexture->bind();
-                // glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
-                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-
-                // m_TreeTexture->bind();
-                // transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-                // transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.0f));
-                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-            }
 
         Rand::Renderer2D::beginScene(&m_Camera->getCamera());
         {
@@ -112,6 +99,7 @@ void SandboxLayer::onUpdate(float deltaTime)
         Rand::Renderer2D::endScene();
     }
     Rand::Renderer::endScene();
+    m_App.pushProfileResult(renderTimer.stop());
 }
 
 void SandboxLayer::onEvent(Rand::Event& event)

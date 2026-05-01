@@ -8,7 +8,7 @@ namespace Rand
     {
         struct Result
         {
-            const char* Name;
+            const char* Time;
             float Value;
         };
 
@@ -29,7 +29,7 @@ namespace Rand
                     std::chrono::time_point_cast<std::chrono::microseconds>(endPoint).time_since_epoch().count();
 
                 start();
-                return {.Name = m_Name, .Value = (endTime - startTime) * 0.001f};
+                return {.Time = m_Name, .Value = (endTime - startTime) * 0.001f};
             }
 
           private:
