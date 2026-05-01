@@ -19,7 +19,10 @@ namespace Rand
         m_LayerStack.pushOverlay(m_ImGuiLayer);
     }
 
-    Application::~Application() {}
+    Application::~Application()
+    {
+        Renderer::shutdown();
+    }
 
     void Application::run()
     {

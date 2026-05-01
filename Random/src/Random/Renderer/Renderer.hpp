@@ -12,6 +12,7 @@ namespace Rand
     {
       public:
         static void init();
+        static void shutdown();
 
         /**
          * @brief Starts current scene

@@ -25,6 +25,7 @@ namespace Rand
         {
         case RendererAPI::API::None:
             RAND_CORE_RELEASE_ASSERT(false, "No RendererAPI");
+            return nullptr;
 
         case RendererAPI::API::OpenGL:
             return new OpenGLVertexBuffer(vertices, size);

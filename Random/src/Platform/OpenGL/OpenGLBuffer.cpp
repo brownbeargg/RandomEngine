@@ -5,8 +5,7 @@ namespace Rand
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) : m_Layout({})
     {
         glCreateBuffers(1, &m_RendererID);
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        setData(vertices, size);
     }
 
     OpenGLVertexBuffer::~OpenGLVertexBuffer()
@@ -17,8 +16,7 @@ namespace Rand
     OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) : m_Count(count)
     {
         glCreateBuffers(1, &m_RendererID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+        setData(indices, count);
     }
 
     OpenGLIndexBuffer::~OpenGLIndexBuffer()

@@ -52,7 +52,7 @@ SandboxLayer::SandboxLayer(const Rand::Application& app) : Layer("SandboxLayer",
         }
     )";
 
-    Rand::Weak textureShader = m_ShaderLib.add("texture", Rand::Shader::Create(vertexSrc, fragmentSrc));
+    Rand::Weak textureShader = m_ShaderLib.add("texture", Rand::Shader::create(vertexSrc, fragmentSrc));
     textureShader->bind();
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
@@ -84,16 +84,27 @@ void SandboxLayer::onUpdate(float deltaTime)
         for (int y{}; y < 10; ++y)
             for (int x{}; x < 10; ++x)
             {
-                m_GrassTexture->bind();
-                glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
-                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+                // m_GrassTexture->bind();
+                // glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
+                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
 
-                m_TreeTexture->bind();
-                transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.1f));
-                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
-                transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.1f));
-                Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+                // m_TreeTexture->bind();
+                // transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
+                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
+                // transform = glm::translate(transform, glm::vec3(0.1f, -0.3f, 0.0f));
+                // Rand::Renderer::submit(textureShader.lock(), m_VAO, transform);
             }
+
+        Rand::Renderer2D::beginScene(&m_Camera->getCamera());
+        {
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.8f, 0.0f, 0.0f)) *
+                glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
+            Rand::Renderer2D::drawQuad(transform, glm::vec4(1.0f, 0.0f, 0.5f, 1.0f));
+
+            transform = glm::translate(transform, glm::vec3(-1.3f, 0.0f, 0.0f));
+            Rand::Renderer2D::drawQuad(transform, glm::vec4(0.5f, 0.0f, 1.0f, 1.0f));
+        }
+        Rand::Renderer2D::endScene();
     }
     Rand::Renderer::endScene();
 }

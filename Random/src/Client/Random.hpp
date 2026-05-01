@@ -39,6 +39,7 @@
 #include "Random/Renderer/Graphics/Texture.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/Renderer.hpp"
+#include "Random/Renderer/Renderer2D.hpp"
 
 /* Precompiled Headers */
 

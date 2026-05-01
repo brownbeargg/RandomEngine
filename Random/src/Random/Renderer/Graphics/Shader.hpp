@@ -15,7 +15,7 @@ namespace Rand
         virtual void bind() const {}
         virtual void unbind() const {}
 
-        static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+        static Shader* create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
         virtual void uInt(const char* name, const int value) = 0;
 

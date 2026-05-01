@@ -23,7 +23,7 @@ namespace Rand
         void setData(float* vertices, uint32_t size) override
         {
             glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
         }
 
       private:

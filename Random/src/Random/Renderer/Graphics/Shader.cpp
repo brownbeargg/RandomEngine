@@ -5,7 +5,7 @@
 
 namespace Rand
 {
-    Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+    Shader* Shader::create(const std::string& vertexSrc, const std::string& fragmentSrc)
     {
         switch (Renderer::getAPI())
         {
