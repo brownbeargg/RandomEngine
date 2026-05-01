@@ -15,7 +15,6 @@ namespace Rand
 
     static Renderer2DStorage* s_Data;
 
-    /// @todo add more capabilities
     void Renderer2D::init()
     {
         s_Data = new Renderer2DStorage;
@@ -85,8 +84,11 @@ namespace Rand
             in vec2 v_TexCoord;
             uniform sampler2D u_Texture;
 
+            uniform int u_TextureScale ;
+            uniform vec4 u_Tint;
+
             void main(){
-                FragColor = texture(u_Texture, v_TexCoord);
+                FragColor = texture(u_Texture, v_TexCoord * u_TextureScale) * u_Tint;
             }
         )";
 
@@ -119,15 +121,19 @@ namespace Rand
         RenderCommand::drawIndexed(s_Data->QuadVertexArray);
     }
 
-    void Renderer2D::drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture)
+    void Renderer2D::drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture,
+        const int textureScale, const glm::vec4& tint)
     {
         s_Data->QuadVertexArray->bind();
         Ref<Shader> textureShader = s_Data->Shaders.get("Texture");
 
         textureShader->bind();
         textureShader->uMat4("u_MVP", s_Data->Camera->getViewProjectionMatrix() * transform);
+
         texture->bind();
         textureShader->uInt("u_Texture", 0);
+        textureShader->uInt("u_TextureScale", textureScale);
+        textureShader->uFloat4("u_Tint", tint);
 
         s_Data->QuadVertexArray->bind();
         RenderCommand::drawIndexed(s_Data->QuadVertexArray);

@@ -16,6 +16,7 @@ namespace Rand
         static void endScene();
 
         static void drawQuad(const glm::mat4& transform, const glm::vec4& color);
-        static void drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture);
+        static void drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture,
+            const int textureScale = 1, const glm::vec4& tint = glm::vec4(1.0f));
     };
 } // namespace Rand

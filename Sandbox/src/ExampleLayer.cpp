@@ -106,8 +106,8 @@ void SandboxLayer::onUpdate(float deltaTime)
             Rand::Renderer2D::drawQuad(transform, m_TreeTexture);
 
             transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.1f)) *
-                glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 5.0f));
-            Rand::Renderer2D::drawQuad(transform, m_GrassTexture);
+                glm::scale(glm::mat4(1.0f), glm::vec3(5.0f));
+            Rand::Renderer2D::drawQuad(transform, m_GrassTexture, 5, glm::vec4(1.0f, 0.0f, 0.2f, 1.0f));
         }
         Rand::Renderer2D::endScene();
     }
