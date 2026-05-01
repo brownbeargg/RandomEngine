@@ -16,4 +16,3 @@ class SandboxLayer : public Rand::Layer
     Rand::Ref<Rand::Texture2D> m_GrassTexture, m_TreeTexture;
     Rand::Ref<Rand::OrthographicCameraController> m_Camera;
 };
-

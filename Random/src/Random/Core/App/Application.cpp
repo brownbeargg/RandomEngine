@@ -6,10 +6,8 @@
 
 #include "Random/Renderer/Renderer.hpp"
 
-namespace Rand
-{
-    Application::Application() : m_LayerStack(*this)
-    {
+namespace Rand{
+    Application::Application(): m_LayerStack(*this){
         m_Window.reset(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
 
@@ -17,59 +15,57 @@ namespace Rand
 
         m_ImGuiLayer = new ImGuiLayer(*this);
         m_LayerStack.pushOverlay(m_ImGuiLayer);
+
+        m_ImGuiProfileLayer = new ImGuiProfileLayer(*this);
+        m_LayerStack.pushOverlay(m_ImGuiProfileLayer);
     }
 
-    Application::~Application()
-    {
+    Application::~Application(){
         Renderer::shutdown();
     }
 
-    void Application::run()
-    {
-        while (m_Running)
-        {
-            m_Dt.recalculate(m_LastTime);
+    void Application::run(){
+        while(m_Running){
+            Profiler::Timer profileTimer("Application::run main loop");
 
-            for (Layer* layer : m_LayerStack)
+            dt.recalculate(m_LastTime);
+
+            for(Layer* layer : m_LayerStack)
                 layer->onUpdate(m_Dt);
 
             m_ImGuiLayer->begin();
             {
-                for (Layer* layer : m_LayerStack)
+                for(Layer* layer : m_LayerStack)
                     layer->onImGuiRender();
             }
             m_ImGuiLayer->end();
 
             m_Window->onUpdate();
+
+            pushProfileResult(profileTimer.stop());
         }
     }
 
-    void Application::onEvent(Event& event)
-    {
+    void Application::onEvent(Event& event){
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
         dispatcher.dispatch<WindowResizeEvent>(RAND_BIND_EVENT_FN(Application::onWindowResize));
 
-        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
-        {
+        for(auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it){
             (*it)->onEvent(event);
-            if (event.isHandled())
-            {
+            if(event.isHandled()){
                 break;
             }
         }
     }
 
-    bool Application::onWindowClose(WindowCloseEvent& event)
-    {
+    bool Application::onWindowClose(WindowCloseEvent& event){
         m_Running = false;
         return true;
     }
 
-    bool Application::onWindowResize(WindowResizeEvent& event)
-    {
-        if (!event.getWidth() || !event.getHeight())
-        {
+    bool Application::onWindowResize(WindowResizeEvent& event){
+        if(!event.getWidth() || !event.getHeight()){
             m_Minimized = true;
             return false;
         }
