@@ -146,4 +146,6 @@ namespace Rand
     {
         glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
+
+    uint32_t OpenGLShader::s_CurrentBound = 0;
 } // namespace Rand

@@ -7,6 +7,7 @@
 
 Sandbox::Sandbox()
 {
+    getWindow()->setVSync(false);
     pushLayer(new SandboxLayer(*this));
 }
 

@@ -24,6 +24,10 @@ namespace Rand
          */
         virtual void setData(float* vertices, uint32_t size) = 0;
 
+        virtual void setData(const void* data, uint32_t size)=0;
+
+        static VertexBuffer* create(uint32_t size);
+
         /**
          * @brief Initializes and sets the data of an vertex buffer object
          *

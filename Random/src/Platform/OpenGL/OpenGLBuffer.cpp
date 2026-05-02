@@ -2,12 +2,22 @@
 
 namespace Rand
 {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) : m_Layout({})
+    {
+        RAND_PROFILE_FUNCTION();
+
+        glCreateBuffers(1, &m_RendererID);
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+    }
+
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) : m_Layout({})
     {
         RAND_PROFILE_FUNCTION();
 
         glCreateBuffers(1, &m_RendererID);
-        setData(vertices, size);
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
     OpenGLVertexBuffer::~OpenGLVertexBuffer()

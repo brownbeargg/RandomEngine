@@ -29,9 +29,9 @@ namespace Rand
          *
          * @param vertexArray The VertexArray object which holds the state of what you want to draw
          */
-        static void drawIndexed(const Ref<VertexArray>& vertexArray)
+        static void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0)
         {
-            s_RendererAPI->drawIndexed(vertexArray);
+            s_RendererAPI->drawIndexed(vertexArray, indexCount);
         }
 
         static void setViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height)

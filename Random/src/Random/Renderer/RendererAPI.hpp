@@ -38,7 +38,7 @@ namespace Rand
          *
          * @param vertexArray The VertexArray object which holds the state of what you want to draw
          */
-        virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+        virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
         virtual void setViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 

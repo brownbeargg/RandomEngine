@@ -19,6 +19,21 @@ namespace Rand
         }
     }
 
+    VertexBuffer* VertexBuffer::create(uint32_t size)
+    {
+        switch (Renderer::getAPI())
+        {
+        case RendererAPI::API::None:
+            RAND_CORE_RELEASE_ASSERT(false, "No RendererAPI");
+            return nullptr;
+
+        case RendererAPI::API::OpenGL:
+            return new OpenGLVertexBuffer(size);
+        }
+
+        RAND_CORE_RELEASE_ASSERT(false, "Unknown rendererAPI");
+    }
+
     VertexBuffer* VertexBuffer::create(float* vertices, uint32_t size)
     {
         switch (Renderer::getAPI())

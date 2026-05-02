@@ -14,8 +14,19 @@ namespace Rand
         OpenGLShader& operator=(OpenGLShader&&) = delete;
         ~OpenGLShader() { glDeleteProgram(m_RendererID); }
 
-        void bind() const override { glUseProgram(m_RendererID); }
-        void unbind() const override { glUseProgram(0); }
+        void bind() const override
+        {
+            glUseProgram(m_RendererID);
+            s_CurrentBound = m_RendererID;
+        }
+
+        void unbind() const override
+        {
+            glUseProgram(0);
+            s_CurrentBound = 0;
+        }
+
+        bool isBound() const override { return s_CurrentBound == m_RendererID; }
 
         void uInt(const char* name, const int value) override;
 
@@ -29,5 +40,7 @@ namespace Rand
 
       private:
         uint32_t m_RendererID;
+
+        static uint32_t s_CurrentBound;
     };
 } // namespace Rand

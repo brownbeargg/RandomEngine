@@ -8,6 +8,7 @@ namespace Rand
     class OpenGLVertexBuffer final : public VertexBuffer
     {
       public:
+        OpenGLVertexBuffer(uint32_t size);
         OpenGLVertexBuffer(float* vertices, uint32_t size);
         OpenGLVertexBuffer(const OpenGLVertexBuffer&) = delete;
         OpenGLVertexBuffer(OpenGLVertexBuffer&&) = delete;
@@ -24,7 +25,13 @@ namespace Rand
         void setData(float* vertices, uint32_t size) override
         {
             glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-            glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        }
+
+        void setData(const void* data, uint32_t size) override
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
         }
 
       private:

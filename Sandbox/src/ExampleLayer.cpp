@@ -25,17 +25,16 @@ void SandboxLayer::onUpdate(float deltaTime)
     {
         Rand::Renderer2D::beginScene(&m_Camera->getCamera());
         {
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.8f, 0.0f, 0.0f)) *
-                glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.2f, 0.5f));
-            Rand::Renderer2D::drawQuad(transform, glm::vec4(1.0f, 0.0f, 0.5f, 1.0f));
+            glm::vec2 scale(0.4f, 0.4f);
+            glm::mat4 rotation(1.0f);
 
-            transform = glm::translate(glm::mat4(1.0f), glm::vec3(-0.8f, 0.0f, 0.0f)) *
-                glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 0.7f, 1.0f));
-            Rand::Renderer2D::drawQuad(transform, m_TreeTexture);
-
-            transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.1f)) *
-                glm::scale(glm::mat4(1.0f), glm::vec3(5.0f));
-            Rand::Renderer2D::drawQuad(transform, m_GrassTexture, 5, glm::vec4(1.0f, 0.0f, 0.2f, 1.0f));
+            for (uint32_t y{}; y < 100; ++y)
+                for (uint32_t x{}; x < 100; ++x)
+                {
+                    glm::vec3 pos(x / 2.0f, y / 2.0f, 0.0f);
+                    glm::vec4 color(x / 100.0f, 0.0f, y / 100.0f, 1.0f);
+                    Rand::Renderer2D::drawQuad(pos, scale, rotation, color);
+                }
         }
         Rand::Renderer2D::endScene();
     }

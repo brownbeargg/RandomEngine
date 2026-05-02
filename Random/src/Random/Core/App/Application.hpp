@@ -11,6 +11,8 @@
 
 namespace Rand
 {
+    class Main;
+
     class Application : public RefCount
     {
       public:
@@ -19,14 +21,6 @@ namespace Rand
          */
         Application();
         virtual ~Application();
-
-        /**
-         * @brief Contains the main application loop
-         *
-         * Calls onUpdate() on every layer
-         * Calls onImGuiRender() on every layer
-         */
-        void run();
 
         /**
          * @brief Gets called on every event
@@ -47,6 +41,15 @@ namespace Rand
         Ref<Window> getWindow() const { return m_Window; }
 
       private:
+        /**
+         * @brief Contains the main application loop
+         *
+         * Calls onUpdate() on every layer
+         * Calls onImGuiRender() on every layer
+         */
+        void run();
+        friend class Main;
+
         bool onWindowClose(WindowCloseEvent& event);
         bool onWindowResize(WindowResizeEvent& event);
 

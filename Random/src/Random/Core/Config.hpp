@@ -4,4 +4,4 @@
     #define RAND_ENABLE_DEBUG_ASSERTS 1
 #endif
 
-#define RAND_PROFILE 0
+#define RAND_ENABLE_PROFILING 0
