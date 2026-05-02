@@ -1,5 +1,7 @@
 #include "Platform/OpenGL/OpenGLShader.hpp"
 
+#include "Random/Debug/Instrumentor.hpp"
+
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Rand
@@ -12,6 +14,8 @@ namespace Rand
      */
     OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
     {
+        RAND_PROFILE_FUNCTION();
+
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
         // Send the vertex shader source code to GL

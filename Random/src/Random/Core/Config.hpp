@@ -4,4 +4,4 @@
     #define RAND_ENABLE_DEBUG_ASSERTS 1
 #endif
 
-#define HZ_PROFILE 0
+#define RAND_PROFILE 0

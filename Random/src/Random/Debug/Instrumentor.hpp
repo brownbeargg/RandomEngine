@@ -119,7 +119,7 @@ namespace Rand
     } // namespace Profiler
 } // namespace Rand
 
-#if HZ_PROFILE
+#if RAND_PROFILE
     #define RAND_PROFILE_BEGIN_SESSION(name, filepath)                                                       \
         ::Rand::Profiler::Instrumentor::get().beginSession(name, filepath)
     #define RAND_PROFILE_END_SESSION() ::Rand::Profiler::Instrumentor::get().endSession()

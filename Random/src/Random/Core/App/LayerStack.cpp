@@ -12,14 +12,12 @@ namespace Rand
 
     void LayerStack::pushLayer(Layer* const layer)
     {
-        layer->onAttach();
         m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
         ++m_LayerInsertIndex;
     }
 
     void LayerStack::pushOverlay(Layer* const overlay)
     {
-        overlay->onAttach();
         m_Layers.push_back(overlay);
     }
 

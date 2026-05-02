@@ -2,6 +2,7 @@
 
 #include "Platform/OpenGL/OpenGLContext.hpp"
 
+#include "Random/Debug/Instrumentor.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Events/KeyEvent.hpp"
 #include "Random/Events/MouseEvent.hpp"
@@ -35,6 +36,8 @@ namespace Rand
 
     void WindowsWindow::init(const WindowProps& props)
     {
+        RAND_PROFILE_FUNCTION();
+
         if (!isGLFWInitialized)
         {
             int glfwInitStatus = glfwInit();
@@ -67,12 +70,16 @@ namespace Rand
 
     void WindowsWindow::shutdown()
     {
+        RAND_PROFILE_FUNCTION();
+
         glfwDestroyWindow(m_Window);
         glfwTerminate();
     }
 
     GLFWmonitor* WindowsWindow::getMonitor()
     {
+        RAND_PROFILE_FUNCTION();
+
         int count;
         GLFWmonitor** monitors = glfwGetMonitors(&count);
 

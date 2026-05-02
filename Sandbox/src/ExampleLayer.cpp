@@ -45,7 +45,5 @@ void SandboxLayer::onUpdate(float deltaTime)
 
 void SandboxLayer::onEvent(Rand::Event& event)
 {
-    RAND_PROFILE_FUNCTION();
-
     m_Camera->onEvent(event);
 }

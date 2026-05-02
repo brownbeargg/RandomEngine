@@ -1,3 +1,4 @@
+#include "Random/Debug/Instrumentor.hpp"
 #include "Random/Renderer/Buffer/Buffer.hpp"
 
 #include <glad/glad.h>
@@ -43,6 +44,8 @@ namespace Rand
 
         void setData(uint32_t* indices, uint32_t count) override
         {
+            RAND_PROFILE_FUNCTION();
+
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 

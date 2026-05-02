@@ -35,11 +35,11 @@ namespace Rand
          */
         void onEvent(Event& event);
 
-        void pushLayer(Layer* const layer) { m_LayerStack.pushLayer(layer); }
-        void pushOverlay(Layer* const overlay) { m_LayerStack.pushOverlay(overlay); }
+        void pushLayer(Layer* const layer);
+        void pushOverlay(Layer* const overlay);
 
-        void popLayer(Layer* const layer) { m_LayerStack.popLayer(layer); }
-        void popOverlay(Layer* const overlay) { m_LayerStack.popOverlay(overlay); }
+        void popLayer(Layer* const layer);
+        void popOverlay(Layer* const overlay);
 
         void pushProfileResult(Profiler::Result result) const { m_ImGuiProfileLayer->pushResult(result); }
 

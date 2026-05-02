@@ -1,6 +1,7 @@
 #include "Random/Layers/ImGuiLayer.hpp"
 
 #include "Random/Core/App/Application.hpp"
+#include "Random/Debug/Instrumentor.hpp"
 
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
@@ -15,6 +16,8 @@ namespace Rand
 
     void ImGuiLayer::onAttach()
     {
+        RAND_PROFILE_FUNCTION();
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGui::StyleColorsDark();
@@ -41,6 +44,8 @@ namespace Rand
 
     void ImGuiLayer::onDetach()
     {
+        RAND_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -50,12 +55,16 @@ namespace Rand
 
     void ImGuiLayer::onImGuiRender()
     {
+        RAND_PROFILE_FUNCTION();
+
         ImGui::ShowDemoWindow();
         ImGui::ShowDebugLogWindow();
     }
 
     void ImGuiLayer::begin()
     {
+        RAND_PROFILE_FUNCTION();
+
         ImGuiIO& io = ImGui::GetIO();
         io.DisplaySize = ImVec2(m_App.getWindow()->getWidth(), m_App.getWindow()->getHeight());
 
@@ -70,6 +79,8 @@ namespace Rand
 
     void ImGuiLayer::end()
     {
+        RAND_PROFILE_FUNCTION();
+
         ImGuiIO& io = ImGui::GetIO();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

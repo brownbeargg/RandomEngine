@@ -1,6 +1,7 @@
 #include "Platform/OpenGL/OpenGLTexture.hpp"
 
 #include "Random/Core/Assert.hpp"
+#include "Random/Debug/Instrumentor.hpp"
 
 #include <stb_image.h>
 
@@ -11,7 +12,11 @@ namespace Rand
         stbi_set_flip_vertically_on_load(true);
 
         int width{}, height{}, channels{};
-        unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+        unsigned char* data = nullptr;
+        {
+            RAND_PROFILE_SCOPE("stbi_load OpenGLTexture2D::OpenGLTexture2D(const std::sring&)");
+            data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+        }
         if (!data)
         {
             RAND_CORE_ERROR("Failed to load image");

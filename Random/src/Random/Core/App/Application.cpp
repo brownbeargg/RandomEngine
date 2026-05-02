@@ -11,16 +11,18 @@ namespace Rand
 {
     Application::Application() : m_LayerStack(*this)
     {
+        RAND_PROFILE_FUNCTION();
+
         m_Window.reset(Window::create());
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
 
         Renderer::init();
 
         m_ImGuiLayer = new ImGuiLayer(*this);
-        m_LayerStack.pushOverlay(m_ImGuiLayer);
+        pushOverlay(m_ImGuiLayer);
 
         m_ImGuiProfileLayer = new ImGuiProfileLayer(*this);
-        m_LayerStack.pushOverlay(m_ImGuiProfileLayer);
+        pushOverlay(m_ImGuiProfileLayer);
     }
 
     Application::~Application()
@@ -36,19 +38,16 @@ namespace Rand
 
             m_Dt.recalculate(m_LastTime);
 
-            {
-                RAND_PROFILE_SCOPE("Layer updates")
-                for (Layer* layer : m_LayerStack)
-                    layer->onUpdate(m_Dt);
-            }
+            for (Layer* layer : m_LayerStack)
+                layer->onUpdate(m_Dt);
 
-            m_ImGuiLayer->begin();
+            if (!m_Minimized)
             {
-                RAND_PROFILE_SCOPE("Layer ImGui Renders")
+                m_ImGuiLayer->begin();
                 for (Layer* layer : m_LayerStack)
                     layer->onImGuiRender();
+                m_ImGuiLayer->end();
             }
-            m_ImGuiLayer->end();
 
             m_Window->onUpdate();
         }
@@ -70,6 +69,30 @@ namespace Rand
                 break;
             }
         }
+    }
+
+    void Application::pushLayer(Layer* const layer)
+    {
+        m_LayerStack.pushLayer(layer);
+        layer->onAttach();
+    }
+
+    void Application::pushOverlay(Layer* const overlay)
+    {
+        m_LayerStack.pushOverlay(overlay);
+        overlay->onAttach();
+    }
+
+    void Application::popLayer(Layer* const layer)
+    {
+        m_LayerStack.popLayer(layer);
+        layer->onDetach();
+    }
+
+    void Application::popOverlay(Layer* const overlay)
+    {
+        m_LayerStack.popOverlay(overlay);
+        overlay->onDetach();
     }
 
     bool Application::onWindowClose(WindowCloseEvent& event)

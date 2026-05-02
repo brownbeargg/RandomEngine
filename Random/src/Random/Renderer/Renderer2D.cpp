@@ -101,15 +101,22 @@ namespace Rand
 
     void Renderer2D::shutdown()
     {
+        RAND_PROFILE_FUNCTION();
+
         delete s_Data;
     }
 
     void Renderer2D::beginScene(OrthographicCamera* cam)
     {
+        RAND_PROFILE_FUNCTION();
+
         s_Data->Camera = cam;
     }
 
-    void Renderer2D::endScene() {}
+    void Renderer2D::endScene()
+    {
+        RAND_PROFILE_FUNCTION();
+    }
 
     void Renderer2D::drawQuad(const glm::mat4& transform, const glm::vec4& color)
     {

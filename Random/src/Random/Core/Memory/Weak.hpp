@@ -15,7 +15,7 @@ namespace Rand
     {
       public:
         Weak() = default;
-        explicit Weak(T* obj) { reset(obj); }
+        Weak(T* obj) { reset(obj); }
         Weak(const Ref<T>& ref) { reset(ref.m_Data); }
         Weak(const Weak& other) { reset(other.m_Data); }
         Weak(Weak&& rhs) noexcept { move(std::move(rhs)); }
