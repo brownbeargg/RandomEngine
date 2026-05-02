@@ -2,7 +2,6 @@
 
 #include "Platform/OpenGL/OpenGLContext.hpp"
 
-#include "Random/Core/Core.hpp"
 #include "Random/Events/ApplicationEvent.hpp"
 #include "Random/Events/KeyEvent.hpp"
 #include "Random/Events/MouseEvent.hpp"
@@ -63,10 +62,6 @@ namespace Rand
         }
 
         glfwSetWindowPos(m_Window, m_Data.Props.XPos, m_Data.Props.YPos);
-
-        Log ::getCoreLogger()->info("CREATING WINDOW {0} {1} by {2} pixels, at {3}, {4}", props.Title, props.Width,
-            props.Height, m_Data.Props.XPos, m_Data.Props.YPos);
-
         setEventCallbacks();
     }
 
@@ -100,8 +95,8 @@ namespace Rand
 
     void WindowsWindow::setEventCallbacks()
     {
-        glfwSetErrorCallback(
-            [](int error, const char* description) { RAND_CORE_ERROR("GLFW ERROR ({0}): {1}", error, description); });
+        glfwSetErrorCallback([](int error, const char* description)
+        { RAND_CORE_ERROR("GLFW ERROR ({0}): {1}", error, description); });
 
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {

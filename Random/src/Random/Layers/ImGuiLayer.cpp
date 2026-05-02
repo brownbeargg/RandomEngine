@@ -36,7 +36,7 @@ namespace Rand
 
         ImGui_ImplOpenGL3_Init("#version 410");
         ImGui_ImplGlfw_InitForOpenGL(
-            static_cast<GLFWwindow*>(const_cast<void*>(m_App.getWindow().getNativeWindow())), true);
+            static_cast<GLFWwindow*>(const_cast<void*>(m_App.getWindow()->getNativeWindow())), true);
     }
 
     void ImGuiLayer::onDetach()
@@ -57,7 +57,7 @@ namespace Rand
     void ImGuiLayer::begin()
     {
         ImGuiIO& io = ImGui::GetIO();
-        io.DisplaySize = ImVec2(m_App.getWindow().getWidth(), m_App.getWindow().getHeight());
+        io.DisplaySize = ImVec2(m_App.getWindow()->getWidth(), m_App.getWindow()->getHeight());
 
         float dt = (float)glfwGetTime();
         io.DeltaTime = m_Time ? dt - m_Time : 1.0f / 60.0f;

@@ -41,6 +41,10 @@
 #include "Random/Renderer/Renderer.hpp"
 #include "Random/Renderer/Renderer2D.hpp"
 
+/* Debug */
+#include "Random/Debug/Instrumentor.hpp"
+#include "Random/Debug/Profiler.hpp"
+
 /* Precompiled Headers */
 
 #include "RandomPch.hpp"

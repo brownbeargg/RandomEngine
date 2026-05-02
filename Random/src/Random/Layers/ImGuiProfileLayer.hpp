@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Random/Core/App/Layer.hpp"
-#include "Random/Core/Profiler.hpp"
+#include "Random/Debug/Profiler.hpp"
 
 #include "imgui.h"
 
@@ -19,18 +19,18 @@ namespace Rand
             {
                 for (auto& [name, time] : m_ProfilerResults)
                 {
-                    char label[50];
-                    strcpy_s(label, name);
-                    strcat_s(label, "  %.3fms");
-                    ImGui::Text(label, time);
+                    ImGui::Text("%.3fms %s", time, name.c_str());
                 }
             }
             ImGui::End();
         }
 
-        void pushResult(const Profiler::Result& result) { m_ProfilerResults[result.Time] = result.Value; }
+        void pushResult(const Profiler::Result& result)
+        {
+            m_ProfilerResults[result.Name] = (result.End - result.Start) * 0.001f;
+        }
 
       private:
-        std::map<const char*, float> m_ProfilerResults;
+        std::map<std::string, float> m_ProfilerResults;
     };
 } // namespace Rand

@@ -15,11 +15,12 @@ namespace Rand
     {
       public:
         Weak() = default;
-        Weak(T* obj) { reset(obj); }
+        explicit Weak(T* obj) { reset(obj); }
         Weak(const Ref<T>& ref) { reset(ref.m_Data); }
         Weak(const Weak& other) { reset(other.m_Data); }
         Weak(Weak&& rhs) noexcept { move(std::move(rhs)); }
         Weak& operator=(T* obj) { return reset(obj); }
+        Weak& operator=(const Ref<T>& ref) { return reset(ref.m_Data); }
         Weak& operator=(const Weak& other) { return reset(other.m_Data); }
         Weak& operator=(Weak&& rhs) { return move(std::move(rhs)); }
         ~Weak() { destroy(); }

@@ -1,5 +1,6 @@
 #include "Random/Renderer/Renderer2D.hpp"
 
+#include "Random/Debug/Instrumentor.hpp"
 #include "Random/Renderer/Buffer/VertexArray.hpp"
 #include "Random/Renderer/Graphics/Shader.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
@@ -17,6 +18,8 @@ namespace Rand
 
     void Renderer2D::init()
     {
+        RAND_PROFILE_FUNCTION();
+
         s_Data = new Renderer2DStorage;
         s_Data->QuadVertexArray = VertexArray::create();
 
@@ -110,6 +113,8 @@ namespace Rand
 
     void Renderer2D::drawQuad(const glm::mat4& transform, const glm::vec4& color)
     {
+        RAND_PROFILE_FUNCTION();
+
         s_Data->QuadVertexArray->bind();
         Ref<Shader> flatColorShader = s_Data->Shaders.get("FlatColor");
 
@@ -124,6 +129,8 @@ namespace Rand
     void Renderer2D::drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture,
         const int textureScale, const glm::vec4& tint)
     {
+        RAND_PROFILE_FUNCTION();
+
         s_Data->QuadVertexArray->bind();
         Ref<Shader> textureShader = s_Data->Shaders.get("Texture");
 
@@ -138,5 +145,4 @@ namespace Rand
         s_Data->QuadVertexArray->bind();
         RenderCommand::drawIndexed(s_Data->QuadVertexArray);
     }
-
 } // namespace Rand

@@ -12,10 +12,6 @@
     #define RAND_DEBUG_BREAK std::abort()
 #endif
 
-#if (defined _DEBUG)
-    #define RAND_ENABLE_DEBUG_ASSERTS _DEBUG
-#endif
-
 #if defined(RAND_ENABLE_DEBUG_ASSERTS)
     #define RAND_CORE_ASSERT(x, ...)                                                                                   \
         do                                                                                                             \

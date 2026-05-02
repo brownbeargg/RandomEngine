@@ -2,6 +2,7 @@
 
 #include "Random/Core/Log.hpp"
 
+#include "Random/Debug/Instrumentor.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
 
 #include "Random/Renderer/Renderer.hpp"
@@ -31,13 +32,19 @@ namespace Rand
     {
         while (m_Running)
         {
+            RAND_PROFILE_SCOPE("Main loop");
+
             m_Dt.recalculate(m_LastTime);
 
-            for (Layer* layer : m_LayerStack)
-                layer->onUpdate(m_Dt);
+            {
+                RAND_PROFILE_SCOPE("Layer updates")
+                for (Layer* layer : m_LayerStack)
+                    layer->onUpdate(m_Dt);
+            }
 
             m_ImGuiLayer->begin();
             {
+                RAND_PROFILE_SCOPE("Layer ImGui Renders")
                 for (Layer* layer : m_LayerStack)
                     layer->onImGuiRender();
             }
@@ -49,6 +56,8 @@ namespace Rand
 
     void Application::onEvent(Event& event)
     {
+        RAND_PROFILE_FUNCTION();
+
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<WindowCloseEvent>(RAND_BIND_EVENT_FN(Application::onWindowClose));
         dispatcher.dispatch<WindowResizeEvent>(RAND_BIND_EVENT_FN(Application::onWindowResize));

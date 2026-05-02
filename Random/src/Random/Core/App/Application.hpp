@@ -44,7 +44,7 @@ namespace Rand
         void pushProfileResult(Profiler::Result result) const { m_ImGuiProfileLayer->pushResult(result); }
 
         Ref<Input> getInput() const { return m_Window->getInput(); }
-        const Window& getWindow() const { return *m_Window.get(); }
+        Ref<Window> getWindow() const { return m_Window; }
 
       private:
         bool onWindowClose(WindowCloseEvent& event);
