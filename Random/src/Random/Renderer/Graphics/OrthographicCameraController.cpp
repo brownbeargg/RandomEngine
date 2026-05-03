@@ -47,8 +47,7 @@ namespace Rand
 
     bool OrthographicCameraController::onMouseScroll(MouseScrolledEvent& e)
     {
-        m_ZoomLevel -= e.getYOffset() * ZoomStrength;
-        m_ZoomLevel = std::clamp(m_ZoomLevel, 0.01f, 30.0f);
+        m_ZoomLevel = std::max(m_ZoomLevel - e.getYOffset() * ZoomStrength, 0.01f);
         m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }

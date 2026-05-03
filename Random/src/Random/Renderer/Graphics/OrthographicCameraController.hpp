@@ -25,6 +25,12 @@ namespace Rand
 
         OrthographicCamera& getCamera() { return m_Camera; }
 
+        void setZoomLevel(float zoomLevel)
+        {
+            m_ZoomLevel = std::max(zoomLevel, 0.01f);
+            m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio, -m_ZoomLevel, m_ZoomLevel);
+        }
+
       private:
         bool onMouseScroll(MouseScrolledEvent& e);
         bool onWindowResize(WindowResizeEvent& e);

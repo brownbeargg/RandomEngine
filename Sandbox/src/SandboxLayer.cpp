@@ -7,6 +7,8 @@ SandboxLayer::SandboxLayer(const Rand::Application& app)
 {
     RAND_PROFILE_FUNCTION();
 
+    m_Camera->setZoomLevel(30.0f);
+
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
     m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
     m_TileMap = Rand::Texture2D::create("Assets/Rpg/Spritesheet/RPGpack_sheet_2X.png");
@@ -44,7 +46,7 @@ void SandboxLayer::onUpdate(float deltaTime)
                 glm::mat4 transform =
                     glm::translate(glm::mat4(1.0f), pos) * glm::scale(rotation, glm::vec3(scale, 1.0f));
 
-                if (!(x % 3))
+                if (x % 3 == 0)
                     Rand::Renderer2D::drawQuad(transform, m_TreeSubTexture);
                 else if (x % 2 && y % 2)
                     Rand::Renderer2D::drawQuad(transform, m_StairSubTexture);
