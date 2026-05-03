@@ -1,5 +1,6 @@
 #include "Random/Core/App/Application.hpp"
 
+#include "Random/Core/Config.hpp"
 #include "Random/Core/Log.hpp"
 
 #include "Random/Debug/Instrumentor.hpp"
@@ -41,6 +42,7 @@ namespace Rand
             for (Layer* layer : m_LayerStack)
                 layer->onUpdate(m_Dt);
 
+#if RAND_ENABLE_IMGUI
             if (!m_Minimized)
             {
                 m_ImGuiLayer->begin();
@@ -48,6 +50,7 @@ namespace Rand
                     layer->onImGuiRender();
                 m_ImGuiLayer->end();
             }
+#endif
 
             m_Window->onUpdate();
         }

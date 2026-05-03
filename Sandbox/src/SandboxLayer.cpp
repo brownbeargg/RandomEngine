@@ -9,6 +9,10 @@ SandboxLayer::SandboxLayer(const Rand::Application& app)
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
     m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
+    m_TileMap = Rand::Texture2D::create("Assets/Rpg/Spritesheet/RPGpack_sheet_2X.png");
+    m_StairSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {7, 6}, {128, 128});
+    m_BarrelSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {8, 2}, {128, 128});
+    m_TreeSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {2, 1}, {128, 128}, {1, 2});
 }
 
 void SandboxLayer::onUpdate(float deltaTime)
@@ -23,11 +27,7 @@ void SandboxLayer::onUpdate(float deltaTime)
     Rand::Profiler::Timer renderer2DTimer("SandboxLayer::onUpdate rendering");
     Rand::Renderer2D::beginScene(&m_Camera->getCamera());
     {
-        constexpr uint32_t size = 400;
-
-        glm::mat4 bgTransform = glm::translate(glm::mat4(1.0f), glm::vec3(size / 2.0f, size / 2.0f, -0.2)) *
-            glm::scale(glm::mat4(1.0f), glm::vec3(size));
-        Rand::Renderer2D::drawQuad(bgTransform, m_GrassTexture, size / 10.0f);
+        constexpr uint32_t size = 300;
 
         glm::vec2 scale(0.4f, 0.4f);
 
@@ -43,7 +43,13 @@ void SandboxLayer::onUpdate(float deltaTime)
 
                 glm::mat4 transform =
                     glm::translate(glm::mat4(1.0f), pos) * glm::scale(rotation, glm::vec3(scale, 1.0f));
-                Rand::Renderer2D::drawQuad(transform, m_TreeTexture);
+
+                if (!(x % 3))
+                    Rand::Renderer2D::drawQuad(transform, m_TreeSubTexture);
+                else if (x % 2 && y % 2)
+                    Rand::Renderer2D::drawQuad(transform, m_StairSubTexture);
+                else
+                    Rand::Renderer2D::drawQuad(transform, m_BarrelSubTexture);
 
                 pos = glm::vec3(x / 2.0f, y / 2.0f, 0.0f);
                 scale = glm::vec2(0.45f, 0.45f);

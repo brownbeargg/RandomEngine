@@ -1,6 +1,8 @@
 #include "Random/Renderer/Renderer2D.hpp"
 
+#include "Random/Core/Config.hpp"
 #include "Random/Debug/Instrumentor.hpp"
+
 #include "Random/Renderer/Buffer/VertexArray.hpp"
 #include "Random/Renderer/Graphics/Shader.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
@@ -37,6 +39,7 @@ namespace Rand
         uint32_t TextureSlotIndex = 1; // slot 0 = white texture
 
         glm::vec4 QuadVertexPositions[4];
+        glm::vec2 QuadTexCoords[4];
 
         Renderer2D::Statistics Stats;
     };
@@ -138,6 +141,11 @@ namespace Rand
         s_Data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
         s_Data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
         s_Data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
+
+        s_Data.QuadTexCoords[0] = {0.0f, 0.0f};
+        s_Data.QuadTexCoords[1] = {1.0f, 0.0f};
+        s_Data.QuadTexCoords[2] = {1.0f, 1.0f};
+        s_Data.QuadTexCoords[3] = {0.0f, 1.0f};
     }
 
     void Renderer2D::shutdown()
@@ -209,52 +217,35 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
-        constexpr uint8_t quadIndexCount = 6;
-
         if (s_Data.QuadIndexCount >= MaxIndices)
             nextBatch();
 
+        constexpr uint8_t quadIndexCount = 6;
+        constexpr uint8_t quadVertexCount = 4;
+
         constexpr float whiteTextureIndex = 0.0f;
 
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = 1.0f;
-        ++s_Data.QuadVertexBufferPtr;
-
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[1];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = 1.0f;
-        ++s_Data.QuadVertexBufferPtr;
-
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[2];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = 1.0f;
-        ++s_Data.QuadVertexBufferPtr;
-
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[3];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = 1.0f;
-        ++s_Data.QuadVertexBufferPtr;
+        for (uint8_t i{}; i < quadVertexCount; ++i)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = color;
+            s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
+            s_Data.QuadVertexBufferPtr->TexScale = 1.0f;
+            ++s_Data.QuadVertexBufferPtr;
+        }
 
         s_Data.QuadIndexCount += quadIndexCount;
 
+#if RAND_ENABLE_RENDERER2D_STATISTICS
         ++s_Data.Stats.QuadCount;
+#endif
     }
 
     void Renderer2D::drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture,
         const float textureScale, const glm::vec4& color)
     {
         RAND_PROFILE_FUNCTION();
-
-        constexpr uint8_t quadIndexCount = 6;
 
         if (s_Data.QuadIndexCount >= MaxIndices)
             nextBatch();
@@ -277,47 +268,90 @@ namespace Rand
             ++s_Data.TextureSlotIndex;
         }
 
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
-        ++s_Data.QuadVertexBufferPtr;
+        constexpr uint8_t quadVertexCount = 4;
+        constexpr uint8_t quadIndexCount = 6;
 
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[1];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
-        ++s_Data.QuadVertexBufferPtr;
-
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[2];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
-        ++s_Data.QuadVertexBufferPtr;
-
-        s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[3];
-        s_Data.QuadVertexBufferPtr->Color = color;
-        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
-        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
-        ++s_Data.QuadVertexBufferPtr;
+        for (uint8_t i{}; i < quadVertexCount; ++i)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = color;
+            s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+            ++s_Data.QuadVertexBufferPtr;
+        }
 
         s_Data.QuadIndexCount += quadIndexCount;
 
+#if RAND_ENABLE_RENDERER2D_STATISTICS
         ++s_Data.Stats.QuadCount;
+#endif
+    }
+
+    void Renderer2D::drawQuad(const glm::mat4& transform, const Ref<SubTexture2D> subTexture,
+        const float textureScale, const glm::vec4& color)
+    {
+        RAND_PROFILE_FUNCTION();
+
+        if (s_Data.QuadIndexCount >= MaxIndices)
+            nextBatch();
+
+        Ref<Texture2D> texture = subTexture->getTexture();
+
+        float textureIndex = -1.0f;
+        for (uint8_t i = 1; i < s_Data.TextureSlotIndex; ++i)
+            if (*s_Data.TextureSlots[i] == *texture)
+            {
+                textureIndex = (float)i;
+                break;
+            }
+
+        if (textureIndex == -1.0f)
+        {
+            if (s_Data.TextureSlotIndex >= MaxTextureSlots - 1)
+                nextBatch();
+
+            textureIndex = (float)s_Data.TextureSlotIndex;
+            s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+            ++s_Data.TextureSlotIndex;
+        }
+
+        constexpr uint8_t quadVertexCount = 4;
+        constexpr uint8_t quadIndexCount = 6;
+
+        const glm::vec2* textureCoords = subTexture->getTexCoords();
+
+        for (uint8_t i{}; i < quadVertexCount; ++i)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = color;
+            s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+            ++s_Data.QuadVertexBufferPtr;
+        }
+
+        s_Data.QuadIndexCount += quadIndexCount;
+
+#if RAND_ENABLE_RENDERER2D_STATISTICS
+        ++s_Data.Stats.QuadCount;
+#endif
     }
 
     Renderer2D::Statistics Renderer2D::getStats()
     {
+#if RAND_ENABLE_RENDERER2D_STATISTICS
         return s_Data.Stats;
+#else
+        return {.DrawCalls = 0, .QuadCount = 0};
+#endif
     }
 
     void Renderer2D::resetStats()
     {
+#if RAND_ENABLE_RENDERER2D_STATISTICS
         memset(&s_Data.Stats, 0, sizeof(Renderer2D::Statistics));
+#endif
     }
 
 } // namespace Rand

@@ -36,6 +36,7 @@
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
 #include "Random/Renderer/Graphics/OrthographicCameraController.hpp"
 #include "Random/Renderer/Graphics/Shader.hpp"
+#include "Random/Renderer/Graphics/SubTexture2D.hpp"
 #include "Random/Renderer/Graphics/Texture.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/Renderer.hpp"

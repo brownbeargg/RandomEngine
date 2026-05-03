@@ -2,6 +2,7 @@
 
 #include "Random/Core/Memory/Ref.hpp"
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+#include "Random/Renderer/Graphics/SubTexture2D.hpp"
 #include "Random/Renderer/Graphics/Texture.hpp"
 
 namespace Rand
@@ -23,6 +24,8 @@ namespace Rand
         static void drawQuad(
             const glm::mat4& transform = glm::mat4(1.0f), const glm::vec4& color = glm::vec4(1.0f));
         static void drawQuad(const glm::mat4& transform, const Ref<Texture2D> texture,
+            const float textureScale = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+        static void drawQuad(const glm::mat4& transform, const Ref<SubTexture2D> subTexture,
             const float textureScale = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 
         struct Statistics
