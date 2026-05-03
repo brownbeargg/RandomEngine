@@ -29,6 +29,7 @@ namespace Rand
         bool isBound() const override { return s_CurrentBound == m_RendererID; }
 
         void uInt(const char* name, const int value) override;
+        void uIntArray(const char* name, const int* values, uint32_t count) override;
 
         void uFloat(const char* name, const float value) override;
         void uFloat2(const char* name, const glm::vec2& float2) override;

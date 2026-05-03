@@ -8,6 +8,7 @@
 static constexpr uint32_t MaxQuads = 10000;
 static constexpr uint32_t MaxVertices = 10000 * 4;
 static constexpr uint32_t MaxIndices = 10000 * 6;
+static constexpr uint32_t MaxTextureSlots = 32; /// @todo renderer capabilities
 
 namespace Rand
 {
@@ -16,7 +17,8 @@ namespace Rand
         glm::vec3 Position;
         glm::vec4 Color;
         glm::vec2 TexCoord;
-        float TexID;
+        float TexIndex = 1.0f; // White texture
+        float TexScale = 1.0f;
     };
 
     struct Renderer2DData
@@ -28,8 +30,11 @@ namespace Rand
         OrthographicCamera* Camera = nullptr;
 
         uint32_t QuadIndexCount = 0;
-        QuadVertex* quadVertexBufferBase = nullptr;
-        QuadVertex* quadVertexBufferPtr = nullptr;
+        QuadVertex* QuadVertexBufferBase = nullptr;
+        QuadVertex* QuadVertexBufferPtr = nullptr;
+
+        std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+        uint32_t TextureSlotIndex = 1; // slot 0 = white texture
     };
 
     static Renderer2DData s_Data;
@@ -41,9 +46,9 @@ namespace Rand
         s_Data.QuadVertexArray = VertexArray::create();
 
         s_Data.QuadVertexBuffer = VertexBuffer::create(nullptr, sizeof(QuadVertex) * MaxVertices);
-        s_Data.QuadVertexBuffer->setLayout(
-            {{"a_Position", ShaderDataType::Float3}, {"a_Color", ShaderDataType::Float4},
-                {"a_TexCoord", ShaderDataType::Float2}, {"a_TexID", ShaderDataType::Float}});
+        s_Data.QuadVertexBuffer->setLayout({{"a_Position", ShaderDataType::Float3},
+            {"a_Color", ShaderDataType::Float4}, {"a_TexCoord", ShaderDataType::Float2},
+            {"a_TexIndex", ShaderDataType::Float}, {"a_TexScale", ShaderDataType::Float}});
         s_Data.QuadVertexArray->addVertexBuffer(s_Data.QuadVertexBuffer);
 
         uint32_t* quadIndices = new uint32_t[MaxIndices];
@@ -65,28 +70,30 @@ namespace Rand
         s_Data.QuadVertexArray->setIndexBuffer(squareIB);
         delete[] quadIndices;
 
-        s_Data.quadVertexBufferBase = new QuadVertex[MaxVertices];
+        s_Data.QuadVertexBufferBase = new QuadVertex[MaxVertices];
 
-        s_Data.WhiteTexture = Texture2D::create(1, 1);
-        uint32_t whiteTextureData = 0xffffffff;
-        s_Data.WhiteTexture->setData(&whiteTextureData, sizeof(uint32_t));
-
+        /// @ todo add texture scale to shader
         const std::string vs = R"(
             #version 330 core
 
             layout(location=0) in vec3 a_Position;
             layout(location=1) in vec4 a_Color;
             layout(location=2) in vec2 a_TexCoord;
-            layout(location=3) in int a_TexID;
+            layout(location=3) in float a_TexIndex;
+            layout(location=4) in float a_TexScale;
 
             uniform mat4 u_VP;
 
             out vec4 v_Color;
             out vec2 v_TexCoord;
+            out float v_TexIndex;
+            out float v_TexScale;
 
             void main(){
                 v_Color = a_Color;
                 v_TexCoord = a_TexCoord;
+                v_TexIndex = a_TexIndex;
+                v_TexScale = a_TexScale;
                 gl_Position = u_VP * vec4(a_Position, 1.0); 
             }
         )";
@@ -95,27 +102,39 @@ namespace Rand
             #version 330 core
             out vec4 FragColor;
 
-            uniform sampler2D u_Texture;
+            uniform sampler2D u_Textures[32];
 
             in vec4 v_Color;
             in vec2 v_TexCoord;
-
-            uniform float u_TextureScale;
-            uniform vec4 u_Color;
+            in float v_TexIndex;
+            in float v_TexScale;
 
             void main(){
-                FragColor = v_Color;/* texture(u_Texture, v_TexCoord * u_TextureScale) * u_Color; */
+                FragColor = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TexScale) * v_Color;
             }
         )";
 
         s_Data.Shader = Shader::create(vs, fs);
+
+        s_Data.WhiteTexture = Texture2D::create(1, 1);
+        uint32_t whiteTextureData = 0xffffffff;
+        s_Data.WhiteTexture->setData(&whiteTextureData, sizeof(uint32_t));
+
+        s_Data.TextureSlots.fill(nullptr);
+        s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+
+        int samplers[MaxTextureSlots];
+        for (int i{}; i < MaxTextureSlots; ++i)
+            samplers[i] = i;
+
+        s_Data.Shader->uIntArray("u_Textures", samplers, MaxTextureSlots);
     }
 
     void Renderer2D::shutdown()
     {
         RAND_PROFILE_FUNCTION();
 
-        delete[] s_Data.quadVertexBufferBase;
+        delete[] s_Data.QuadVertexBufferBase;
     }
 
     void Renderer2D::beginScene(OrthographicCamera* cam)
@@ -124,15 +143,20 @@ namespace Rand
 
         s_Data.Camera = cam;
         s_Data.QuadIndexCount = 0;
-        s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
+
+        if (!s_Data.Shader->isBound())
+            s_Data.Shader->bind();
+
+        s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+        s_Data.Shader->uMat4("u_VP", s_Data.Camera->getViewProjectionMatrix());
+
+        s_Data.TextureSlotIndex = 1;
     }
 
     void Renderer2D::endScene()
     {
         RAND_PROFILE_FUNCTION();
-
-        uint32_t dataSize = (s_Data.quadVertexBufferPtr - s_Data.quadVertexBufferBase) * sizeof(QuadVertex);
-        s_Data.QuadVertexBuffer->setData(s_Data.quadVertexBufferBase, dataSize);
 
         flush();
     }
@@ -141,10 +165,16 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
+        uint32_t dataSize = (s_Data.QuadVertexBufferPtr - s_Data.QuadVertexBufferBase) * sizeof(QuadVertex);
+        s_Data.QuadVertexBuffer->setData(s_Data.QuadVertexBufferBase, dataSize);
+        s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
         if (!s_Data.Shader->isBound())
             s_Data.Shader->bind();
 
-        s_Data.Shader->uMat4("u_VP", s_Data.Camera->getViewProjectionMatrix());
+        for (int i{}; i < MaxTextureSlots; ++i)
+            if (s_Data.TextureSlots[i])
+                s_Data.TextureSlots[i]->bind();
 
         RenderCommand::drawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
     }
@@ -154,39 +184,27 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
-        s_Data.quadVertexBufferPtr->Position = position;
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = position;
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
+        s_Data.QuadVertexBufferPtr++;
 
-        s_Data.quadVertexBufferPtr->Position = {position.x + scale.x, position.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = {position.x + scale.x, position.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
+        s_Data.QuadVertexBufferPtr++;
 
-        s_Data.quadVertexBufferPtr->Position = {position.x + scale.x, position.y + scale.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = {position.x + scale.x, position.y + scale.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
+        s_Data.QuadVertexBufferPtr++;
 
-        s_Data.quadVertexBufferPtr->Position = {position.x, position.y + scale.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = {position.x, position.y + scale.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
+        s_Data.QuadVertexBufferPtr++;
 
         s_Data.QuadIndexCount += 6;
-
-        // s_Data.WhiteTexture->bind();
-        // s_Data.Shader->uInt("u_Texture", 0);
-        // s_Data.Shader->uFloat("u_TextureScale", 1.0f);
-        // s_Data.Shader->uFloat4("u_Color", color);
-
-        // s_Data.QuadVertexArray->bind();
-        // RenderCommand::drawIndexed(s_Data.QuadVertexArray);
     }
 
     void Renderer2D::drawQuad(const glm::vec3& position, const Ref<Texture2D> texture,
@@ -194,47 +212,50 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
-        s_Data.quadVertexBufferPtr->Position = position;
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        float textureIndex = 0.0f;
+        for (uint32_t i = 1; i < s_Data.TextureSlotIndex; ++i)
+            if (*s_Data.TextureSlots[i].get() == *texture.get())
+                if (textureIndex == 0.0f)
+                {
+                    textureIndex = (float)i;
+                    break;
+                }
 
-        s_Data.quadVertexBufferPtr->Position = {position.x + scale.x, position.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        if (textureIndex == 0.0f)
+        {
+            textureIndex = (float)s_Data.TextureSlotIndex;
+            s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+            ++s_Data.TextureSlotIndex;
+        }
 
-        s_Data.quadVertexBufferPtr->Position = {position.x + scale.x, position.y + scale.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = position;
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
+        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+        s_Data.QuadVertexBufferPtr++;
 
-        s_Data.quadVertexBufferPtr->Position = {position.x, position.y + scale.y, position.z};
-        s_Data.quadVertexBufferPtr->Color = color;
-        s_Data.quadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
-        s_Data.quadVertexBufferPtr->TexID = 0;
-        s_Data.quadVertexBufferPtr++;
+        s_Data.QuadVertexBufferPtr->Position = {position.x + scale.x, position.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
+        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+        s_Data.QuadVertexBufferPtr++;
+
+        s_Data.QuadVertexBufferPtr->Position = {position.x + scale.x, position.y + scale.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
+        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+        s_Data.QuadVertexBufferPtr++;
+
+        s_Data.QuadVertexBufferPtr->Position = {position.x, position.y + scale.y, position.z};
+        s_Data.QuadVertexBufferPtr->Color = color;
+        s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
+        s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+        s_Data.QuadVertexBufferPtr->TexScale = textureScale;
+        s_Data.QuadVertexBufferPtr++;
 
         s_Data.QuadIndexCount += 6;
-
-        // s_Data.QuadVertexArray->bind();
-
-        if (!s_Data.Shader->isBound())
-            s_Data.Shader->bind();
-
-        s_Data.Shader->uMat4("u_MVP",
-            s_Data.Camera->getViewProjectionMatrix() * glm::translate(rotation, position) *
-                glm::scale(glm::mat4(1.0f), {scale, 1.0f}));
-
-        // texture->bind();
-        // s_Data.Shader->uInt("u_Texture", 0);
-        // s_Data.Shader->uFloat("u_TextureScale", textureScale);
-        // s_Data.Shader->uFloat4("u_Color", color);
-
-        // s_Data.QuadVertexArray->bind();
-        // RenderCommand::drawIndexed(s_Data.QuadVertexArray);
     }
 } // namespace Rand

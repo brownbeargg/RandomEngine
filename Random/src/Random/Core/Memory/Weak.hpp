@@ -38,6 +38,8 @@ namespace Rand
         const T* get() const { return m_Data; }
         T* get() { return m_Data; }
 
+        bool expired() { return m_Data->getRefCount(); }
+
       private:
         const T& dereference() const;
         T& dereference() { return const_cast<T&>(std::as_const(*this).dereference()); }

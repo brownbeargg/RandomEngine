@@ -12,14 +12,15 @@ namespace Rand
       public:
         virtual ~Shader() = default;
 
-        virtual void bind() const=0; 
-        virtual void unbind() const =0;
+        virtual void bind() const = 0;
+        virtual void unbind() const = 0;
 
         virtual bool isBound() const = 0;
 
         static Shader* create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
         virtual void uInt(const char* name, const int value) = 0;
+        virtual void uIntArray(const char* name, const int* values, uint32_t count) = 0;
 
         virtual void uFloat(const char* name, const float value) = 0;
         virtual void uFloat2(const char* name, const glm::vec2& float2) = 0;

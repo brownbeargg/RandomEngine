@@ -117,6 +117,11 @@ namespace Rand
         glUniform1i(glGetUniformLocation(m_RendererID, name), value);
     }
 
+    void OpenGLShader::uIntArray(const char* name, const int* values, uint32_t count)
+    {
+        glUniform1iv(glGetUniformLocation(m_RendererID, name), count, values);
+    }
+
     void OpenGLShader::uFloat(const char* name, const float value)
     {
         glUniform1f(glGetUniformLocation(m_RendererID, name), value);

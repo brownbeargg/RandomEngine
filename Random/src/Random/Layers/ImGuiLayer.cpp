@@ -37,6 +37,8 @@ namespace Rand
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
+        style.FontSizeBase = 21;
+
         ImGui_ImplOpenGL3_Init("#version 410");
         ImGui_ImplGlfw_InitForOpenGL(
             static_cast<GLFWwindow*>(const_cast<void*>(m_App.getWindow()->getNativeWindow())), true);
@@ -56,9 +58,6 @@ namespace Rand
     void ImGuiLayer::onImGuiRender()
     {
         RAND_PROFILE_FUNCTION();
-
-        ImGui::ShowDemoWindow();
-        ImGui::ShowDebugLogWindow();
     }
 
     void ImGuiLayer::begin()

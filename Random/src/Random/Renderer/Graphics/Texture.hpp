@@ -6,8 +6,13 @@ namespace Rand
 {
     class Texture : public RefCount
     {
+      protected:
+        using RendererID = uint32_t;
+
       public:
         virtual ~Texture() = default;
+        virtual bool operator==(const Texture& other) const = 0;
+        virtual bool operator==(const RendererID otherID) const = 0;
 
         virtual void bind(uint32_t slot = 0) const = 0;
 

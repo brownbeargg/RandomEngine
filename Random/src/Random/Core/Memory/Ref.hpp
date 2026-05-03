@@ -24,6 +24,8 @@ namespace Rand
         const T* operator->() const { return get(); }
         T* operator->() { return get(); }
 
+        operator bool() const { return m_Data != nullptr; }
+
         Ref& reset(T* obj);
 
         /**
