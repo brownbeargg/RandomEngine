@@ -7,6 +7,7 @@ class SandboxLayer : public Rand::Layer
 
     void onUpdate(float deltaTime) override;
     void onEvent(Rand::Event& event) override;
+    void onImGuiRender() override;
 
   private:
     Rand::ShaderLibrary m_ShaderLib;
