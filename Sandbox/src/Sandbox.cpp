@@ -1,6 +1,6 @@
 #include "Sandbox.hpp"
 
-#include "ExampleLayer.hpp"
+#include "SandboxLayer.hpp"
 
 #include <EntryPoint.hpp>
 #include <Random.hpp>
