@@ -9,11 +9,11 @@
 
 namespace Rand
 {
-    Application::Application() : m_LayerStack(*this)
+    Application::Application(const WindowProps& windowProps) : m_LayerStack(*this)
     {
         RAND_PROFILE_FUNCTION();
 
-        m_Window.reset(Window::create());
+        m_Window = Window::create(windowProps);
         m_Window->setEventCallback(RAND_BIND_EVENT_FN(Application::onEvent));
 
         Renderer::init();

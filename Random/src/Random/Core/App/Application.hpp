@@ -19,7 +19,7 @@ namespace Rand
         /**
          * @brief Initializes state of the Application object e.g. the window
          */
-        Application();
+        Application(const WindowProps& windowProps = WindowProps());
         virtual ~Application();
 
         /**

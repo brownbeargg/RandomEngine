@@ -27,7 +27,6 @@ void SandboxLayer::onUpdate(float deltaTime)
 {
     RAND_PROFILE_FUNCTION();
 
-    m_FrameBuffer->bind();
     Rand::RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
     Rand::RenderCommand::clear();
 
@@ -70,7 +69,6 @@ void SandboxLayer::onUpdate(float deltaTime)
             }
     }
     Rand::Renderer2D::endScene();
-    m_FrameBuffer->unbind();
     m_App.pushProfileResult(renderer2DTimer.stop());
 }
 
@@ -83,26 +81,6 @@ void SandboxLayer::onImGuiRender()
 {
     Rand::Renderer2D::Statistics renderer2DStats = Rand::Renderer2D::getStats();
     Rand::Renderer2D::resetStats();
-
-    ImGui::DockSpaceOverViewport();
-
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("Exit"))
-            {
-                const_cast<Rand::Application&>(m_App).close();
-            }
-
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
-
-    ImGui::Begin("Scene");
-    ImGui::Image(m_FrameBuffer->getColorAttachmentRendererID(), ImGui::GetWindowSize());
-    ImGui::End();
 
     ImGui::Begin("Info");
     ImGui::TextColored({0.8f, 0.2f, 0.2f, 1.0f}, "Renderer statistics");

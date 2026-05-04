@@ -1,33 +1,18 @@
-cmake_minimum_required(VERSION 3.20)
 project(Sandbox)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-add_subdirectory("../Random" "${CMAKE_BINARY_DIR}/Random")
 
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     src/*.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(Sandbox ${SRC_FILES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(Sandbox PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Random/src/Client
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Random)
+target_link_libraries(Sandbox PRIVATE Random)
 
-set_target_properties(Random ${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin-int"
-)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:Sandbox> $<TARGET_RUNTIME_DLLS:Sandbox>
     COMMAND_EXPAND_LISTS
 )

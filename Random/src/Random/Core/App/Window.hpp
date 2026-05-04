@@ -61,7 +61,7 @@ namespace Rand
          *
          * @param props The properties of the window
          */
-        static Window* create(const WindowProps& props = WindowProps());
+        static Window* create(const WindowProps& props);
 
       protected:
         GraphicsContext* m_Context;
