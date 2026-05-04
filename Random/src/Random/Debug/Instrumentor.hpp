@@ -123,7 +123,7 @@ namespace Rand
     #define RAND_PROFILE_BEGIN_SESSION(name, filepath)                                                       \
         ::Rand::Profiler::Instrumentor::get().beginSession(name, filepath)
     #define RAND_PROFILE_END_SESSION() ::Rand::Profiler::Instrumentor::get().endSession()
-    #define RAND_PROFILE_SCOPE(name) ::Rand::Profiler::InstrumentationTimer timer##__LINE__(name);
+    #define RAND_PROFILE_SCOPE(name) ::Rand::Profiler::InstrumentationTimer timer##__LINE__(name)
     #define RAND_PROFILE_FUNCTION() RAND_PROFILE_SCOPE(__FUNCSIG__)
 #else
     #define RAND_PROFILE_BEGIN_SESSION(name, filepath)

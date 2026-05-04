@@ -30,6 +30,7 @@
 
 /* Renderer */
 #include "Random/Renderer/Buffer/Buffer.hpp"
+#include "Random/Renderer/Buffer/Framebuffer.hpp"
 #include "Random/Renderer/Buffer/Layout.hpp"
 #include "Random/Renderer/Buffer/VertexArray.hpp"
 #include "Random/Renderer/Graphics/GraphicsContext.hpp"

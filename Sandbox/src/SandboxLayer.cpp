@@ -6,21 +6,28 @@ SandboxLayer::SandboxLayer(const Rand::Application& app)
           (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.getInput()))
 {
     RAND_PROFILE_FUNCTION();
+}
+
+void SandboxLayer::onAttach()
+{
+    RAND_PROFILE_FUNCTION();
 
     m_Camera->setZoomLevel(15.0f);
-
-    m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
-    m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
     m_TileMap = Rand::Texture2D::create("Assets/Rpg/Spritesheet/RPGpack_sheet_2X.png");
     m_StairSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {7, 6}, {128, 128});
     m_BarrelSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {8, 2}, {128, 128});
     m_TreeSubTexture = Rand::SubTexture2D::createFromCoords(m_TileMap, {2, 1}, {128, 128}, {1, 2});
+
+    Rand::FramebufferSpecification fbSpec = {
+        .Width = m_App.getWindow()->getWidth(), .Height = m_App.getWindow()->getHeight()};
+    m_FrameBuffer = Rand::Framebuffer::Create(fbSpec);
 }
 
 void SandboxLayer::onUpdate(float deltaTime)
 {
     RAND_PROFILE_FUNCTION();
 
+    m_FrameBuffer->bind();
     Rand::RenderCommand::clearColor({0.1, 0.1, 0.1, 1.0});
     Rand::RenderCommand::clear();
 
@@ -63,6 +70,7 @@ void SandboxLayer::onUpdate(float deltaTime)
             }
     }
     Rand::Renderer2D::endScene();
+    m_FrameBuffer->unbind();
     m_App.pushProfileResult(renderer2DTimer.stop());
 }
 
@@ -82,7 +90,8 @@ void SandboxLayer::onImGuiRender()
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Exit")){
+            if (ImGui::MenuItem("Exit"))
+            {
                 const_cast<Rand::Application&>(m_App).close();
             }
 
@@ -90,6 +99,10 @@ void SandboxLayer::onImGuiRender()
         }
         ImGui::EndMainMenuBar();
     }
+
+    ImGui::Begin("Scene");
+    ImGui::Image(m_FrameBuffer->getColorAttachmentRendererID(), ImGui::GetWindowSize());
+    ImGui::End();
 
     ImGui::Begin("Info");
     ImGui::TextColored({0.8f, 0.2f, 0.2f, 1.0f}, "Renderer statistics");
