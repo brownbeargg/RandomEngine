@@ -23,6 +23,8 @@ namespace Rand
         void onUpdate(float deltaTime);
         void onEvent(Event& e);
 
+        void resize(float width, float height);
+
         OrthographicCamera& getCamera() { return m_Camera; }
 
         void setZoomLevel(float zoomLevel)

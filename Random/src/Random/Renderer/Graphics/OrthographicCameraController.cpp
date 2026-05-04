@@ -45,17 +45,21 @@ namespace Rand
             RAND_BIND_EVENT_FN(OrthographicCameraController::onWindowResize));
     }
 
+    void OrthographicCameraController::resize(float width, float height)
+    {
+        m_AspectRatio = width / height;
+        m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio, -m_ZoomLevel, m_ZoomLevel);
+    }
+
     bool OrthographicCameraController::onMouseScroll(MouseScrolledEvent& e)
     {
-        m_ZoomLevel = std::max(m_ZoomLevel - e.getYOffset() * ZoomStrength, 0.01f);
-        m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio, -m_ZoomLevel, m_ZoomLevel);
+        setZoomLevel(m_ZoomLevel - e.getYOffset() * ZoomStrength);
         return false;
     }
 
     bool OrthographicCameraController::onWindowResize(WindowResizeEvent& e)
     {
-        m_AspectRatio = (float)e.getWidth() / (float)e.getHeight();
-        m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio, -m_ZoomLevel, m_ZoomLevel);
+        resize((float)e.getWidth(), (float)e.getHeight());
         return false;
     }
 } // namespace Rand

@@ -12,6 +12,7 @@ namespace Rand
       public:
         EditorApp(const WindowProps& windowProps) : Application(windowProps)
         {
+            getWindow()->setVSync(false);
             pushLayer(new SceneLayer(*this));
         }
 
