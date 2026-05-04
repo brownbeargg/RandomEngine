@@ -67,9 +67,7 @@ namespace Rand
         {
             (*it)->onEvent(event);
             if (event.isHandled())
-            {
                 break;
-            }
         }
     }
 

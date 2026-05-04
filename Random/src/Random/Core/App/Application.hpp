@@ -35,9 +35,11 @@ namespace Rand
         void popLayer(Layer* const layer);
         void popOverlay(Layer* const overlay);
 
+        ImGuiLayer* getImGuiLayer() const { return m_ImGuiLayer; }
+
         void pushProfileResult(Profiler::Result result) const { m_ImGuiProfileLayer->pushResult(result); }
 
-        Ref<Input> getInput() const { return m_Window->getInput(); }
+        Ref<Input> input() const { return m_Window->input(); }
         Ref<Window> getWindow() const { return m_Window; }
 
         void close() { m_Running = false; }

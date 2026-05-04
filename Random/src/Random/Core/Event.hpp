@@ -44,28 +44,31 @@ namespace Rand
         Mouse = BIT(3),
     };
 
-#define RAND_EVENT_CLASS_TYPE(type)                                                                                    \
-    static EventType getStaticType()                                                                                   \
-    {                                                                                                                  \
-        return type;                                                                                                   \
-    }                                                                                                                  \
-    virtual EventType getEventType() const override                                                                    \
-    {                                                                                                                  \
-        return getStaticType();                                                                                        \
-    }                                                                                                                  \
-    virtual const char* getName() const override                                                                       \
-    {                                                                                                                  \
-        return #type;                                                                                                  \
+#define RAND_EVENT_CLASS_TYPE(type)                                                                          \
+    static EventType getStaticType()                                                                         \
+    {                                                                                                        \
+        return type;                                                                                         \
+    }                                                                                                        \
+    virtual EventType getEventType() const override                                                          \
+    {                                                                                                        \
+        return getStaticType();                                                                              \
+    }                                                                                                        \
+    virtual const char* getName() const override                                                             \
+    {                                                                                                        \
+        return #type;                                                                                        \
     }
 
-#define RAND_EVENT_CLASS_CATEGORY(category)                                                                            \
-    virtual int getCategoryFlags() const override                                                                      \
-    {                                                                                                                  \
-        return category;                                                                                               \
+#define RAND_EVENT_CLASS_CATEGORY(category)                                                                  \
+    virtual int getCategoryFlags() const override                                                            \
+    {                                                                                                        \
+        return category;                                                                                     \
     }
 
     class Event
     {
+      public:
+        bool Handled;
+
       public:
         inline virtual EventType getEventType() const = 0;
         inline virtual const char* getName() const = 0;
@@ -77,13 +80,11 @@ namespace Rand
             return getCategoryFlags() & static_cast<int>(category);
         }
 
-        bool isHandled() { return m_Handled; }
+        bool isHandled() { return Handled; }
 
         void operator<<(std::ostream& os) const { os << toString(); }
 
       private:
-        bool m_Handled;
-
         friend class EventDispatcher;
     };
 
@@ -97,7 +98,7 @@ namespace Rand
         explicit EventDispatcher(Event& event) : m_Event(event) {}
 
         /**
-         * @brief Tries to handle an event by calling the function param if the type of m_Event == the type of T
+         * @brief Tries to handle an event by calling the function param if the type of m_Event is of type T
          *
          * @param func A function that returns a bool and has a T, which is an Event, param
          */
@@ -107,7 +108,7 @@ namespace Rand
         {
             if (m_Event.getEventType() == T::getStaticType())
             {
-                return m_Event.m_Handled = func(static_cast<T&>(m_Event));
+                return m_Event.Handled = func(static_cast<T&>(m_Event));
                 return true;
             }
 

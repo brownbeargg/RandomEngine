@@ -3,7 +3,7 @@
 SandboxLayer::SandboxLayer(const Rand::Application& app)
     : Layer("SandboxLayer", app),
       m_Camera(new Rand::OrthographicCameraController(
-          (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.getInput()))
+          (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.input()))
 {
     RAND_PROFILE_FUNCTION();
 }

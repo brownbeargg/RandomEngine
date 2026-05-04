@@ -20,5 +20,7 @@ namespace Rand
 
         Ref<Framebuffer> m_SceneFBO;
         ImVec2 m_ViewportSize = {0, 0};
+        bool m_ViewportFocused = false;
+        bool m_ViewportHovered = false;
     };
 } // namespace Rand

@@ -41,13 +41,13 @@ namespace Rand
         inline virtual void setVSync(const bool enabled) = 0;
         inline virtual bool isVSync() const = 0;
 
-        Ref<Input> getInput() const { return m_Input; }
+        Ref<Input> input() const { return m_Input; }
 
         /**
          * @brief Gets the window object
          *
-         * This function should be used with caution because if the platform / graphicsAPI isn't clear you will read
-         * from memory wrong (because void* is used), which is ofcourse unsafe
+         * This function should be used with caution because if the platform / graphicsAPI isn't clear you
+         * will read from memory wrong (because void* is used), which is ofcourse unsafe
          *
          * @return A handle to the window object
          */
@@ -56,12 +56,12 @@ namespace Rand
         /**
          * @brief Creates a window object
          *
-         * This function should be defined in other compiled c++ files instead of here because it is made to be a
-         * cross-platform alternative instead of a lot of #ifdefs
+         * This function should be defined in other compiled c++ files instead of here because it is made to
+         * be a cross-platform alternative instead of a lot of #ifdefs
          *
          * @param props The properties of the window
          */
-        static Window* create(const WindowProps& props);
+        static Window* create(const WindowProps& props = WindowProps());
 
       protected:
         GraphicsContext* m_Context;

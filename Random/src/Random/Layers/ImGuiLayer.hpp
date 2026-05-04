@@ -35,7 +35,10 @@ namespace Rand
          */
         void end();
 
+        void blockEvents(bool blockEvents) { m_BlockEvents = blockEvents; }
+
       private:
         float m_Time{};
+        bool m_BlockEvents = false;
     };
 } // namespace Rand

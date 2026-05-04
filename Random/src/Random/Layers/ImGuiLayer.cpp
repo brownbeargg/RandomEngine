@@ -53,7 +53,15 @@ namespace Rand
         ImGui::DestroyContext();
     }
 
-    void ImGuiLayer::onEvent(Event& event) {}
+    void ImGuiLayer::onEvent(Event& event)
+    {
+        if (m_BlockEvents)
+        {
+            ImGuiIO& io = ImGui::GetIO();
+            event.Handled |= event.isInCategory(EventCategory::Mouse) & io.WantCaptureMouse;
+            event.Handled |= event.isInCategory(EventCategory::Keyboard) & io.WantCaptureKeyboard;
+        }
+    }
 
     void ImGuiLayer::onImGuiRender()
     {

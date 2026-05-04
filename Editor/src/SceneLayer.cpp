@@ -9,19 +9,21 @@ namespace Rand
         m_SceneFBO = Framebuffer::Create(fbSpec);
 
         m_CameraController = new OrthographicCameraController(
-            (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.getInput());
-        m_CameraController->setZoomLevel(15.0f);
+            (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.input());
+        m_CameraController->setZoomLevel(30.0f);
+        m_CameraController->getCamera().setPosition({30.0f, 30.0f, 0.0f});
     }
 
     void SceneLayer::onUpdate(float deltaTime)
     {
-        m_CameraController->onUpdate(deltaTime);
+        if (m_ViewportFocused)
+            m_CameraController->onUpdate(deltaTime);
 
         m_SceneFBO->bind();
         RenderCommand::clearColor({0.2f, 0.2f, 0.2f, 1.0f});
         RenderCommand::clear();
 
-        constexpr uint32_t QuadCount = 150;
+        constexpr uint32_t QuadCount = 400;
 
         Rand::Profiler::Timer renderer2DTimer("SceneLayer::onUpdate rendering");
         Rand::Renderer2D::beginScene(&m_CameraController->getCamera());
@@ -59,14 +61,17 @@ namespace Rand
         ImGui::EndMainMenuBar();
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0, 0});
-        ImGui::Begin("Scene");
+        ImGui::Begin("Viewport");
         const ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         if (m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y)
         {
             m_SceneFBO->resize(viewportPanelSize.x, viewportPanelSize.y);
             m_ViewportSize = viewportPanelSize;
         }
-        ImGui::Image(m_SceneFBO->getColorAttachmentRendererID(),m_ViewportSize, {0, 1}, {1,0} );
+        ImGui::Image(m_SceneFBO->getColorAttachmentRendererID(), m_ViewportSize, {0, 1}, {1, 0});
+
+        m_ViewportFocused = ImGui::IsWindowFocused();
+        m_ViewportHovered = ImGui::IsWindowHovered();
         ImGui::End();
         ImGui::PopStyleVar();
 
@@ -84,6 +89,7 @@ namespace Rand
 
     void SceneLayer::onEvent(Event& e)
     {
-        m_CameraController->onEvent(e);
+        if (m_ViewportHovered)
+            m_CameraController->onEvent(e);
     }
 } // namespace Rand

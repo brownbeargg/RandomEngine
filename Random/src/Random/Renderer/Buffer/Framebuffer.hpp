@@ -15,6 +15,8 @@ namespace Rand
     class Framebuffer : public RefCount
     {
       public:
+        virtual ~Framebuffer() = default;
+
         virtual void bind() const = 0;
         virtual void unbind() const = 0;
 

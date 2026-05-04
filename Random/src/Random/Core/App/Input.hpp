@@ -14,13 +14,13 @@ namespace Rand
     /**
      * @brief Class to handle input
      *
-     * This class should mostly be defined in a compiled c++ in the Platform directory so it's implementation will
-     * always be cross-platform
+     * This class should mostly be defined in a compiled c++ in the Platform directory so it's implementation
+     * will always be cross-platform
      */
     class Input final : public RefCount
     {
       public:
-        Input(const Window* window) : m_Window(window) {}
+        Input(Window* window) : m_Window(window) {}
         ~Input() = default;
 
         bool isKeyPressed(const Key key) const;
@@ -31,6 +31,6 @@ namespace Rand
         float getMouseY() const { return getMousePos().y; }
 
       private:
-        const Window* const m_Window;
+        Window* const m_Window;
     };
 } // namespace Rand
