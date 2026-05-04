@@ -207,6 +207,8 @@ namespace Rand
         for (int i{}; i < MaxTextureSlots; ++i)
             if (s_Data.TextureSlots[i])
                 s_Data.TextureSlots[i]->bind(i);
+            else
+                break;
 
         RenderCommand::drawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 

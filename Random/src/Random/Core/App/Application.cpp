@@ -1,7 +1,6 @@
 #include "Random/Core/App/Application.hpp"
 
 #include "Random/Core/Config.hpp"
-#include "Random/Core/Log.hpp"
 
 #include "Random/Debug/Instrumentor.hpp"
 #include "Random/Layers/ImGuiLayer.hpp"
@@ -100,7 +99,7 @@ namespace Rand
 
     bool Application::onWindowClose(WindowCloseEvent& event)
     {
-        m_Running = false;
+        close();
         return true;
     }
 

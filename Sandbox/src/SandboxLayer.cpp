@@ -7,7 +7,7 @@ SandboxLayer::SandboxLayer(const Rand::Application& app)
 {
     RAND_PROFILE_FUNCTION();
 
-    m_Camera->setZoomLevel(30.0f);
+    m_Camera->setZoomLevel(15.0f);
 
     m_GrassTexture = Rand::Texture2D::create("Assets/Textures/Grass.png");
     m_TreeTexture = Rand::Texture2D::create("Assets/Textures/Tree.png");
@@ -29,7 +29,7 @@ void SandboxLayer::onUpdate(float deltaTime)
     Rand::Profiler::Timer renderer2DTimer("SandboxLayer::onUpdate rendering");
     Rand::Renderer2D::beginScene(&m_Camera->getCamera());
     {
-        constexpr uint32_t size = 300;
+        constexpr uint32_t size = 250;
 
         glm::vec2 scale(0.4f, 0.4f);
 
@@ -76,7 +76,23 @@ void SandboxLayer::onImGuiRender()
     Rand::Renderer2D::Statistics renderer2DStats = Rand::Renderer2D::getStats();
     Rand::Renderer2D::resetStats();
 
-    ImGui::Begin("Renderer2D statistics");
+    ImGui::DockSpaceOverViewport();
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Exit")){
+                const_cast<Rand::Application&>(m_App).close();
+            }
+
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+    ImGui::Begin("Info");
+    ImGui::TextColored({0.8f, 0.2f, 0.2f, 1.0f}, "Renderer statistics");
     ImGui::Text("draw calls: %i", renderer2DStats.DrawCalls);
     ImGui::Text("quad count: %i", renderer2DStats.QuadCount);
     ImGui::Text("vertex count: %i", renderer2DStats.getTotalVertexCount());

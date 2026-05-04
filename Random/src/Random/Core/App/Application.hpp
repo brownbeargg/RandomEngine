@@ -40,6 +40,8 @@ namespace Rand
         Ref<Input> getInput() const { return m_Window->getInput(); }
         Ref<Window> getWindow() const { return m_Window; }
 
+        void close() { m_Running = false; }
+
       private:
         /**
          * @brief Contains the main application loop
