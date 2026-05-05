@@ -1,7 +1,5 @@
 #include "EditorLayer.hpp"
 
-#include "Random/Scene/Component.hpp"
-
 namespace Rand
 {
     void EditorLayer::onAttach()
@@ -10,11 +8,14 @@ namespace Rand
             .Width = m_App.getWindow()->getWidth(), .Height = m_App.getWindow()->getHeight()};
         m_SceneFBO = Framebuffer::Create(fbSpec);
 
-        m_CameraController = new OrthographicCameraController(
-            (float)m_App.getWindow()->getWidth() / (float)m_App.getWindow()->getHeight(), m_App.input());
-        m_CameraController->setZoomLevel(30.0f);
-
         m_ActiveScene = new Scene;
+
+        m_Camera = m_ActiveScene->createEntity("Camera");
+        m_Camera.addComponent<TransformComponent>();
+
+        CameraComponent& camComponent = m_Camera.addComponent<CameraComponent>();
+        camComponent.Camera.setOrthoProjection(-1.0f, 1.0f, -1.0f, 1.0f);
+        m_ActiveScene->setPrimaryCamera(&camComponent);
 
         constexpr uint32_t QuadCount = 100;
 
@@ -28,7 +29,7 @@ namespace Rand
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) *
                     glm::scale(glm::mat4(1.0f), glm::vec3(scale, 1.0f));
 
-                Entity quad = m_ActiveScene->createEntity();
+                Entity quad = m_ActiveScene->createEntity("Quad");
                 quad.addComponent<TransformComponent>(transform);
                 quad.addComponent<SpriteRendererComponent>(color);
             }
@@ -36,15 +37,14 @@ namespace Rand
 
     void EditorLayer::onUpdate(float deltaTime)
     {
-        if (m_ViewportFocused)
-            m_CameraController->onUpdate(deltaTime);
+        m_ActiveScene->createEntity();
 
         m_SceneFBO->bind();
         RenderCommand::clearColor({0.2f, 0.2f, 0.2f, 1.0f});
         RenderCommand::clear();
 
         Profiler::Timer renderer2DTimer("SceneLayer::onUpdate rendering");
-        Renderer2D::beginScene(&m_CameraController->getCamera());
+        Renderer2D::beginScene(m_ActiveScene->getPrimaryCamera()->Camera);
         {
             m_ActiveScene->onUpdate();
         }
@@ -87,18 +87,15 @@ namespace Rand
         Renderer2D::Statistics renderer2DStats = Renderer2D::getStats();
         Renderer2D::resetStats();
 
-        ImGui::Begin("Info");
+        ImGui::Begin("settings");
         ImGui::TextColored({0.8f, 0.2f, 0.2f, 1.0f}, "Renderer statistics");
         ImGui::Text("draw calls: %i", renderer2DStats.DrawCalls);
         ImGui::Text("quad count: %i", renderer2DStats.QuadCount);
         ImGui::Text("vertex count: %i", renderer2DStats.getTotalVertexCount());
         ImGui::Text("index count: %i", renderer2DStats.getTotalIndexCount());
+
         ImGui::End();
     }
 
-    void EditorLayer::onEvent(Event& e)
-    {
-        if (m_ViewportHovered)
-            m_CameraController->onEvent(e);
-    }
+    void EditorLayer::onEvent(Event& e) {}
 } // namespace Rand

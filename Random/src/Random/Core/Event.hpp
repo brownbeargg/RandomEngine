@@ -2,7 +2,11 @@
 
 #include "Random/Core/Core.hpp"
 
-#define RAND_BIND_EVENT_FN(eventFn) std::bind(&eventFn, this, std::placeholders::_1)
+#define RAND_BIND_EVENT_FN(eventFn)                                                                          \
+    [this](auto&&... args) -> decltype(auto)                                                                           \
+    {                                                                                                        \
+        return this->eventFn(std::forward<decltype(args)>(args)...);                                         \
+    }
 
 namespace Rand
 {

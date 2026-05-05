@@ -4,8 +4,6 @@
 
 namespace Rand
 {
-    
-
     struct BufferElement final
     {
         std::string Name;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+
 #include "glm/glm.hpp"
 
 namespace Rand
@@ -32,5 +34,14 @@ namespace Rand
         SpriteRendererComponent() = default;
         SpriteRendererComponent(const SpriteRendererComponent&) = default;
         SpriteRendererComponent(const glm::vec4 color) : Color(color) {}
+    };
+
+    struct CameraComponent
+    {
+        Camera Camera;
+
+        CameraComponent() = default;
+        CameraComponent(const CameraComponent&) = default;
+        CameraComponent(const glm::mat4& projection) : Camera(projection) {};
     };
 } // namespace Rand

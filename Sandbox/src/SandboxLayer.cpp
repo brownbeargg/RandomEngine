@@ -33,7 +33,7 @@ void SandboxLayer::onUpdate(float deltaTime)
     m_Camera->onUpdate(deltaTime);
 
     Rand::Profiler::Timer renderer2DTimer("SandboxLayer::onUpdate rendering");
-    Rand::Renderer2D::beginScene(&m_Camera->getCamera());
+    Rand::Renderer2D::beginScene(m_Camera->getCamera());
     {
         constexpr uint32_t size = 250;
 

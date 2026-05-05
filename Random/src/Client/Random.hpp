@@ -41,6 +41,7 @@
 #include "Random/Renderer/Renderer2D.hpp"
 
 /* Scene | ECS */
+#include "Random/Scene/Component.hpp"
 #include "Random/Scene/Entity.hpp"
 #include "Random/Scene/Scene.hpp"
 

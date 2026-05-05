@@ -16,13 +16,12 @@ namespace Rand
         void onEvent(Event& e) override;
 
       private:
-        Ref<OrthographicCameraController> m_CameraController;
-
         Ref<Framebuffer> m_SceneFBO;
         ImVec2 m_ViewportSize = {0, 0};
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;
 
         Ref<Scene> m_ActiveScene;
+        Entity m_Camera;
     };
 } // namespace Rand

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Random/Core/Memory/RefCount.hpp"
+#include "Random/Scene/Component.hpp"
 
 #include "entt.hpp"
 
@@ -18,8 +19,12 @@ namespace Rand
 
         void onUpdate();
 
+        CameraComponent* getPrimaryCamera() { return m_PrimaryCamera; }
+        void setPrimaryCamera(CameraComponent* camera) { m_PrimaryCamera = camera; }
+
       private:
         entt::registry m_Registry;
+        CameraComponent* m_PrimaryCamera;
 
         friend class Entity;
     };

@@ -12,9 +12,12 @@ namespace Rand
     class Entity final
     {
       public:
+        Entity() = default;
         Entity(entt::entity handle, const Weak<Scene>& scene);
         Entity(const Entity& other) = default;
         Entity(Entity&& rhs) = default;
+        Entity& operator=(const Entity& other) = default;
+        Entity& operator=(Entity&& other) = default;
         ~Entity() = default;
 
         operator bool() const { return (uint32_t)m_EntityHandle; }
@@ -32,7 +35,7 @@ namespace Rand
         bool hasComponent();
 
       private:
-        entt::entity m_EntityHandle{};
+        entt::entity m_EntityHandle = entt::null;
         Weak<Scene> m_Scene = nullptr;
     };
 

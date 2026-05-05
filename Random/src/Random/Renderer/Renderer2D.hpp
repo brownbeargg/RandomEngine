@@ -13,7 +13,7 @@ namespace Rand
         static void init();
         static void shutdown();
 
-        static void beginScene(OrthographicCamera* cam);
+        static void beginScene(const Camera& cam);
         static void endScene();
 
         static void startBatch();

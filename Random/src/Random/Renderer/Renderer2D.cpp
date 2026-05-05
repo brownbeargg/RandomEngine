@@ -29,7 +29,7 @@ namespace Rand
         Ref<VertexBuffer> QuadVertexBuffer = nullptr;
         Ref<Shader> Shader = nullptr;
         Ref<Texture2D> WhiteTexture = nullptr;
-        OrthographicCamera* Camera = nullptr;
+        const Camera* Camera = nullptr;
 
         uint32_t QuadIndexCount = 0;
         QuadVertex* QuadVertexBufferBase = nullptr;
@@ -155,11 +155,11 @@ namespace Rand
         delete[] s_Data.QuadVertexBufferBase;
     }
 
-    void Renderer2D::beginScene(OrthographicCamera* cam)
+    void Renderer2D::beginScene(const Camera& cam)
     {
         RAND_PROFILE_FUNCTION();
 
-        s_Data.Camera = cam;
+        s_Data.Camera = &cam;
 
         if (!s_Data.Shader->isBound())
             s_Data.Shader->bind();

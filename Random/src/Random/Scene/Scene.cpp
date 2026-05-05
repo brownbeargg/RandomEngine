@@ -21,11 +21,29 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
-        auto spriteGroup = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-        for (auto Entity : spriteGroup)
+        Camera* primaryCamera = nullptr;
         {
-            auto [transform, sprite] = spriteGroup.get<TransformComponent, SpriteRendererComponent>(Entity);
-            Renderer2D::drawQuad(transform, sprite.Color);
+            auto cameraView = m_Registry.view<CameraComponent>();
+            for (auto entity : cameraView)
+            {
+                CameraComponent& cameraComponent = cameraView->get(entity);
+
+                if (&cameraComponent == m_PrimaryCamera)
+                {
+                    primaryCamera = &cameraComponent.Camera;
+                    break;
+                }
+            }
+        }
+
+        if (primaryCamera)
+        {
+            auto spriteView = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+            for (auto entity : spriteView)
+            {
+                const auto& [transform, sprite] = spriteView.get(entity);
+                Renderer2D::drawQuad(transform, sprite.Color);
+            }
         }
     }
 } // namespace Rand
