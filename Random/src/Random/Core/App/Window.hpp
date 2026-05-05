@@ -12,16 +12,11 @@ namespace Rand
      */
     struct WindowProps
     {
-        std::string Title{};
-        uint32_t Width{}, Height{};
+        std::string Title = "RANDOM ENGINE";
+        uint32_t Width = 1280, Height = 720;
         int XPos{}, YPos{};
-        bool Focus{};
-
-        explicit WindowProps(const std::string_view title = "RANDOM ENGINE", const size_t width = 1280,
-            const size_t height = 720, const int xPos = 0, const int yPos = 0, const bool focus = true)
-            : Title(title), Width(width), Height(height), XPos(xPos), YPos(yPos), Focus(focus)
-        {
-        }
+        bool Focus = true;
+        bool HasTitleBar = true;
     };
 
     class Window : public RefCount

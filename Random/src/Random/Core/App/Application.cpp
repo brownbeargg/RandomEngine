@@ -38,8 +38,11 @@ namespace Rand
 
             m_Dt.recalculate(m_LastTime);
 
-            for (Layer* layer : m_LayerStack)
-                layer->onUpdate(m_Dt);
+            if (m_RunWhileMinimized || !m_Minimized)
+            {
+                for (Layer* layer : m_LayerStack)
+                    layer->onUpdate(m_Dt);
+            }
 
 #if RAND_ENABLE_IMGUI
             if (!m_Minimized)

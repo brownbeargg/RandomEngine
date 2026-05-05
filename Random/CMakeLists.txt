@@ -38,6 +38,7 @@ target_include_directories(imgui PUBLIC
     vendor/GLFW/include
     vendor/imgui
     vendor/imgui/backends
+    vendor/entt/include
 )
 
 target_link_libraries(${PROJECT_NAME}

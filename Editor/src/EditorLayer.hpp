@@ -4,11 +4,11 @@
 
 namespace Rand
 {
-    class SceneLayer : public Layer
+    class EditorLayer : public Layer
     {
       public:
-        SceneLayer(Rand::Application& app) : Rand::Layer("SceneLayer", app) {}
-        ~SceneLayer() {}
+        EditorLayer(Rand::Application& app) : Rand::Layer("SceneLayer", app) {}
+        ~EditorLayer() {}
 
         void onAttach() override;
         void onUpdate(float deltaTime) override;
@@ -22,5 +22,7 @@ namespace Rand
         ImVec2 m_ViewportSize = {0, 0};
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;
+
+        Ref<Scene> m_ActiveScene;
     };
 } // namespace Rand

@@ -42,6 +42,8 @@ namespace Rand
         Ref<Input> input() const { return m_Window->input(); }
         Ref<Window> getWindow() const { return m_Window; }
 
+        void runWhileMinimized(bool runWhileMinimized) { m_RunWhileMinimized = runWhileMinimized; }
+
         void close() { m_Running = false; }
 
       private:
@@ -62,6 +64,7 @@ namespace Rand
 
         bool m_Running = true;
         bool m_Minimized = false;
+        bool m_RunWhileMinimized = true;
 
         DeltaTime m_Dt{};
         float m_LastTime{};

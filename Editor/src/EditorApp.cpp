@@ -6,9 +6,13 @@ namespace Rand
 {
     Application* createApplication()
     {
-        WindowProps windowProps;
-        windowProps.Title = "Random Editor";
-        return new EditorApp(windowProps);
+        WindowProps windowProps = {.Title = "Random Editor", .HasTitleBar = true};
+        EditorApp* app = new EditorApp(windowProps);
+
+        app->getWindow()->setVSync(false);
+        app->runWhileMinimized(false);
+
+        return app;
     }
 } // namespace Rand
 

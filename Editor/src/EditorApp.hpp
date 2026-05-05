@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneLayer.hpp"
+#include "EditorLayer.hpp"
 
 #include <Random.hpp>
 #include <RandomPch.hpp>
@@ -13,7 +13,7 @@ namespace Rand
         EditorApp(const WindowProps& windowProps) : Application(windowProps)
         {
             getWindow()->setVSync(false);
-            pushLayer(new SceneLayer(*this));
+            pushLayer(new EditorLayer(*this));
         }
 
         ~EditorApp() {}

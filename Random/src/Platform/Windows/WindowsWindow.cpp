@@ -25,7 +25,7 @@ namespace Rand
 
     WindowsWindow::~WindowsWindow()
     {
-        shutdown();
+        close();
     }
 
     void WindowsWindow::onUpdate()
@@ -48,8 +48,10 @@ namespace Rand
 
         m_Data.Props = props;
 
-        m_Window = glfwCreateWindow(
-            (int)m_Data.Props.Width, (int)m_Data.Props.Height, m_Data.Props.Title.c_str(), nullptr, nullptr);
+        glfwWindowHint(GLFW_DECORATED, props.HasTitleBar ? GLFW_TRUE : GLFW_FALSE);
+
+        m_Window =
+            glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
         glfwSetWindowUserPointer(m_Window, &m_Data);
         setVSync(true);
 
@@ -58,7 +60,7 @@ namespace Rand
 
         m_Data.Monitor = getMonitor();
 
-        if (!m_Data.Props.XPos || m_Data.Props.YPos)
+        if (!props.XPos || props.YPos)
         {
             m_Data.Props.XPos = (m_Data.VidMode->width - m_Data.Props.Width) / 2;
             m_Data.Props.YPos = (m_Data.VidMode->height - m_Data.Props.Height) / 2;
@@ -68,7 +70,7 @@ namespace Rand
         setEventCallbacks();
     }
 
-    void WindowsWindow::shutdown()
+    void WindowsWindow::close()
     {
         RAND_PROFILE_FUNCTION();
 

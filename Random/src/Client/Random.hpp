@@ -1,7 +1,3 @@
-/* Application */
-
-#include "Random/Core/App/Application.hpp"
-
 /* Key | Mouse Codes */
 
 #include "Random/Core/Codes/KeyCodes.hpp"
@@ -9,6 +5,7 @@
 
 /* Core */
 
+#include "Random/Core/App/Application.hpp"
 #include "Random/Core/Core.hpp"
 #include "Random/Core/Event.hpp"
 #include "Random/Core/Log.hpp"
@@ -42,6 +39,10 @@
 #include "Random/Renderer/RenderCommand.hpp"
 #include "Random/Renderer/Renderer.hpp"
 #include "Random/Renderer/Renderer2D.hpp"
+
+/* Scene | ECS */
+#include "Random/Scene/Entity.hpp"
+#include "Random/Scene/Scene.hpp"
 
 /* Debug */
 #include "Random/Debug/Instrumentor.hpp"

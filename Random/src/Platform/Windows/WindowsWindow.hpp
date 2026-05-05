@@ -43,7 +43,7 @@ namespace Rand
 
       private:
         void init(const WindowProps& props);
-        void shutdown();
+        void close();
 
         GLFWmonitor* getMonitor();
         void setEventCallbacks();

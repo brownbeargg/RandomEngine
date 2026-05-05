@@ -7,7 +7,7 @@
 #include "Random/Renderer/Graphics/Shader.hpp"
 #include "Random/Renderer/RenderCommand.hpp"
 
-static constexpr uint32_t MaxQuads = 8000;
+static constexpr uint32_t MaxQuads = 10000;
 static constexpr uint32_t MaxVertices = MaxQuads * 4;
 static constexpr uint32_t MaxIndices = MaxQuads * 6;
 static constexpr uint32_t MaxTextureSlots = 32; /// @todo renderer capabilities
