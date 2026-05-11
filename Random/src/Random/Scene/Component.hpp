@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Random/Renderer/Graphics/OrthographicCamera.hpp"
+#include "Random/Scene/SceneCamera.hpp"
 
 #include "glm/glm.hpp"
 
@@ -38,7 +39,8 @@ namespace Rand
 
     struct CameraComponent
     {
-        Camera Camera;
+        SceneCamera Camera;
+        bool FixedAspectRatio = false;
 
         CameraComponent() = default;
         CameraComponent(const CameraComponent&) = default;

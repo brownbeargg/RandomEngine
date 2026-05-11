@@ -13,9 +13,10 @@ namespace Rand
         m_Camera = m_ActiveScene->createEntity("Camera");
         m_Camera.addComponent<TransformComponent>();
 
-        CameraComponent& camComponent = m_Camera.addComponent<CameraComponent>();
-        camComponent.Camera.setOrthoProjection(-1.0f, 1.0f, -1.0f, 1.0f);
-        m_ActiveScene->setPrimaryCamera(&camComponent);
+        CameraComponent& cameraComponent = m_Camera.addComponent<CameraComponent>();
+        cameraComponent.Camera.setOrtho(10, -1, 1);
+        cameraComponent.Camera.setViewportSize(fbSpec.Width, fbSpec.Height);
+        m_ActiveScene->setPrimaryCamera(&m_Camera);
 
         constexpr uint32_t QuadCount = 100;
 
@@ -37,14 +38,30 @@ namespace Rand
 
     void EditorLayer::onUpdate(float deltaTime)
     {
-        m_ActiveScene->createEntity();
+        {
+            ///@todo make fbo resizable
+
+            uint32_t viewportWidth = (uint32_t)m_ViewportSize.x;
+            uint32_t viewportHeight = (uint32_t)m_ViewportSize.y;
+
+            if (FramebufferSpecification spec = m_SceneFBO->getSpecification(); viewportWidth > 0 &&
+                viewportHeight > 0 && (spec.Width != viewportWidth || spec.Height != viewportHeight))
+            {
+                m_SceneFBO->resize(viewportWidth, viewportHeight);
+                m_ActiveScene->onViewportResize(viewportWidth, viewportHeight);
+            }
+        }
 
         m_SceneFBO->bind();
         RenderCommand::clearColor({0.2f, 0.2f, 0.2f, 1.0f});
         RenderCommand::clear();
 
+        RAND_CORE_WARN("Aspect ratio = {}",
+            m_ActiveScene->getPrimaryCamera()->getComponent<CameraComponent>().Camera.getAspectRatio());
+        RAND_CORE_TRACE("viewportwidth: {}", m_ViewportSize.x);
+
         Profiler::Timer renderer2DTimer("SceneLayer::onUpdate rendering");
-        Renderer2D::beginScene(m_ActiveScene->getPrimaryCamera()->Camera);
+        Renderer2D::beginScene(m_ActiveScene->getPrimaryCamera()->getComponent<CameraComponent>().Camera);
         {
             m_ActiveScene->onUpdate();
         }
@@ -70,13 +87,11 @@ namespace Rand
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0, 0});
         ImGui::Begin("Viewport");
+
         const ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        if ((m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y) &&
-            (viewportPanelSize.x && viewportPanelSize.y))
-        {
-            m_SceneFBO->resize(viewportPanelSize.x, viewportPanelSize.y);
+        if (viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
             m_ViewportSize = viewportPanelSize;
-        }
+
         ImGui::Image(m_SceneFBO->getColorAttachmentRendererID(), m_ViewportSize, {0, 1}, {1, 0});
 
         m_ViewportFocused = ImGui::IsWindowFocused();

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Random/Core/Memory/RefCount.hpp"
-#include "Random/Scene/Component.hpp"
 
 #include "entt.hpp"
 
@@ -15,16 +14,19 @@ namespace Rand
         Scene() = default;
         ~Scene() = default;
 
-        Entity createEntity(const std::string_view name = std::string());
+        [[nodiscard]] Entity createEntity(const std::string_view name = std::string());
 
         void onUpdate();
+        void onViewportResize(uint32_t width, uint32_t height);
 
-        CameraComponent* getPrimaryCamera() { return m_PrimaryCamera; }
-        void setPrimaryCamera(CameraComponent* camera) { m_PrimaryCamera = camera; }
+        Entity* getPrimaryCamera() { return m_PrimaryCamera; }
+        void setPrimaryCamera(Entity* camera) { m_PrimaryCamera = camera; }
 
       private:
         entt::registry m_Registry;
-        CameraComponent* m_PrimaryCamera;
+        Entity* m_PrimaryCamera;
+
+        uint32_t m_ViewportWidth{}, m_ViewportHeight{};
 
         friend class Entity;
     };

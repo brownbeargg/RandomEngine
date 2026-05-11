@@ -33,7 +33,7 @@ namespace Rand
         glCreateTextures(GL_TEXTURE_2D, 1, &m_ColorAttachment);
         glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
         glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA32F, m_Spec.Width, m_Spec.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            GL_TEXTURE_2D, 0, GL_RGBA32F, m_Spec.Width, m_Spec.Height, 0, GL_RGBA, GL_FLOAT, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -54,6 +54,12 @@ namespace Rand
 
     void OpenGLFrameBuffer::resize(uint32_t width, uint32_t height)
     {
+        if (!width || !height)
+            return;
+
+        if (width == m_Spec.Width && height == m_Spec.Height)
+            return;
+
         m_Spec.Width = width;
         m_Spec.Height = height;
         invalidate();

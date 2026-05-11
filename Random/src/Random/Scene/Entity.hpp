@@ -34,6 +34,8 @@ namespace Rand
         template <typename T>
         bool hasComponent();
 
+        entt::entity getUnderlyingEntityHandle() { return m_EntityHandle; }
+
       private:
         entt::entity m_EntityHandle = entt::null;
         Weak<Scene> m_Scene = nullptr;

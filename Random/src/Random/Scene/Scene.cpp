@@ -21,28 +21,29 @@ namespace Rand
     {
         RAND_PROFILE_FUNCTION();
 
-        Camera* primaryCamera = nullptr;
-        {
-            auto cameraView = m_Registry.view<CameraComponent>();
-            for (auto entity : cameraView)
-            {
-                CameraComponent& cameraComponent = cameraView->get(entity);
-
-                if (&cameraComponent == m_PrimaryCamera)
-                {
-                    primaryCamera = &cameraComponent.Camera;
-                    break;
-                }
-            }
-        }
-
-        if (primaryCamera)
+        if (m_PrimaryCamera)
         {
             auto spriteView = m_Registry.view<TransformComponent, SpriteRendererComponent>();
             for (auto entity : spriteView)
             {
                 const auto& [transform, sprite] = spriteView.get(entity);
                 Renderer2D::drawQuad(transform, sprite.Color);
+            }
+        }
+    }
+
+    void Scene::onViewportResize(uint32_t width, uint32_t height)
+    {
+        m_ViewportWidth = width;
+        m_ViewportHeight = height;
+
+        auto cameraView = m_Registry.view<CameraComponent>();
+        for (auto entity : cameraView)
+        {
+            CameraComponent& cameraComponent = cameraView.get<CameraComponent>(entity);
+            if (!cameraComponent.FixedAspectRatio)
+            {
+                cameraComponent.Camera.setViewportSize(width, height);
             }
         }
     }

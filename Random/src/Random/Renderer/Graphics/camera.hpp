@@ -12,11 +12,9 @@ namespace Rand
     class Camera : public RefCount
     {
       public:
-        Camera()
-            : m_ProjectionMatrix(glm::mat4(1.0f)), m_ViewProjectionMatrix(m_ViewMatrix * m_ProjectionMatrix)
-        {
-        }
+        Camera();
         Camera(const glm::mat4& projectionMatrix) : m_ProjectionMatrix(projectionMatrix) {}
+        virtual ~Camera() = default;
 
         const glm::mat4& getProjectionMatrix() const { return m_ProjectionMatrix; }
         const glm::mat4& getViewMatrix() const { return m_ViewMatrix; }
@@ -25,10 +23,10 @@ namespace Rand
         void setOrthoProjection(float left, float right, float bottom, float top);
 
         const glm::vec3& getPosition() const { return m_Position; }
-        void setPosition(const glm::vec3& position);
+        void setPosition(const glm::vec3& position) { m_Position = position; }
 
         const glm::vec3& getRotation() const { return m_Rotation; }
-        void setRotation(const glm::vec3& rotation);
+        void setRotation(const glm::vec3& rotation) { m_Rotation = rotation; }
 
       protected:
         void calculateOrthoViewMatrix();
